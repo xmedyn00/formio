@@ -2,6 +2,24 @@ const express = require('express');
 const { google } = require('googleapis');
 
 const app = express();
+
+/* =======================
+   🔐 CORS (ДОЛЖЕН БЫТЬ ЗДЕСЬ)
+   ======================= */
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'https://portal.form.io');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+
+  next();
+});
+
+/* ======================= */
+
 app.use(express.json());
 
 const oauth2Client = new google.auth.OAuth2(
@@ -10,20 +28,12 @@ const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_REDIRECT_URI
 );
 
-// 👇 refresh token используется автоматически
 oauth2Client.setCredentials({
   refresh_token: process.env.GOOGLE_REFRESH_TOKEN
 });
 
-const docs = google.docs({
-  version: 'v1',
-  auth: oauth2Client
-});
-
-const drive = google.drive({
-  version: 'v3',
-  auth: oauth2Client
-});
+const docs = google.docs({ version: 'v1', auth: oauth2Client });
+const drive = google.drive({ version: 'v3', auth: oauth2Client });
 
 app.post('/generate-doc', async (req, res) => {
   try {
@@ -33,7 +43,7 @@ app.post('/generate-doc', async (req, res) => {
       return res.status(400).json({ error: 'Missing parameters' });
     }
 
-    // 1️⃣ Копия шаблона
+    // 1️⃣ копия шаблона
     const copy = await drive.files.copy({
       fileId: process.env.TEMPLATE_ID,
       requestBody: {
@@ -43,26 +53,20 @@ app.post('/generate-doc', async (req, res) => {
 
     const documentId = copy.data.id;
 
-    // 2️⃣ Замена параметров
+    // 2️⃣ замены
     await docs.documents.batchUpdate({
       documentId,
       requestBody: {
         requests: [
           {
             replaceAllText: {
-              containsText: {
-                text: '{{companyName}}',
-                matchCase: true
-              },
+              containsText: { text: '{{companyName}}', matchCase: true },
               replaceText: companyName
             }
           },
           {
             replaceAllText: {
-              containsText: {
-                text: '{{ico}}',
-                matchCase: true
-              },
+              containsText: { text: '{{ico}}', matchCase: true },
               replaceText: ico
             }
           }
@@ -70,7 +74,6 @@ app.post('/generate-doc', async (req, res) => {
       }
     });
 
-    // 3️⃣ Ответ
     res.json({
       url: `https://docs.google.com/document/d/${documentId}/edit`
     });
