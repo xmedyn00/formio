@@ -43,31 +43,31 @@ app.post('/generate-doc', async (req, res) => {
   try {
     // 👉 все поля необязательные
     const {
-      adresaBudovy = '',
-      jmenoVlastnika = '',
-      jmenoZadavatele = '',
-      adresaZadavatele = '',
-      ic = '',
-      zastupceZadavatele = '',
-      datumZpracovani = '',
-      datumPristiKontroly = '',
-      datumProvedeniVetsiZmenyNaBudove = '',
-      vytapenaPlocha = '',
-      evidencniCisloEnex = ''
+      adresaBudovy,
+      jmenoVlastnika,
+      jmenoZadavatele,
+      adresaZadavatele,
+      ic,
+      zastupceZadavatele,
+      datumZpracovani,
+      datumPristiKontroly,
+      datumProvedeniVetsiZmenyNaBudove,
+      vytapenaPlocha,
+      evidencniCisloEnex
     } = req.body || {};
 
     // 1️⃣ копия шаблона + конвертация в Google Docs
     const copy = await drive.files.copy({
       fileId: process.env.TEMPLATE_ID,
       requestBody: {
-        name: adresaBudovy ? `Firma_${adresaBudovy}` : 'Firma',
+        name: adresaBudovy ? `Firma_${String(adresaBudovy)}` : 'Firma',
         mimeType: 'application/vnd.google-apps.document'
       }
     });
 
     const documentId = copy.data.id;
 
-    // 2️⃣ все placeholders → всегда заменяются (даже на пусто)
+    // 2️⃣ placeholders → всегда заменяем, ВСЕГДА строкой
     const replacements = [
       ['{{adresaBudovy}}', adresaBudovy],
       ['{{jmenoVlastnika}}', jmenoVlastnika],
@@ -91,7 +91,8 @@ app.post('/generate-doc', async (req, res) => {
               text: placeholder,
               matchCase: true
             },
-            replaceText: value || ''
+            // 🔑 КЛЮЧЕВОЙ ФИКС
+            replaceText: String(value ?? '')
           }
         }))
       }
