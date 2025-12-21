@@ -60,25 +60,25 @@ app.post('/generate-doc', async (req, res) => {
         requests: [
           {
             replaceAllText: {
-              containsText: { text: '{{data.adresaBudovy}}', matchCase: true },
+              containsText: { text: '{{adresaBudovy}}', matchCase: true },
               replaceText: adresaBudovy
             }
           },
           {
             replaceAllText: {
-              containsText: { text: '{{data.jmenoVlastnika}}', matchCase: true },
+              containsText: { text: '{{jmenoVlastnika}}', matchCase: true },
               replaceText: jmenoVlastnika
             }
           },
           {
             replaceAllText: {
-              containsText: { text: '{{data.jmenoZadavatele}}', matchCase: true },
+              containsText: { text: '{{jmenoZadavatele}}', matchCase: true },
               replaceText: jmenoZadavatele
             }
           },
           {
             replaceAllText: {
-              containsText: { text: '{{data.adresaZadavatele}}', matchCase: true },
+              containsText: { text: '{{adresaZadavatele}}', matchCase: true },
               replaceText: adresaZadavatele
             }
           }
