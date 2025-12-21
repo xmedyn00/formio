@@ -37,9 +37,9 @@ const drive = google.drive({ version: 'v3', auth: oauth2Client });
 
 app.post('/generate-doc', async (req, res) => {
   try {
-    const { companyName, ico } = req.body;
+    const { adresaBudovy, zastupceZadavatele } = req.body;
 
-    if (!companyName || !ico) {
+    if (!adresaBudovy || !zastupceZadavatele) {
       return res.status(400).json({ error: 'Missing parameters' });
     }
 
@@ -47,7 +47,7 @@ app.post('/generate-doc', async (req, res) => {
     const copy = await drive.files.copy({
       fileId: process.env.TEMPLATE_ID,
       requestBody: {
-        name: `Firma_${companyName}`
+        name: `Firma_${adresaBudovy}`
       }
     });
 
@@ -60,14 +60,14 @@ app.post('/generate-doc', async (req, res) => {
         requests: [
           {
             replaceAllText: {
-              containsText: { text: '{{companyName}}', matchCase: true },
-              replaceText: companyName
+              containsText: { text: '{{data.adresaBudovy}}', matchCase: true },
+              replaceText: adresaBudovy
             }
           },
           {
             replaceAllText: {
-              containsText: { text: '{{ico}}', matchCase: true },
-              replaceText: ico
+              containsText: { text: '{{data.adresaZadavatele}}', matchCase: true },
+              replaceText: adresaZadavatele
             }
           }
         ]
