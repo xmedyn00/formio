@@ -44,7 +44,7 @@ app.post('/generate-doc', async (req, res) => {
     const body = req.body || {};
 
     /* =======================
-       ✅ RADIO LOGIC (ANO / NE)
+       ✅ RADIO: ANO / NE
        ======================= */
     const radio = body.automatizacniRidiciSystem;
 
@@ -54,8 +54,37 @@ app.post('/generate-doc', async (req, res) => {
     body.automatizacniRidiciSystem_checkNo =
       radio === 'ne' ? 'Ne' : '';
 
-    /* ======================= */
+    /* =======================
+       🧩 AGGREGATE PRIPOMINKY
+       ======================= */
+    const pripominkyFields = [
+      { key: 'pouzitiKoncepcniReseni1', label: 'Použití, koncepční řešení' },
+      { key: 'dimenzovani1', label: 'Dimenzování' },
+      { key: 'zapojeni1', label: 'Zapojení' },
+      { key: 'regulace1', label: 'Regulace' },
+      { key: 'provozniNastaveni1', label: 'Provozní nastavení' },
+      { key: 'tepelnaIzolace1', label: 'Tepelná izolace' },
+      { key: 'stavArmatur1', label: 'Stav armatur' },
+      { key: 'dalsi1', label: 'Další' }
+    ];
 
+    const pripominkyCombined = pripominkyFields
+      .map(({ key, label }) => {
+        const value = body[key];
+        if (!value || !String(value).trim()) return null;
+
+        return `${label}:\n${String(value).trim()}`;
+      })
+      .filter(Boolean)
+      .join('\n\n');
+
+    // 👉 финальное поле для шаблона
+    body.c32_vsechnyPripominky =
+      pripominkyCombined || 'bez připomínek';
+
+    /* =======================
+       📄 Copy template
+       ======================= */
     const copy = await drive.files.copy({
       fileId: process.env.TEMPLATE_ID,
       requestBody: {
@@ -68,6 +97,9 @@ app.post('/generate-doc', async (req, res) => {
 
     const documentId = copy.data.id;
 
+    /* =======================
+       ✏ Replace placeholders
+       ======================= */
     const requests = Object.entries(body).map(([key, value]) => ({
       replaceAllText: {
         containsText: {
@@ -97,7 +129,6 @@ app.post('/generate-doc', async (req, res) => {
     });
   }
 });
-
 
 /* =======================
    🚀 Server start
