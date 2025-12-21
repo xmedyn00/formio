@@ -37,9 +37,9 @@ const drive = google.drive({ version: 'v3', auth: oauth2Client });
 
 app.post('/generate-doc', async (req, res) => {
   try {
-    const { adresaBudovy, zastupceZadavatele } = req.body;
+    const { adresaBudovy, jmenoVlastnika, jmenoZadavatele, adresaZadavatele } = req.body;
 
-    if (!adresaBudovy || !zastupceZadavatele) {
+    if (!adresaBudovy || !jmenoVlastnika || !jmenoZadavatele || !adresaZadavatele) {
       return res.status(400).json({ error: 'Missing parameters' });
     }
 
@@ -62,6 +62,18 @@ app.post('/generate-doc', async (req, res) => {
             replaceAllText: {
               containsText: { text: '{{data.adresaBudovy}}', matchCase: true },
               replaceText: adresaBudovy
+            }
+          },
+          {
+            replaceAllText: {
+              containsText: { text: '{{data.jmenoVlastnika}}', matchCase: true },
+              replaceText: jmenoVlastnika
+            }
+          },
+          {
+            replaceAllText: {
+              containsText: { text: '{{data.jmenoZadavatele}}', matchCase: true },
+              replaceText: jmenoZadavatele
             }
           },
           {
