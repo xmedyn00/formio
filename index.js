@@ -41,12 +41,19 @@ const drive = google.drive({ version: 'v3', auth: oauth2Client });
    ======================= */
 app.post('/generate-doc', async (req, res) => {
   try {
-    // 👉 все значения необязательны
+    // 👉 все поля необязательные
     const {
       adresaBudovy = '',
       jmenoVlastnika = '',
       jmenoZadavatele = '',
-      adresaZadavatele = ''
+      adresaZadavatele = '',
+      ic = '',
+      zastupceZadavatele = '',
+      datumZpracovani = '',
+      datumPristiKontroly = '',
+      datumProvedeniVetsiZmenyNaBudove = '',
+      vytapenaPlocha = '',
+      evidencniCisloEnex = ''
     } = req.body || {};
 
     // 1️⃣ копия шаблона + конвертация в Google Docs
@@ -60,12 +67,19 @@ app.post('/generate-doc', async (req, res) => {
 
     const documentId = copy.data.id;
 
-    // 2️⃣ список замен (всегда заменяем, даже на пусто)
+    // 2️⃣ все placeholders → всегда заменяются (даже на пусто)
     const replacements = [
       ['{{adresaBudovy}}', adresaBudovy],
       ['{{jmenoVlastnika}}', jmenoVlastnika],
       ['{{jmenoZadavatele}}', jmenoZadavatele],
-      ['{{adresaZadavatele}}', adresaZadavatele]
+      ['{{adresaZadavatele}}', adresaZadavatele],
+      ['{{ic}}', ic],
+      ['{{zastupceZadavatele}}', zastupceZadavatele],
+      ['{{datumZpracovani}}', datumZpracovani],
+      ['{{datumPristiKontroly}}', datumPristiKontroly],
+      ['{{datumProvedeniVetsiZmenyNaBudove}}', datumProvedeniVetsiZmenyNaBudove],
+      ['{{vytapenaPlocha}}', vytapenaPlocha],
+      ['{{evidencniCisloEnex}}', evidencniCisloEnex]
     ];
 
     await docs.documents.batchUpdate({
