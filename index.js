@@ -39,12 +39,10 @@ const drive = google.drive({ version: 'v3', auth: oauth2Client });
 /* =======================
    📄 Generate document
    ======================= */
-
 app.post('/generate-doc', async (req, res) => {
   try {
     const body = req.body || {};
 
-    // 1️⃣ копия шаблона + Google Docs
     const copy = await drive.files.copy({
       fileId: process.env.TEMPLATE_ID,
       requestBody: {
@@ -57,7 +55,6 @@ app.post('/generate-doc', async (req, res) => {
 
     const documentId = copy.data.id;
 
-    // 2️⃣ АВТОМАТИЧЕСКИЕ ЗАМЕНЫ
     const requests = Object.entries(body).map(([key, value]) => ({
       replaceAllText: {
         containsText: {
@@ -68,7 +65,6 @@ app.post('/generate-doc', async (req, res) => {
       }
     }));
 
-    // 3️⃣ выполняем batchUpdate ТОЛЬКО если есть данные
     if (requests.length > 0) {
       await docs.documents.batchUpdate({
         documentId,
@@ -87,4 +83,12 @@ app.post('/generate-doc', async (req, res) => {
       details: err.message
     });
   }
+});
+
+/* =======================
+   🚀 Server start
+   ======================= */
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
 });
