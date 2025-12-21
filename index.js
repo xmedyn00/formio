@@ -43,6 +43,19 @@ app.post('/generate-doc', async (req, res) => {
   try {
     const body = req.body || {};
 
+    /* =======================
+       ✅ RADIO LOGIC (ANO / NE)
+       ======================= */
+    const radio = body.automatizacniRidiciSystem;
+
+    body.automatizacniRidiciSystem_checkYes =
+      radio === 'ano' ? 'Ano' : '';
+
+    body.automatizacniRidiciSystem_checkNo =
+      radio === 'ne' ? 'Ne' : '';
+
+    /* ======================= */
+
     const copy = await drive.files.copy({
       fileId: process.env.TEMPLATE_ID,
       requestBody: {
@@ -84,6 +97,7 @@ app.post('/generate-doc', async (req, res) => {
     });
   }
 });
+
 
 /* =======================
    🚀 Server start
