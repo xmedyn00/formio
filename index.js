@@ -82,15 +82,24 @@ app.post('/generate-doc', async (req, res) => {
     body.c32_vsechnyPripominky =
       pripominkyCombined || 'bez připomínek';
 /* =======================
-   ☑ C32 – CELKOVÉ HODNOCENÍ
+   ☑ C32 – CELKOVÉ HODNOCENÍ (SPRÁVNÁ LOGIKA)
    ======================= */
 
+// поля, которые АВТОМАТИЧЕСКИ означают "Vážný nedostatek"
+const vaznyNedostatekFields = [
+  'tepelnaIzolace1',
+  'zjisteneRozporySPokynyVyrobce2',
+  'dalsiZjisteneVazneNedostatky2'
+];
+
+// проверяем, заполнено ли хотя бы одно
+const hasVaznyNedostatek = vaznyNedostatekFields.some(
+  key => body[key] && String(body[key]).trim()
+);
+
+// есть ли обычные připomínky (кроме "bez připomínek")
 const hasAnyPripominky =
   Boolean(pripominkyCombined && pripominkyCombined !== 'bez připomínek');
-
-const hasVaznyNedostatek =
-  pripominkyCombined &&
-  /(vážný|závažn)/i.test(pripominkyCombined);
 
 let c32Status = 'bezPripominek';
 
@@ -100,6 +109,10 @@ if (hasVaznyNedostatek) {
   c32Status = 'pripominky';
 }
 
+/* =======================
+   ☑ CHECKBOXY DO DOKUMENTU
+   ======================= */
+
 body.c32_bezPripominek =
   c32Status === 'bezPripominek' ? '☒' : '☐';
 
@@ -107,7 +120,7 @@ body.c32_pripominky =
   c32Status === 'pripominky' ? '☒' : '☐';
 
 body.c32_vaznyNedostatek =
-  c32Status === 'vaznyNedostatek' ? '☒' : '☐';    
+  c32Status === 'vaznyNedostatek' ? '☒' : '☐';   
 /* =======================
        📄 Copy template
        ======================= */
