@@ -45,11 +45,12 @@ app.post('/generate-doc', async (req, res) => {
 
     // 1️⃣ копия шаблона
     const copy = await drive.files.copy({
-      fileId: process.env.TEMPLATE_ID,
-      requestBody: {
-        name: `Firma_${adresaBudovy}`
-      }
-    });
+  fileId: process.env.TEMPLATE_ID,
+  requestBody: {
+    name: `Firma_${adresaBudovy}`,
+    mimeType: 'application/vnd.google-apps.document'
+  }
+});
 
     const documentId = copy.data.id;
 
