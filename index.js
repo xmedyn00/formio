@@ -81,8 +81,34 @@ app.post('/generate-doc', async (req, res) => {
     // 👉 финальное поле для шаблона
     body.c32_vsechnyPripominky =
       pripominkyCombined || 'bez připomínek';
+/* =======================
+   ☑ C32 – CELKOVÉ HODNOCENÍ
+   ======================= */
 
-    /* =======================
+const hasAnyPripominky =
+  Boolean(pripominkyCombined && pripominkyCombined !== 'bez připomínek');
+
+const hasVaznyNedostatek =
+  pripominkyCombined &&
+  /(vážný|závažn)/i.test(pripominkyCombined);
+
+let c32Status = 'bezPripominek';
+
+if (hasVaznyNedostatek) {
+  c32Status = 'vaznyNedostatek';
+} else if (hasAnyPripominky) {
+  c32Status = 'pripominky';
+}
+
+body.c32_bezPripominek =
+  c32Status === 'bezPripominek' ? '☒' : '☐';
+
+body.c32_pripominky =
+  c32Status === 'pripominky' ? '☒' : '☐';
+
+body.c32_vaznyNedostatek =
+  c32Status === 'vaznyNedostatek' ? '☒' : '☐';    
+/* =======================
        📄 Copy template
        ======================= */
     const copy = await drive.files.copy({
