@@ -4,7 +4,7 @@ const { google } = require('googleapis');
 const app = express();
 
 /* =======================
-   🔐 CORS (ДОЛЖЕН БЫТЬ ЗДЕСЬ)
+   🔐 CORS
    ======================= */
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', 'https://portal.form.io');
@@ -18,10 +18,11 @@ app.use((req, res, next) => {
   next();
 });
 
-/* ======================= */
-
 app.use(express.json());
 
+/* =======================
+   🔐 Google Auth
+   ======================= */
 const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
@@ -35,55 +36,50 @@ oauth2Client.setCredentials({
 const docs = google.docs({ version: 'v1', auth: oauth2Client });
 const drive = google.drive({ version: 'v3', auth: oauth2Client });
 
+/* =======================
+   📄 Generate document
+   ======================= */
 app.post('/generate-doc', async (req, res) => {
   try {
-    const { adresaBudovy, jmenoVlastnika, jmenoZadavatele, adresaZadavatele } = req.body;
+    // 👉 все значения необязательны
+    const {
+      adresaBudovy = '',
+      jmenoVlastnika = '',
+      jmenoZadavatele = '',
+      adresaZadavatele = ''
+    } = req.body || {};
 
-    if (!adresaBudovy || !jmenoVlastnika || !jmenoZadavatele || !adresaZadavatele) {
-      return res.status(400).json({ error: 'Missing parameters' });
-    }
-
-    // 1️⃣ копия шаблона
+    // 1️⃣ копия шаблона + конвертация в Google Docs
     const copy = await drive.files.copy({
-  fileId: process.env.TEMPLATE_ID,
-  requestBody: {
-    name: `Firma_${adresaBudovy}`,
-    mimeType: 'application/vnd.google-apps.document'
-  }
-});
+      fileId: process.env.TEMPLATE_ID,
+      requestBody: {
+        name: adresaBudovy ? `Firma_${adresaBudovy}` : 'Firma',
+        mimeType: 'application/vnd.google-apps.document'
+      }
+    });
 
     const documentId = copy.data.id;
 
-    // 2️⃣ замены
+    // 2️⃣ список замен (всегда заменяем, даже на пусто)
+    const replacements = [
+      ['{{adresaBudovy}}', adresaBudovy],
+      ['{{jmenoVlastnika}}', jmenoVlastnika],
+      ['{{jmenoZadavatele}}', jmenoZadavatele],
+      ['{{adresaZadavatele}}', adresaZadavatele]
+    ];
+
     await docs.documents.batchUpdate({
       documentId,
       requestBody: {
-        requests: [
-          {
-            replaceAllText: {
-              containsText: { text: '{{adresaBudovy}}', matchCase: true },
-              replaceText: adresaBudovy
-            }
-          },
-          {
-            replaceAllText: {
-              containsText: { text: '{{jmenoVlastnika}}', matchCase: true },
-              replaceText: jmenoVlastnika
-            }
-          },
-          {
-            replaceAllText: {
-              containsText: { text: '{{jmenoZadavatele}}', matchCase: true },
-              replaceText: jmenoZadavatele
-            }
-          },
-          {
-            replaceAllText: {
-              containsText: { text: '{{adresaZadavatele}}', matchCase: true },
-              replaceText: adresaZadavatele
-            }
+        requests: replacements.map(([placeholder, value]) => ({
+          replaceAllText: {
+            containsText: {
+              text: placeholder,
+              matchCase: true
+            },
+            replaceText: value || ''
           }
-        ]
+        }))
       }
     });
 
@@ -92,8 +88,11 @@ app.post('/generate-doc', async (req, res) => {
     });
 
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Google Docs generation failed' });
+    console.error('Generate-doc error:', err);
+    res.status(500).json({
+      error: 'Google Docs generation failed',
+      details: err.message
+    });
   }
 });
 
