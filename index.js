@@ -49,10 +49,10 @@ app.post('/generate-doc', async (req, res) => {
     const radio = body.automatizacniRidiciSystem;
 
     body.automatizacniRidiciSystem_checkYes =
-      radio === 'ano' ? 'Ano' : '';
+      radio === 'ano' ? '☒' : '☐';
 
     body.automatizacniRidiciSystem_checkNo =
-      radio === 'ne' ? 'Ne' : '';
+      radio === 'ne' ? '☒' : '☐';
 
     /* =======================
        🧩 AGGREGATE PRIPOMINKY
