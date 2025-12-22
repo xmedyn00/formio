@@ -8,6 +8,7 @@ const handleC32 = require('./aggregates/c32');
 const handleC42 = require('./aggregates/c42');
 const handleC52 = require('./aggregates/c52');
 const applySelectCheckboxeTypBudovy = require('./aggregates/selectCheckBox-typBudovy');
+const applySelectBoxesAnoNe = require('./aggregates/selectBoxesAnoNe');
 
 /* =======================
    🚀 APP INIT
@@ -99,6 +100,23 @@ app.post('/generate-doc', async (req, res) => {
 		  { label: 'Jiný druh budovy', value: 'jinyDruhBudovy' }
 		]
 	  }
+	});
+	
+	/* =======================
+   ☑ SELECTBOXES: DOKUMENTACE
+   ======================= */
+	applySelectBoxesAnoNe(body, {
+	  key: 'selectBoxes',
+	  values: [
+		{ label: 'Projektová dokumentace daného systému', value: 'projektovaDokumentaceDanehoSystemu' },
+		{ label: 'Zprávy o údržbě', value: 'zpravyOUdrzbe' },
+		{ label: 'Provozní řád kotelny, je-li příslušnými předpisy vyžadován', value: 'provozniRadKotelnyJeLiPrislusnymiPredpisyVyzadovan' },
+		{ label: 'Projektová dokumentace kotelny a otopné soustavy', value: 'projektovaDokumentaceKotelnyAOtopneSoustavy' },
+		{ label: 'Provozní dokumentace zdroje tepla a ostatní provozní dokumentace', value: 'provozniDokumentaceZdrojeTeplaAOstatniProvozniDokumentace' },
+		{ label: 'Provozní předpis výrobce zdroje tepla', value: 'provozniPredpisVyrobceZdrojeTepla' },
+		{ label: 'Návod pro provoz, obsluhu, údržbu a užívání tepelné soustavy podle příslušných technických norem', value: 'navodProProvozObsluhuUdrzbuAUzivaniTepelneSoustavyPodlePrislusnychTechnickychNorem' },
+		{ label: 'Zpráva z předchozí kontroly podle vyhlášky č. 38/2022 Sb.', value: 'zpravaZPredchoziKontrolyPodleVyhlaskyC382022SbKontroleProvozovanehoSystemuVytapeniAKombinovanehoSystemuVytapeniAVetrani' }
+	  ]
 	});
 
     /* =======================
