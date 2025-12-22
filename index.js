@@ -7,7 +7,7 @@ const { google } = require('googleapis');
 const handleC32 = require('./aggregates/c32');
 const handleC42 = require('./aggregates/c42');
 const handleC52 = require('./aggregates/c52');
-const applySelectCheckboxeTypBudovy = require('./aggregates/selectCheckbox-typBudovy');
+const applySelectCheckboxeTypBudovy = require('./aggregates/selectCheckBox-typBudovy');
 
 /* =======================
    🚀 APP INIT
