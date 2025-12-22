@@ -208,7 +208,19 @@ const c52PripominkyFields = [
     key: 'uzivatelskeRozhraniSchopnostSystemuPoskytnoutInformaciOUzitiEnergieProObsluhuAUzivatele',
     label: 'Uživatelské rozhraní a informování uživatelů'
   },
-  { key: 'dalsi3', label: 'Další' }
+  { key: 'dalsi3', label: 'Další' },
+{
+    key: 'zjisteneRozporySPozadavkyPravnichPredpisu4',
+    label: 'Zjištěné rozpory s požadavky právních předpisů'
+  },
+  {
+    key: 'zjisteneRozporySPokynyVyrobce4',
+    label: 'Zjištěné rozpory s pokyny výrobce'
+  },
+  {
+    key: 'dalsiZjisteneVazneNedostatky4',
+    label: 'Další zjištěné vážné nedostatky'
+  }
 ];
 
 const c52PripominkyCombined = c52PripominkyFields
