@@ -82,7 +82,7 @@ app.post('/generate-doc', async (req, res) => {
 	/* =======================
    ☑ SELECT: TYP BUDOVY
    ======================= */
-	applySelectCheckboxes(body, {
+	applySelectCheckboxeTypBudovy(body, {
 	  key: 'typBudovy',
 	  data: {
 		values: [
