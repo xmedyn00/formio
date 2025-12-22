@@ -7,6 +7,7 @@ const { google } = require('googleapis');
 const handleC32 = require('./aggregates/c32');
 const handleC42 = require('./aggregates/c42');
 const handleC52 = require('./aggregates/c52');
+const applySelectCheckboxeTypBudovy = require('./aggregates/selectCheckbox-typBudovy');
 
 /* =======================
    🚀 APP INIT
@@ -77,6 +78,28 @@ app.post('/generate-doc', async (req, res) => {
     handleC32(body);
     handleC42(body);
     handleC52(body);
+	
+	/* =======================
+   ☑ SELECT: TYP BUDOVY
+   ======================= */
+	applySelectCheckboxes(body, {
+	  key: 'typBudovy',
+	  data: {
+		values: [
+		  { label: 'Bytový dům', value: 'bytovyDum' },
+		  { label: 'Budova pro vzdělávání', value: 'budovaProVzdelavani' },
+		  { label: 'Administrativní budova', value: 'administrativniBudova' },
+		  { label: 'Budova pro kulturu', value: 'budovaProKulturu' },
+		  { label: 'Budova pro obchodní účely', value: 'budovaProObchodniUcely' },
+		  { label: 'Budova pro sociální péči', value: 'budovaProSocialniPeci' },
+		  { label: 'Budova pro sport', value: 'budovaProSport' },
+		  { label: 'Budova pro zdravotnictví', value: 'budovaProZdravotnictvi' },
+		  { label: 'Budova pro ubytování a stravování', value: 'budovaProUbytovaniAStravovani' },
+		  { label: 'Budova pro výrobu a skladování', value: 'budovaProVyrobuASkladovani' },
+		  { label: 'Jiný druh budovy', value: 'jinyDruhBudovy' }
+		]
+	  }
+	});
 
     /* =======================
        📄 COPY TEMPLATE
