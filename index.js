@@ -182,6 +182,36 @@ app.post('/generate-doc', async (req, res) => {
 		}
 	  ]
 	});
+	
+	applySelectBoxesAnoNe(body, {
+  key: 'selectBoxes3',
+  values: [
+    {
+      label: 'Pravidelná údržba',
+      value: 'pravidelnaUdrzba'
+    },
+    {
+      label: 'Dokumenty a informace jsou aktuální',
+      value: 'dokumentyAInformaceJsouAktualniOdpovidajiSoucasnemuStavu'
+    },
+    {
+      label: 'Zpráva o čištění otopného okruhu',
+      value: 'zpravaOCisteniOtopnehoOkruhu'
+    },
+    {
+      label: 'Zpráva o výměně termostatických hlavic a uzavíracích ventilů',
+      value: 'zpravaOVymeneTermostatickychHlavicAUzaviracichVentiluAInformaceOTomKdyBylyMeneny'
+    },
+    {
+      label: 'Zpráva (protokol chemického rozboru) o kontrole otopné vody',
+      value: 'zpravaProtokolChemickehoRozboruOKontroleOtopneVody'
+    },
+    {
+      label: 'Energetický audit',
+      value: 'energetickyAudit'
+    }
+  ]
+});
 
     /* =======================
        📄 COPY TEMPLATE
