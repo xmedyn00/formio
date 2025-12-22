@@ -4,9 +4,9 @@ const { google } = require('googleapis');
 /* =======================
    📦 IMPORT MODULES
    ======================= */
-const handleC32 = require('./aggregates/c32');
-const handleC42 = require('./aggregates/c42');
-const handleC52 = require('./aggregates/c52');
+const handleC32 = require('./aggregates/c32-pripominky');
+const handleC42 = require('./aggregates/c42-pripominky');
+const handleC52 = require('./aggregates/c52-pripominky');
 
 /* =======================
    🚀 APP INIT
