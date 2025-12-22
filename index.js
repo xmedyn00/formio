@@ -123,40 +123,40 @@ app.post('/generate-doc', async (req, res) => {
 	  key: 'selectBoxes1',
 	  values: [
 		{
-		  label: 'kontrola podle § 17 odst. 1 písm. h) zákona č. 201/2012 Sb.',
-		  value: 'kontrolaPodle17Odst1PismHZakonaC2012012SbOOchraneOvzdusiVeZneniPozdejsichPredpisuDokumentacePodle6Odst2ZakonaC2012012SbOOchraneOvzdusiVeZneniPozdejsichPredpisu'
+		  label: 'Kontrola podle § 17 odst. 1 písm. h) zákona č. 201/2012 Sb. a dokumentace podle § 6 odst. 2',
+		  value: 'b2KontrolaOvzdusi'
 		},
 		{
-		  label: 'dokumentace podle § 6 odst. 2 zákona č. 201/2012 Sb.',
-		  value: 'dokumentacePodle6Odst2ZakonaC2012012SbOOchraneOvzdusiVeZneniPozdejsichPredpisu'
+		  label: 'Dokumentace podle § 6 odst. 2 zákona č. 201/2012 Sb.',
+		  value: 'b2DokumentaceOvzdusi'
 		},
 		{
-		  label: 'revize a čištění spalinové cesty',
-		  value: 'revizeACisteniSpalCestyPodleVyhlaskyC342016SbOCisteniKontroleAReviziSpalinovychCest'
+		  label: 'Revize a čištění spalinové cesty',
+		  value: 'b2RevizeSpalinoveCesty'
 		},
 		{
-		  label: 'kontrola provozuschopnosti podle vyhlášky č. 246/2001 Sb.',
-		  value: 'kontrolaProvozuschopnostiPodleVyhlaskyC2462001SbOStanoveniPodminekPozarniBezpecnostiAVykonuStatnihoPozarnihoDozoruOPozarniPrevenciVeZneniPozdejsichPredpisu'
+		  label: 'Kontrola provozuschopnosti (požární bezpečnost)',
+		  value: 'b2KontrolaPozarniBezpecnosti'
 		},
 		{
-		  label: 'kontrola a provozní revize plynových zařízení',
-		  value: 'kontrolaAProvozniRevizePodleVyhlaskyC851978SbOKontrolachRevizichAZkouskachPlynovychZarizeniVeZneniPozdejsichPredpisu'
+		  label: 'Kontrola a provozní revize plynových zařízení',
+		  value: 'b2RevizePlynoveZarizeni'
 		},
 		{
-		  label: 'odborná prohlídka nízkotlakých kotelen',
-		  value: 'odbornaProhlidkaPodleVyhlaskyC911993SbOZajisteniBezpecnostiVNizkotlakychKotelnach'
+		  label: 'Odborná prohlídka nízkotlakých kotelen',
+		  value: 'b2OdbornaProhlidkaKotelny'
 		},
 		{
-		  label: 'kontrola a provozní revize dle ČSN 070703',
-		  value: 'kontrolaAProvozniRevizePodleCsn070703KotelnySeZarizenimNaPlynnaPaliva'
+		  label: 'Kontrola a provozní revize dle ČSN 070703',
+		  value: 'b2RevizeKotelnyCsn070703'
 		},
 		{
-		  label: 'provozní a vnitřní revize tlakových nádob',
-		  value: 'provozniRevizeVnitrniRevizeAZkouskaTesnostiPodleCsn690012TlakoveNadobyStabilniProvozniPozadavky'
+		  label: 'Provozní a vnitřní revize tlakových nádob',
+		  value: 'b2RevizeTlakoveNadoby'
 		},
 		{
-		  label: 'kontrola těsnosti chladicího okruhu tepelného čerpadla',
-		  value: 'kontrolaTesnostiChladicihoOkruhuTepelnehoCerpadlaPodleNarizeniEvropskehoParlamentuARadyEuC5172014ZeDne16Dubna2014OFluorovanychSklenikovychPlynechAOZruseniNarizeniEsC8422006'
+		  label: 'Kontrola těsnosti chladicího okruhu tepelného čerpadla',
+		  value: 'b2KontrolaTesnostiTepelneCerpadlo'
 		}
 	  ]
 	});
