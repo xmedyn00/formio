@@ -1,6 +1,16 @@
 const express = require('express');
 const { google } = require('googleapis');
 
+/* =======================
+   📦 IMPORT MODULES
+   ======================= */
+const handleC32 = require('./aggregates/c32');
+const handleC42 = require('./aggregates/c42');
+const handleC52 = require('./aggregates/c52');
+
+/* =======================
+   🚀 APP INIT
+   ======================= */
 const app = express();
 
 /* =======================
@@ -21,7 +31,7 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 /* =======================
-   🔐 Google Auth
+   🔐 GOOGLE AUTH
    ======================= */
 const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
@@ -33,18 +43,25 @@ oauth2Client.setCredentials({
   refresh_token: process.env.GOOGLE_REFRESH_TOKEN
 });
 
-const docs = google.docs({ version: 'v1', auth: oauth2Client });
-const drive = google.drive({ version: 'v3', auth: oauth2Client });
+const docs = google.docs({
+  version: 'v1',
+  auth: oauth2Client
+});
+
+const drive = google.drive({
+  version: 'v3',
+  auth: oauth2Client
+});
 
 /* =======================
-   📄 Generate document
+   📄 GENERATE DOCUMENT
    ======================= */
 app.post('/generate-doc', async (req, res) => {
   try {
     const body = req.body || {};
 
     /* =======================
-       ✅ RADIO: ANO / NE
+       ☑ RADIO: ANO / NE
        ======================= */
     const radio = body.automatizacniRidiciSystem;
 
@@ -55,230 +72,14 @@ app.post('/generate-doc', async (req, res) => {
       radio === 'ne' ? '☒' : '☐';
 
     /* =======================
-       🧩 AGGREGATE PRIPOMINKY
+       🧩 AGGREGATES
        ======================= */
-    const pripominkyFields = [
-      { key: 'pouzitiKoncepcniReseni1', label: 'Použití, koncepční řešení' },
-      { key: 'dimenzovani1', label: 'Dimenzování' },
-      { key: 'zapojeni1', label: 'Zapojení' },
-      { key: 'regulace1', label: 'Regulace' },
-      { key: 'provozniNastaveni1', label: 'Provozní nastavení' },
-      { key: 'tepelnaIzolace1', label: 'Tepelná izolace' },
-      { key: 'stavArmatur1', label: 'Stav armatur' },
-      { key: 'dalsi1', label: 'Další' }
-    ];
+    handleC32(body);
+    handleC42(body);
+    handleC52(body);
 
-    const pripominkyCombined = pripominkyFields
-      .map(({ key, label }) => {
-        const value = body[key];
-        if (!value || !String(value).trim()) return null;
-
-        return `${label}:\n${String(value).trim()}`;
-      })
-      .filter(Boolean)
-      .join('\n\n');
-
-    // 👉 финальное поле для шаблона
-    body.c32_vsechnyPripominky =
-      pripominkyCombined || 'bez připomínek';
-/* =======================
-   ☑ C32 – CELKOVÉ HODNOCENÍ (SPRÁVNÁ LOGIKA)
-   ======================= */
-
-// поля, которые АВТОМАТИЧЕСКИ означают "Vážný nedostatek"
-const vaznyNedostatekFields = [
-  'tepelnaIzolace1',
-  'zjisteneRozporySPokynyVyrobce2',
-  'dalsiZjisteneVazneNedostatky2'
-];
-
-// проверяем, заполнено ли хотя бы одно
-const hasVaznyNedostatek = vaznyNedostatekFields.some(
-  key => body[key] && String(body[key]).trim()
-);
-
-// есть ли обычные připomínky (кроме "bez připomínek")
-const hasAnyPripominky =
-  Boolean(pripominkyCombined && pripominkyCombined !== 'bez připomínek');
-
-let c32Status = 'bezPripominek';
-
-if (hasVaznyNedostatek) {
-  c32Status = 'vaznyNedostatek';
-} else if (hasAnyPripominky) {
-  c32Status = 'pripominky';
-}
-
-/* =======================
-   ☑ CHECKBOXY DO DOKUMENTU
-   ======================= */
-
-body.c32_bezPripominek =
-  c32Status === 'bezPripominek' ? '☒' : '☐';
-
-body.c32_pripominky =
-  c32Status === 'pripominky' ? '☒' : '☐';
-
-body.c32_vaznyNedostatek =
-  c32Status === 'vaznyNedostatek' ? '☒' : '☐';   
-
-/* =======================
-       🧩 AGGREGATE PRIPOMINKY
-       ======================= */
-const c42PripominkyFields = [
-  { key: 'pouzitiKoncepcniReseni2', label: 'Použití, koncepční řešení' },
-  { key: 'dimenzovani2', label: 'Dimenzování' },
-  { key: 'zapojeni2', label: 'Zapojení' },
-  { key: 'regulace2', label: 'Regulace' },
-  { key: 'provozniNastaveni2', label: 'Provozní nastavení' },
-  { key: 'tepelnaIzolace2', label: 'Tepelná izolace' },
-  { key: 'stavArmatur2', label: 'Stav armatur' },
-  { key: 'dalsi2', label: 'Další' }
-];
-
-const c42PripominkyCombined = c42PripominkyFields
-  .map(({ key, label }) => {
-    const value = body[key];
-    if (!value || !String(value).trim()) return null;
-    return `${label}:\n${String(value).trim()}`;
-  })
-  .filter(Boolean)
-  .join('\n\n');
-
-body.c42_vsechnyPripominky =
-  c42PripominkyCombined || 'bez připomínek';
-
-/* =======================
-   ☑ C42 – CELKOVÉ HODNOCENÍ
-   ======================= */
-
-// поля, которые AUTOMATICKY znamenají vážný nedostatek
-const c42VaznyNedostatekFields = [
-  'zjisteneRozporySPozadavkyPravnichPredpisu3',
-  'zjisteneRozporySPokynyVyrobce3',
-  'dalsiZjisteneVazneNedostatky3'
-];
-
-// есть ли vážný nedostatek
-const c42HasVaznyNedostatek = c42VaznyNedostatekFields.some(
-  key => body[key] && String(body[key]).trim()
-);
-
-// есть ли běžné připomínky
-const c42HasAnyPripominky =
-  Boolean(c42PripominkyCombined && c42PripominkyCombined !== 'bez připomínek');
-
-let c42Status = 'bezPripominek';
-
-if (c42HasVaznyNedostatek) {
-  c42Status = 'vaznyNedostatek';
-} else if (c42HasAnyPripominky) {
-  c42Status = 'pripominky';
-}
-
-/* =======================
-   ☑ CHECKBOXY DO DOKUMENTU
-   ======================= */
-
-body.c42_bezPripominek =
-  c42Status === 'bezPripominek' ? '☒' : '☐';
-
-body.c42_pripominky =
-  c42Status === 'pripominky' ? '☒' : '☐';
-
-body.c42_vaznyNedostatek =
-  c42Status === 'vaznyNedostatek' ? '☒' : '☐';
-
-/* =======================
-    C52 – AGGREGATE PRIPOMINKY
-   ======================= */
-
-const c52PripominkyFields = [
-  { key: 'celkoveReseni', label: 'Celkové řešení' },
-  { key: 'fakturacniMereniDodaneEnergie', label: 'Fakturační měření dodané energie' },
-  { key: 'podruzneMereniNaOkruzich', label: 'Podružné měření na okruzích' },
-  { key: 'mereniNaPrvcichNaSdileniTepla', label: 'Měření na prvcích pro sdílení tepla' },
-  { key: 'rozuctovaniNakladu', label: 'Rozúčtování nákladů' },
-  { key: 'ukladaniDatOSpotrebeAPraceSNimi', label: 'Ukládání dat o spotřebě a práce s nimi' },
-  {
-    key: 'autodiagnostikaOdchylekOdBezneSpotrebyUpozorneniProObsluhu',
-    label: 'Autodiagnostika odchylek od běžné spotřeby'
-  },
-  {
-    key: 'uzivatelskeRozhraniSchopnostSystemuPoskytnoutInformaciOUzitiEnergieProObsluhuAUzivatele',
-    label: 'Uživatelské rozhraní a informování uživatelů'
-  },
-  { key: 'dalsi3', label: 'Další' },
-{
-    key: 'zjisteneRozporySPozadavkyPravnichPredpisu4',
-    label: 'Zjištěné rozpory s požadavky právních předpisů'
-  },
-  {
-    key: 'zjisteneRozporySPokynyVyrobce4',
-    label: 'Zjištěné rozpory s pokyny výrobce'
-  },
-  {
-    key: 'dalsiZjisteneVazneNedostatky4',
-    label: 'Další zjištěné vážné nedostatky'
-  }
-];
-
-const c52PripominkyCombined = c52PripominkyFields
-  .map(({ key, label }) => {
-    const value = body[key];
-    if (!value || !String(value).trim()) return null;
-    return `${label}:\n${String(value).trim()}`;
-  })
-  .filter(Boolean)
-  .join('\n\n');
-
-body.c52_vsechnyPripominky =
-  c52PripominkyCombined || 'bez připomínek';
-
-/* =======================
-   ☑ C52 – CELKOVÉ HODNOCENÍ
-   ======================= */
-
-// pole, která AUTOMATICKY znamenají vážný nedostatek
-const c52VaznyNedostatekFields = [
-  'zjisteneRozporySPozadavkyPravnichPredpisu4',
-  'zjisteneRozporySPokynyVyrobce4',
-  'dalsiZjisteneVazneNedostatky4'
-];
-
-// existuje vážný nedostatek?
-const c52HasVaznyNedostatek = c52VaznyNedostatekFields.some(
-  key => body[key] && String(body[key]).trim()
-);
-
-// existují běžné připomínky?
-const c52HasAnyPripominky =
-  Boolean(c52PripominkyCombined && c52PripominkyCombined !== 'bez připomínek');
-
-let c52Status = 'bezPripominek';
-
-if (c52HasVaznyNedostatek) {
-  c52Status = 'vaznyNedostatek';
-} else if (c52HasAnyPripominky) {
-  c52Status = 'pripominky';
-}
-
-/* =======================
-   ☑ CHECKBOXY DO DOKUMENTU
-   ======================= */
-
-body.c52_bezPripominek =
-  c52Status === 'bezPripominek' ? '☒' : '☐';
-
-body.c52_pripominky =
-  c52Status === 'pripominky' ? '☒' : '☐';
-
-body.c52_vaznyNedostatek =
-  c52Status === 'vaznyNedostatek' ? '☒' : '☐';
-
-
-/* =======================
-       📄 Copy template
+    /* =======================
+       📄 COPY TEMPLATE
        ======================= */
     const copy = await drive.files.copy({
       fileId: process.env.TEMPLATE_ID,
@@ -293,7 +94,7 @@ body.c52_vaznyNedostatek =
     const documentId = copy.data.id;
 
     /* =======================
-       ✏ Replace placeholders
+       ✏ REPLACE PLACEHOLDERS
        ======================= */
     const requests = Object.entries(body).map(([key, value]) => ({
       replaceAllText: {
@@ -312,6 +113,9 @@ body.c52_vaznyNedostatek =
       });
     }
 
+    /* =======================
+       ✅ RESPONSE
+       ======================= */
     res.json({
       url: `https://docs.google.com/document/d/${documentId}/edit`
     });
@@ -325,14 +129,11 @@ body.c52_vaznyNedostatek =
   }
 });
 
-
-
 /* =======================
-   🚀 Server start
+   🚀 SERVER START
    ======================= */
 const PORT = process.env.PORT || 8080;
+
 app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
+  console.log(`✅ Server started on port ${PORT}`);
 });
-
-
