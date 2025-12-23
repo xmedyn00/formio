@@ -69,7 +69,7 @@ app.post('/generate-doc', async (req, res) => {
 	applyOkruhy(body, {
 	  sourceKey: 'editGrid', // ключ Form.io
 	  targetKey: 'okruh',    // {{okruh.0.*}}
-	  max: 3
+	  max: 4
 	});
 
     /* =======================
