@@ -11,6 +11,7 @@ const applySelectCheckboxeTypBudovy = require('./aggregates/selectCheckBox-typBu
 const applySelectBoxesAnoNe = require('./aggregates/selectBoxesAnoNe');
 const applyOkruhy = require('./aggregates/okruhy');
 const handleC41 = require('./aggregates/c41');
+const handleC411 = require('./aggregates/c411');
 
 /* =======================
    🚀 APP INIT
@@ -91,6 +92,7 @@ app.post('/generate-doc', async (req, res) => {
     handleC42(body);
     handleC52(body);
 	handleC41(body);
+	handleC411(body);
 	
 	/* =======================
    ☑ SELECT: TYP BUDOVY
