@@ -88,3 +88,13 @@ module.exports = function handleC42(body) {
 
   applyCheckboxes(body, 'c42', status);
 };
+
+function setIfEmpty(body, key, value) {
+  if (
+    body[key] === undefined ||
+    body[key] === null ||
+    body[key] === ''
+  ) {
+    body[key] = value;
+  }
+}
