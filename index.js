@@ -9,6 +9,7 @@ const handleC42 = require('./aggregates/c42');
 const handleC52 = require('./aggregates/c52');
 const applySelectCheckboxeTypBudovy = require('./aggregates/selectCheckBox-typBudovy');
 const applySelectBoxesAnoNe = require('./aggregates/selectBoxesAnoNe');
+const applyOkruhy = require('./aggregates/okruhy');
 
 /* =======================
    🚀 APP INIT
@@ -61,6 +62,15 @@ const drive = google.drive({
 app.post('/generate-doc', async (req, res) => {
   try {
     const body = req.body || {};
+	
+	/* =======================
+   🔁 OKRUHY (EDIT GRID)
+   ======================= */
+	applyOkruhy(body, {
+	  sourceKey: 'editGrid', // ключ Form.io
+	  targetKey: 'okruh',    // {{okruh.0.*}}
+	  max: 3
+	});
 
     /* =======================
        ☑ RADIO: ANO / NE
