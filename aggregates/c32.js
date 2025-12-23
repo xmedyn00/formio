@@ -1,8 +1,7 @@
 const {
   aggregatePripominky,
   resolveStatus,
-  applyCheckboxes,
-  setIfEmpty
+  applyCheckboxes
 } = require('../utils/aggregateHelpers');
 
 module.exports = function handleC32(body) {
