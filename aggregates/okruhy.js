@@ -1,6 +1,10 @@
 /**
  * EditGrid → okruh.N.*
  * Max 3 okruhy
+ * 
+ * ❗ Правило:
+ * - агрегат ТОЛЬКО дополняет body
+ * - НИКОГДА не перезаписывает существующие ключи
  */
 
 module.exports = function applyOkruhy(body, options = {}) {
@@ -17,43 +21,75 @@ module.exports = function applyOkruhy(body, options = {}) {
   rows.forEach((row, i) => {
     const p = `${targetKey}.${i}`;
 
-    /* ===== ZÁKLAD ===== */
-    body[`${p}.cislo`] = row.textField || '';
-    body[`${p}.oznaceni`] =
-      row.oznaceniNaprOtopnaTelesaPodlahoveVytapeniVzduchotechnika || '';
+    /* =====================
+       ZÁKLAD
+       ===================== */
+    setIfEmpty(body, `${p}.cislo`, row.textField || '');
 
-    /* ===== VÝPOČTOVÝ TEPLOTNÍ SPÁD ===== */
-    body[`${p}.vypoctovyTeplotniSpad`] =
+    setIfEmpty(
+      body,
+      `${p}.oznaceni`,
+      row.oznaceniNaprOtopnaTelesaPodlahoveVytapeniVzduchotechnika || ''
+    );
+
+    /* =====================
+       VÝPOČTOVÝ TEPLOTNÍ SPÁD
+       ===================== */
+    const vypoctovySpad =
       row.teplotaVPrivodnimPotrubiC1 != null &&
       row.teplotaVeVratnemPotrubiC3 != null
         ? `${row.teplotaVPrivodnimPotrubiC1}/${row.teplotaVeVratnemPotrubiC3}`
         : '';
 
-    /* ===== PROVOZOVANÝ TEPLOTNÍ SPÁD ===== */
-    body[`${p}.provozovanyTeplotniSpad`] =
+    setIfEmpty(body, `${p}.vypoctovyTeplotniSpad`, vypoctovySpad);
+
+    /* =====================
+       PROVOZOVANÝ TEPLOTNÍ SPÁD
+       ===================== */
+    const provozovanySpad =
       row.teplotaVPrivodnimPotrubiC != null &&
       row.teplotaVeVratnemPotrubiC2 != null
         ? `${row.teplotaVPrivodnimPotrubiC}/${row.teplotaVeVratnemPotrubiC2}`
         : '';
 
-    /* ===== VÝKONY ===== */
-    body[`${p}.vypoctovyTepelnyVykon`] =
+    setIfEmpty(body, `${p}.provozovanyTeplotniSpad`, provozovanySpad);
+
+    /* =====================
+       VÝKONY
+       ===================== */
+    const vypoctovyVykon =
       row.number != null ? String(row.number) : '';
 
-    body[`${p}.prenasenyVykon`] =
+    setIfEmpty(body, `${p}.vypoctovyTepelnyVykon`, vypoctovyVykon);
+
+    const prenasenyVykon =
       row.prenasenyVykonKW != null
         ? String(row.prenasenyVykonKW)
         : '';
 
-    /* ===== IZOLACE ===== */
-    body[`${p}.typTepelneIzolace`] =
-      row.typTepelneIzolace || '';
+    setIfEmpty(body, `${p}.prenasenyVykon`, prenasenyVykon);
 
-    /* ===== ČERPADLO ===== */
-    body[`${p}.oznaceniCerpadla`] =
-      row.oznaceniATypObehovehoCerpadlaElOkruhu || '';
+    /* =====================
+       IZOLACE
+       ===================== */
+    setIfEmpty(
+      body,
+      `${p}.typTepelneIzolace`,
+      row.typTepelneIzolace || ''
+    );
 
-    /* ===== REGULACE ČERPADLA (SELECT → LABEL) ===== */
+    /* =====================
+       ČERPADLO
+       ===================== */
+    setIfEmpty(
+      body,
+      `${p}.oznaceniCerpadla`,
+      row.oznaceniATypObehovehoCerpadlaElOkruhu || ''
+    );
+
+    /* =====================
+       REGULACE ČERPADLA (SELECT → LABEL)
+       ===================== */
     const regulaceMap = {
       bezRegulaceKonstantniOtacky: 'Bez regulace, konstantní otáčky',
       rucneNastaveneKonstantniOtacky: 'Ručně nastavené konstantní otáčky',
@@ -64,35 +100,78 @@ module.exports = function applyOkruhy(body, options = {}) {
       jine: 'Jiné'
     };
 
-    body[`${p}.zpusobRegulace`] =
-      regulaceMap[row.zpusobRegulaceANastaveniObehovehoCerpadlaElDanehoOkruhu1] || '';
+    setIfEmpty(
+      body,
+      `${p}.zpusobRegulace`,
+      regulaceMap[
+        row.zpusobRegulaceANastaveniObehovehoCerpadlaElDanehoOkruhu1
+      ] || ''
+    );
 
-    /* ===== ELEKTRICKÝ PŘÍKON ===== */
-    body[`${p}.jmenovityPrikon`] =
+    /* =====================
+       ELEKTRICKÝ PŘÍKON
+       ===================== */
+    setIfEmpty(
+      body,
+      `${p}.jmenovityPrikon`,
       row.jmenovityElektrickyPrikonCerpadelW != null
         ? String(row.jmenovityElektrickyPrikonCerpadelW)
-        : '';
+        : ''
+    );
 
-    /* ===== RADIO → CHECKBOX LOGIKA ===== */
+    /* =====================
+       RADIO: ANO / NE → CHECK
+       ===================== */
     applyAnoNe(body, p, 'jsouOsazenyVyvazovaciArmaturyNaRozvodechTepelneEnergie', row);
     applyAnoNe(body, p, 'lzeOveritSpravnostDimenzeANastaveni', row);
     applyAnoNe(body, p, 'jeProvedenoHydraulickeNastaveniVyvazovacichArmatur', row);
     applyAnoNe(body, p, 'vsechnyPristupneCastiRozvoduTepelneEnergieTepelneIzolovany', row);
   });
 
-  /* ===== ČIŠTĚNÍ NEPOUŽITÝCH ŘÁDKŮ ===== */
+  /* =====================
+     ČIŠTĚNÍ NEPOUŽITÝCH ŘÁDKŮ
+     (BEZ RIZIKA PŘEPSÁNÍ)
+     ===================== */
+  const SAFE_FIELDS = [
+    'cislo',
+    'oznaceni',
+    'vypoctovyTeplotniSpad',
+    'provozovanyTeplotniSpad',
+    'vypoctovyTepelnyVykon',
+    'prenasenyVykon',
+    'typTepelneIzolace',
+    'oznaceniCerpadla',
+    'zpusobRegulace',
+    'jmenovityPrikon'
+  ];
+
   for (let i = rows.length; i < max; i++) {
     const p = `${targetKey}.${i}`;
-    Object.keys(body)
-      .filter(k => k.startsWith(p))
-      .forEach(k => (body[k] = ''));
+    SAFE_FIELDS.forEach(field =>
+      setIfEmpty(body, `${p}.${field}`, '')
+    );
   }
 };
 
-/* ===== HELPER: ANO / NE → ☒ ☑ ===== */
+/* ======================================================
+   HELPERS
+   ====================================================== */
+
+/**
+ * Zapíše hodnotu pouze pokud klíč neexistuje nebo je prázdný
+ */
+function setIfEmpty(body, key, value) {
+  if (body[key] === undefined || body[key] === '') {
+    body[key] = value;
+  }
+}
+
+/**
+ * Radio Ano / Ne → checkbox znaky
+ */
 function applyAnoNe(body, prefix, key, row) {
   const value = row[key];
 
-  body[`${prefix}.${key}.yes`] = value === 'ano' ? '☒' : '☐';
-  body[`${prefix}.${key}.no`] = value === 'ne' ? '☒' : '☐';
+  setIfEmpty(body, `${prefix}.${key}.yes`, value === 'ano' ? '☒' : '☐');
+  setIfEmpty(body, `${prefix}.${key}.no`, value === 'ne' ? '☒' : '☐');
 }
