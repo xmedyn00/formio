@@ -91,6 +91,11 @@ module.exports = function applyOkruhy(body, options = {}) {
       `${p}.poznamkyKRozvodumTepelneEnergie`,
       row.poznamkyKRozvodumTepelneEnergie || ''
     );
+	setIfEmpty(
+      body,
+      `${p}.typHydraulickehoVyvazeniOtopneSoustavy`,
+      row.typHydraulickehoVyvazeniOtopneSoustavy || ''
+    );
 
     /* =====================
        REGULACE ČERPADLA (SELECT → LABEL)
