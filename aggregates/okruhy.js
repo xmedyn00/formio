@@ -86,6 +86,11 @@ module.exports = function applyOkruhy(body, options = {}) {
       `${p}.oznaceniCerpadla`,
       row.oznaceniATypObehovehoCerpadlaElOkruhu || ''
     );
+	setIfEmpty(
+      body,
+      `${p}.poznamkyKRozvodumTepelneEnergie`,
+      row.poznamkyKRozvodumTepelneEnergie || ''
+    );
 
     /* =====================
        REGULACE ČERPADLA (SELECT → LABEL)
@@ -126,7 +131,6 @@ module.exports = function applyOkruhy(body, options = {}) {
     applyAnoNe(body, p, 'lzeOveritSpravnostDimenzeANastaveni', row);
     applyAnoNe(body, p, 'jeProvedenoHydraulickeNastaveniVyvazovacichArmatur', row);
     applyAnoNe(body, p, 'vsechnyPristupneCastiRozvoduTepelneEnergieTepelneIzolovany', row);
-	
     applyAnoNe(body, p, 'vyhovujiciStavTepelneIzolace', row);
     applyAnoNe(body, p, 'dochaziKeZtrateTeplonosneLatky', row);
     applyAnoNe(body, p, 'kontrolaKvalityTeplonosneLatky', row);
