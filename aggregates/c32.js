@@ -23,6 +23,22 @@ module.exports = function handleC32(body) {
     'c32.zjisteneRozporySPozadavkyPravnichPredpisu',
     'c32.dalsiZjisteneVazneNedostatky'
   ];
+  
+  setIfEmpty(
+      body,
+      `${p}.c32_zjisteneRozporySPozadavkyPravnichPredpisu`,
+      row.c32_zjisteneRozporySPozadavkyPravnichPredpisu || 'bez připomínek'
+    );
+	setIfEmpty(
+      body,
+      `${p}.c32_zjisteneRozporySPokynyVyrobce`,
+      row.c32_zjisteneRozporySPokynyVyrobce || 'bez připomínek'
+    );
+	setIfEmpty(
+      body,
+      `${p}.c32_dalsiZjisteneVazneNedostatky`,
+      row.c32_dalsiZjisteneVazneNedostatky || 'bez připomínek'
+    );
 
   const combined = aggregatePripominky(body, fields);
 
