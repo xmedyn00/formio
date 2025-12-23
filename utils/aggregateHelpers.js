@@ -33,6 +33,16 @@ function applyCheckboxes(body, prefix, status) {
     status === 'vaznyNedostatek' ? '☒' : '☐';
 }
 
+function setIfEmpty(body, key, value) {
+  if (
+    body[key] === undefined ||
+    body[key] === null ||
+    body[key] === ''
+  ) {
+    body[key] = value;
+  }
+}
+
 module.exports = {
   aggregatePripominky,
   resolveStatus,
