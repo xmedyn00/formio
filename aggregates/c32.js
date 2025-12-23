@@ -74,3 +74,13 @@ module.exports = function handleC32(body) {
      ===================== */
   applyCheckboxes(body, 'c32', status);
 };
+
+function setIfEmpty(body, key, value) {
+  if (
+    body[key] === undefined ||
+    body[key] === null ||
+    body[key] === ''
+  ) {
+    body[key] = value;
+  }
+}
