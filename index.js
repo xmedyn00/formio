@@ -103,6 +103,28 @@ app.post('/generate-doc', async (req, res) => {
 	});
 	
 	/* =======================
+   ☑ SELECTBOXES: REGULACE VÝKONU ZDROJE
+   ======================= */
+	const regulaceMap = {
+	  kvantitativni: 'kvantitativní',
+	  kvalitativni: 'kvalitativní',
+	  jina: 'jiná'
+	};
+
+	if (
+	  body.regulaceVykonuZdroje &&
+	  typeof body.regulaceVykonuZdroje === 'object'
+	) {
+	  const selectedKey = Object.keys(body.regulaceVykonuZdroje)
+		.find(key => body.regulaceVykonuZdroje[key] === true);
+
+	  body.regulaceVykonuZdroje =
+		regulaceMap[selectedKey] || '';
+	} else {
+	  body.regulaceVykonuZdroje = '';
+	}
+	
+	/* =======================
    ☑ SELECTBOXES: DOKUMENTACE
    ======================= */
 	applySelectBoxesAnoNe(body, {
