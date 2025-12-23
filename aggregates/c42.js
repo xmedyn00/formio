@@ -34,6 +34,57 @@ module.exports = function handleC42(body) {
     vaznyFields,
     body
   });
+  
+  setIfEmpty(
+    body,
+    'С42_pouzitiKoncepcniReseni',
+    body.С42_pouzitiKoncepcniReseni || 'bez připomínek'
+  );
+  setIfEmpty(
+    body,
+    'С42_dimenzovani',
+    body.С42_dimenzovani || 'bez připomínek'
+  );
+  setIfEmpty(
+    body,
+    'С42_zapojeni',
+    body.С42_zapojeni || 'bez připomínek'
+  );
+  setIfEmpty(
+    body,
+    'c42_regulace',
+    body.c42_regulace || 'bez připomínek'
+  );
+  setIfEmpty(
+    body,
+    'С42_provozniNastaveni',
+    body.С42_provozniNastaveni || 'bez připomínek'
+  );
+  setIfEmpty(
+    body,
+    'С42_tepelnaIzolace',
+    body.С42_tepelnaIzolace || 'bez připomínek'
+  );
+  setIfEmpty(
+    body,
+    'С42_stavArmatur',
+    body.С42_stavArmatur || 'bez připomínek'
+  );
+  setIfEmpty(
+    body,
+    'С42_zjisteneRozporySPozadavkyPravnichPredpisu',
+    body.С42_zjisteneRozporySPozadavkyPravnichPredpisu || 'bez připomínek'
+  );
+  setIfEmpty(
+    body,
+    'С42_zjisteneRozporySPokynyVyrobce',
+    body.С42_zjisteneRozporySPokynyVyrobce || 'bez připomínek'
+  );
+  setIfEmpty(
+    body,
+    'С42_dalsiZjisteneVazneNedostatky',
+    body.С42_dalsiZjisteneVazneNedostatky || 'bez připomínek'
+  );
 
   applyCheckboxes(body, 'c42', status);
 };
