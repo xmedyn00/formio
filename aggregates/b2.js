@@ -1,7 +1,5 @@
 // B2.js
-const {
-  applySelectBoxesAnoNe
-} = require('../applySelectBoxesAnoNe');
+const { applySelectBoxesAnoNe } = require('./applySelectBoxesAnoNe');
 
 module.exports = function handleB2(body) {
   if (!body || typeof body !== 'object') return;
