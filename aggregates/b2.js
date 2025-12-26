@@ -1,7 +1,11 @@
 // B2.js
-import { applySelectBoxesAnoNe } from './helpers/applySelectBoxesAnoNe.js';
+const {
+  applySelectBoxesAnoNe
+} = require('../applySelectBoxesAnoNe');
 
-export function applyB2(body) {
+module.exports = function handleB2(body) {
+  if (!body || typeof body !== 'object') return;
+
   // === selectBoxes ===
   applySelectBoxesAnoNe(body, {
     key: 'selectBoxes',
@@ -68,4 +72,4 @@ export function applyB2(body) {
       { label: 'Energetický audit', value: 'energetickyAudit' }
     ]
   });
-}
+};
