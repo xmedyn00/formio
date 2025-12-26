@@ -79,11 +79,11 @@ module.exports = function handleB2(body) {
       { label: 'Zpráva o čištění otopného okruhu', value: 'zpravaOCisteniOtopnehoOkruhu' },
       {
         label: 'Zpráva o výměně termostatických hlavic a uzavíracích ventilů',
-        value: 'zpravaOVymeneTermostatickychHlavicAUzaviracichVentiluAInformaceOTomKdyBylyMeneny'
+        value: 'zpravaOVymeneTermostatickychHlavic'
       },
       {
         label: 'Zpráva (protokol chemického rozboru) o kontrole otopné vody',
-        value: 'zpravaProtokolChemickehoRozboruOKontroleOtopneVody'
+        value: 'zpravaOKontroleOtopneVody'
       },
       { label: 'Energetický audit', value: 'energetickyAudit' }
     ]
