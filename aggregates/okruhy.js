@@ -42,6 +42,7 @@ module.exports = function applyOkruhy(body, options = {}) {
         : '';
 
     setIfEmpty(body, `${p}.vypoctovyTeplotniSpad`, vypoctovySpad);
+	
 
     /* =====================
        PROVOZOVANÝ TEPLOTNÍ SPÁD
@@ -58,9 +59,12 @@ module.exports = function applyOkruhy(body, options = {}) {
        VÝKONY
        ===================== */
     const vypoctovyVykon =
-      row.number != null ? String(row.number) : '';
 
-    setIfEmpty(body, `${p}.vypoctovyTepelnyVykon`, vypoctovyVykon);
+	setIfEmpty(
+      body,
+      `${p}.vypoctovyTepelnyVykon`,
+      row.vypoctovyTepelnyVykon || ''
+    );
 
     const prenasenyVykon =
       row.prenasenyVykonKW != null
@@ -84,7 +88,7 @@ module.exports = function applyOkruhy(body, options = {}) {
     setIfEmpty(
       body,
       `${p}.oznaceniCerpadla`,
-      row.oznaceniATypObehovehoCerpadlaElOkruhu || ''
+      row.oznaceniCerpadla || ''
     );
 	setIfEmpty(
       body,
