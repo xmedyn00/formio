@@ -9,7 +9,7 @@
 
 module.exports = function applyOkruhy(body, options = {}) {
   const {
-    sourceKey = 'okruhy',
+    sourceKey = 'editGrid',
     targetKey = 'okruh',
     max = 3
   } = options;
@@ -173,23 +173,11 @@ module.exports = function applyOkruhy(body, options = {}) {
 /**
  * Zapíše hodnotu pouze pokud klíč neexistuje nebo je prázdný
  */
-function setIfEmpty(obj, path, value) {
-  const parts = path.split('.');
-  let curr = obj;
-
-  for (let i = 0; i < parts.length - 1; i++) {
-    if (curr[parts[i]] === undefined) {
-      curr[parts[i]] = {};
-    }
-    curr = curr[parts[i]];
-  }
-
-  const last = parts[parts.length - 1];
-  if (curr[last] === undefined || curr[last] === '') {
-    curr[last] = value;
+function setIfEmpty(body, key, value) {
+  if (body[key] === undefined || body[key] === '') {
+    body[key] = value;
   }
 }
-
 
 /**
  * Radio Ano / Ne → checkbox znaky
@@ -197,15 +185,6 @@ function setIfEmpty(obj, path, value) {
 function applyAnoNe(body, prefix, key, row) {
   const value = row[key];
 
-
-  if (
-    body[prefix] &&
-    typeof body[prefix][key] !== 'object'
-  ) {
-    body[prefix][key] = {};
-  }
-
   setIfEmpty(body, `${prefix}.${key}.yes`, value === 'ano' ? '☒' : '☐');
-  setIfEmpty(body, `${prefix}.${key}.no`,  value === 'ne'  ? '☒' : '☐');
+  setIfEmpty(body, `${prefix}.${key}.no`, value === 'ne' ? '☒' : '☐');
 }
-
