@@ -114,7 +114,7 @@ module.exports = function applyOkruhy(body, options = {}) {
       body,
       `${p}.zpusobRegulace`,
       regulaceMap[
-        row.zpusobRegulaceANastaveniObehovehoCerpadlaElDanehoOkruhu1
+        row.zpusobRegulace
       ] || ''
     );
 
