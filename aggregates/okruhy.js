@@ -173,24 +173,11 @@ module.exports = function applyOkruhy(body, options = {}) {
 /**
  * Zapíše hodnotu pouze pokud klíč neexistuje nebo je prázdný
  */
-function setIfEmpty(obj, path, value) {
-  const parts = path.split('.');
-  let curr = obj;
-
-  for (let i = 0; i < parts.length - 1; i++) {
-    const key = parts[i];
-    if (curr[key] === undefined) {
-      curr[key] = {};
-    }
-    curr = curr[key];
-  }
-
-  const lastKey = parts[parts.length - 1];
-  if (curr[lastKey] === undefined || curr[lastKey] === '') {
-    curr[lastKey] = value;
+function setIfEmpty(body, key, value) {
+  if (body[key] === undefined || body[key] === '') {
+    body[key] = value;
   }
 }
-
 
 /**
  * Radio Ano / Ne → checkbox znaky
