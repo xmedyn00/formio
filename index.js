@@ -232,3 +232,9 @@ function formatDateCZ(value) {
 
   return `${day}.${month}.${year}`;
 }
+
+function setIfEmpty(body, key, value) {
+  if (body[key] === undefined || body[key] === '') {
+    body[key] = value;
+  }
+}
