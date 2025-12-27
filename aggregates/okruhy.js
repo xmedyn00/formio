@@ -24,12 +24,12 @@ module.exports = function applyOkruhy(body, options = {}) {
     /* =====================
        ZÁKLAD
        ===================== */
-    setIfEmpty(body, `${p}.cislo`, row.textField || '');
+    setIfEmpty(body, `${p}.cislo`, row.cislo || '');
 
     setIfEmpty(
       body,
       `${p}.oznaceni`,
-      row.oznaceniNaprOtopnaTelesaPodlahoveVytapeniVzduchotechnika || ''
+      row.oznaceni || ''
     );
 
     /* =====================
@@ -66,11 +66,6 @@ module.exports = function applyOkruhy(body, options = {}) {
       row.vypoctovyTepelnyVykon || ''
     );
 
-    const prenasenyVykon =
-      row.prenasenyVykonKW != null
-        ? String(row.prenasenyVykonKW)
-        : '';
-
     setIfEmpty(body, `${p}.prenasenyVykon`, prenasenyVykon);
 
     /* =====================
@@ -89,6 +84,11 @@ module.exports = function applyOkruhy(body, options = {}) {
       body,
       `${p}.oznaceniCerpadla`,
       row.oznaceniCerpadla || ''
+    );
+	setIfEmpty(
+      body,
+      `${p}.popisKonceptuRozvodu`,
+      row.popisKonceptuRozvodu || ''
     );
 	setIfEmpty(
       body,
@@ -128,8 +128,8 @@ module.exports = function applyOkruhy(body, options = {}) {
     setIfEmpty(
       body,
       `${p}.jmenovityPrikon`,
-      row.jmenovityElektrickyPrikonCerpadelW != null
-        ? String(row.jmenovityElektrickyPrikonCerpadelW)
+      row.jmenovityPrikon != null
+        ? String(row.jmenovityPrikon)
         : ''
     );
 
