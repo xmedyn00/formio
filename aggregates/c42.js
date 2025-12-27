@@ -8,20 +8,20 @@ module.exports = function handleC42(body) {
   if (!body || typeof body !== 'object') return;
 
   const fields = [
-    { key: 'pouzitiKoncepcniReseni2', label: 'Použití, koncepční řešení' },
-    { key: 'dimenzovani2', label: 'Dimenzování' },
-    { key: 'zapojeni2', label: 'Zapojení' },
-    { key: 'regulace2', label: 'Regulace' },
-    { key: 'provozniNastaveni2', label: 'Provozní nastavení' },
-    { key: 'tepelnaIzolace2', label: 'Tepelná izolace' },
-    { key: 'stavArmatur2', label: 'Stav armatur' },
-    { key: 'dalsi2', label: 'Další' }
+    { key: 'c42_pouzitiKoncepcniReseni', label: 'Použití, koncepční řešení' },
+    { key: 'c42_dimenzovani', label: 'Dimenzování' },
+    { key: 'c42_zapojeni', label: 'Zapojení' },
+    { key: 'c42_regulace', label: 'Regulace' },
+    { key: 'c42_provozniNastaveni', label: 'Provozní nastavení' },
+    { key: 'c42_tepelnaIzolace', label: 'Tepelná izolace' },
+    { key: 'c42_stavArmatur', label: 'Stav armatur' },
+    { key: 'c42_dalsi', label: 'Další' }
   ];
 
   const vaznyFields = [
-    'zjisteneRozporySPozadavkyPravnichPredpisu3',
-    'zjisteneRozporySPokynyVyrobce3',
-    'dalsiZjisteneVazneNedostatky3'
+    'c42_zjisteneRozporySPozadavkyPravnichPredpisu',
+    'c42_zjisteneRozporySPokynyVyrobce',
+    'c42_dalsiZjisteneVazneNedostatky'
   ];
 
   const combined = aggregatePripominky(body, fields);
