@@ -185,6 +185,15 @@ function setIfEmpty(body, key, value) {
 function applyAnoNe(body, prefix, key, row) {
   const value = row[key];
 
+
+  if (
+    body[prefix] &&
+    typeof body[prefix][key] !== 'object'
+  ) {
+    body[prefix][key] = {};
+  }
+
   setIfEmpty(body, `${prefix}.${key}.yes`, value === 'ano' ? '☒' : '☐');
-  setIfEmpty(body, `${prefix}.${key}.no`, value === 'ne' ? '☒' : '☐');
+  setIfEmpty(body, `${prefix}.${key}.no`,  value === 'ne'  ? '☒' : '☐');
 }
+
