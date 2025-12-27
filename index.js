@@ -67,6 +67,23 @@ app.post('/generate-doc', async (req, res) => {
     const body = req.body || {};
 	
 	/* =======================
+   🚀 DATE
+   ======================= */
+	setIfEmpty(
+	  body,
+	  'datumPristiKontroly',
+	  formatDateCZ(body.datumPristiKontroly)
+	);
+	
+	setIfEmpty(
+	  body,
+	  'datumZpracovani',
+	  formatDateCZ(body.datumZpracovani)
+	);
+
+	
+	
+	/* =======================
    🔁 OKRUHY (EDIT GRID)
    ======================= */
 	applyOkruhy(body, {
@@ -202,3 +219,16 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`✅ Server started on port ${PORT}`);
 });
+
+
+function formatDateCZ(value) {
+  if (!value) return '';
+
+  const d = new Date(value);
+
+  const day = String(d.getDate()).padStart(2, '0');
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const year = d.getFullYear();
+
+  return `${day}.${month}.${year}`;
+}
