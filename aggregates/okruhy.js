@@ -1,10 +1,10 @@
 /**
  * EditGrid → okruh.N.*
  * Max 3 okruhy
- * 
- * ❗ Правило:
- * - агрегат ТОЛЬКО дополняет body
- * - НИКОГДА не перезаписывает существующие ключи
+ *
+ * ❗ Pravidla:
+ * - agregát POUZE doplňuje body
+ * - NIKDY nepřepisuje existující klíče
  */
 
 module.exports = function applyOkruhy(body, options = {}) {
@@ -25,12 +25,7 @@ module.exports = function applyOkruhy(body, options = {}) {
        ZÁKLAD
        ===================== */
     setIfEmpty(body, `${p}.cislo`, row.cislo || '');
-
-    setIfEmpty(
-      body,
-      `${p}.oznaceni`,
-      row.oznaceni || ''
-    );
+    setIfEmpty(body, `${p}.oznaceni`, row.oznaceni || '');
 
     /* =====================
        VÝPOČTOVÝ TEPLOTNÍ SPÁD
@@ -42,7 +37,6 @@ module.exports = function applyOkruhy(body, options = {}) {
         : '';
 
     setIfEmpty(body, `${p}.vypoctovyTeplotniSpad`, vypoctovySpad);
-	
 
     /* =====================
        PROVOZOVANÝ TEPLOTNÍ SPÁD
@@ -58,13 +52,21 @@ module.exports = function applyOkruhy(body, options = {}) {
     /* =====================
        VÝKONY
        ===================== */
-    const vypoctovyVykon =
 
-	setIfEmpty(
+    // vypočtový tepelný výkon – pouze převzetí hodnoty
+    setIfEmpty(
       body,
       `${p}.vypoctovyTepelnyVykon`,
-      row.vypoctovyTepelnyVykon || ''
+      row.vypoctovyTepelnyVykon != null
+        ? String(row.vypoctovyTepelnyVykon)
+        : ''
     );
+
+    // přenášený výkon – OPRAVENO (byl ReferenceError)
+    const prenasenyVykon =
+      row.prenasenyVykon != null
+        ? String(row.prenasenyVykon)
+        : '';
 
     setIfEmpty(body, `${p}.prenasenyVykon`, prenasenyVykon);
 
@@ -85,17 +87,20 @@ module.exports = function applyOkruhy(body, options = {}) {
       `${p}.oznaceniCerpadla`,
       row.oznaceniCerpadla || ''
     );
-	setIfEmpty(
+
+    setIfEmpty(
       body,
       `${p}.popisKonceptuRozvodu`,
       row.popisKonceptuRozvodu || ''
     );
-	setIfEmpty(
+
+    setIfEmpty(
       body,
       `${p}.poznamkyKRozvodumTepelneEnergie`,
       row.poznamkyKRozvodumTepelneEnergie || ''
     );
-	setIfEmpty(
+
+    setIfEmpty(
       body,
       `${p}.typHydraulickehoVyvazeniOtopneSoustavy`,
       row.typHydraulickehoVyvazeniOtopneSoustavy || ''
@@ -117,9 +122,7 @@ module.exports = function applyOkruhy(body, options = {}) {
     setIfEmpty(
       body,
       `${p}.zpusobRegulace`,
-      regulaceMap[
-        row.zpusobRegulace
-      ] || ''
+      regulaceMap[row.zpusobRegulace] || ''
     );
 
     /* =====================
@@ -147,7 +150,6 @@ module.exports = function applyOkruhy(body, options = {}) {
 
   /* =====================
      ČIŠTĚNÍ NEPOUŽITÝCH ŘÁDKŮ
-     (BEZ RIZIKA PŘEPSÁNÍ)
      ===================== */
   const SAFE_FIELDS = [
     'cislo',
