@@ -69,17 +69,13 @@ app.post('/generate-doc', async (req, res) => {
 	/* =======================
    🚀 DATE
    ======================= */
-	setIfEmpty(
-	  body,
-	  'datumPristiKontroly',
-	  formatDateCZ(body.datumPristiKontroly)
-	);
-	
-	setIfEmpty(
-	  body,
-	  'datumZpracovani',
-	  formatDateCZ(body.datumZpracovani)
-	);
+	if (body.datumPristiKontroly) {
+		body.datumPristiKontroly = formatDateCZ(body.datumPristiKontroly);
+	}
+
+	if (body.datumZpracovani) {
+	  body.datumZpracovani = formatDateCZ(body.datumZpracovani);
+	}
 
 	
 	
