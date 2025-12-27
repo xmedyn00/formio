@@ -91,6 +91,21 @@ app.post('/generate-doc', async (req, res) => {
 	  targetKey: 'okruh',    // {{okruh.0.*}}
 	  max: 4
 	});
+	
+	/* =======================
+   🔁 DATA ŠETŘENÍ (TABLE)
+   ======================= */
+	if (Array.isArray(body.dataSetreni)) {
+	  body.DATA_SETRENI = body.dataSetreni
+		.map((item, index) => {
+		  if (!item?.datum) return '';
+		  return `${index + 1}. ${formatDateCZ(item.datum)}`;
+		})
+		.filter(Boolean)
+		.join('\n');
+	} else {
+	  body.DATA_SETRENI = '';
+	}
 
     /* =======================
        ☑ RADIO: ANO / NE
