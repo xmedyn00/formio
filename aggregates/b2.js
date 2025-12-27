@@ -75,7 +75,7 @@ module.exports = function handleB2(body) {
     key: 'selectBoxes3',
     values: [
       { label: 'Pravidelná údržba', value: 'pravidelnaUdrzba' },
-      { label: 'Dokumenty a informace jsou aktuální', value: 'dokumentyAInformaceJsouAktualniOdpovidajiSoucasnemuStavu' },
+      { label: 'Dokumenty a informace jsou aktuální', value: 'dokumentyAInformaceAktualni' },
       { label: 'Zpráva o čištění otopného okruhu', value: 'zpravaOCisteniOtopnehoOkruhu' },
       {
         label: 'Zpráva o výměně termostatických hlavic a uzavíracích ventilů',

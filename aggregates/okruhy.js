@@ -9,7 +9,7 @@
 
 module.exports = function applyOkruhy(body, options = {}) {
   const {
-    sourceKey = 'editGrid',
+    sourceKey = 'okruhy',
     targetKey = 'okruh',
     max = 3
   } = options;
