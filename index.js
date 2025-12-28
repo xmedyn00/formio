@@ -65,6 +65,7 @@ const drive = google.drive({
    ======================= */
 app.post('/generate-doc', async (req, res) => {
   try {
+	  await testScriptPing();
     const body = req.body || {};
 	
 	/* =======================
@@ -254,4 +255,36 @@ function setIfEmpty(body, key, value) {
   if (body[key] === undefined || body[key] === '') {
     body[key] = value;
   }
+}
+
+async function testScriptPing() {
+  const scriptId = process.env.APPS_SCRIPT_ID;
+
+  const { token } = await oauth2Client.getAccessToken();
+
+  const res = await fetch(
+    `https://script.googleapis.com/v1/scripts/${scriptId}:run`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        function: 'pingFromBackend'
+      })
+    }
+  );
+
+  const json = await res.json();
+  console.log('SCRIPT RESPONSE:', JSON.stringify(json, null, 2));
+
+  if (json.error) {
+    throw new Error(
+      'Apps Script ping failed: ' +
+      JSON.stringify(json.error)
+    );
+  }
+
+  return json;
 }
