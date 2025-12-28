@@ -319,7 +319,8 @@ async function getDocumentText(docs, documentId) {
 
 async function overwriteDocument(docs, documentId, text) {
   const doc = await docs.documents.get({ documentId });
-  const endIndex = doc.data.body.content.slice(-1)[0].endIndex;
+  const endIndex =
+    doc.data.body.content.slice(-1)[0].endIndex - 1;
 
   await docs.documents.batchUpdate({
     documentId,
