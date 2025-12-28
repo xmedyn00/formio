@@ -4,8 +4,8 @@ module.exports = function handleC41(body) {
 
   const src = body.prvkySdileniTeplaProTechnickeFunkce || {};
 
-  applyCheckbox(body, 'c41_t1VytapeniProstoru', src.t1VytapeniProstoru);
-  applyCheckbox(body, 'c41_t3PripravaTepleVody', src.t3PripravaTepleVody);
+  applyCheckbox(body, 'c41_t1VytapeniProstoru', src.c41_t1VytapeniProstoru);
+  applyCheckbox(body, 'c41_t3PripravaTepleVody', src.c41_t3PripravaTepleVody);
 };
 
 /* =====================
@@ -13,7 +13,7 @@ module.exports = function handleC41(body) {
    ===================== */
 
 function applyCheckbox(body, key, value) {
-  body[key] = value ? '☒' : '☐';
+  body[key] = value === true ? '☒' : '☐';
 }
 
 function setIfEmpty(body, key, value) {
