@@ -1,5 +1,7 @@
 const express = require('express');
 const { google } = require('googleapis');
+const fetch = (...args) =>
+  import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
 /* =======================
    📦 IMPORT MODULES
@@ -31,7 +33,6 @@ app.use((req, res, next) => {
   if (req.method === 'OPTIONS') {
     return res.sendStatus(204);
   }
-
   next();
 });
 
@@ -50,15 +51,8 @@ oauth2Client.setCredentials({
   refresh_token: process.env.GOOGLE_REFRESH_TOKEN
 });
 
-const docs = google.docs({
-  version: 'v1',
-  auth: oauth2Client
-});
-
-const drive = google.drive({
-  version: 'v3',
-  auth: oauth2Client
-});
+const docs = google.docs({ version: 'v1', auth: oauth2Client });
+const drive = google.drive({ version: 'v3', auth: oauth2Client });
 
 /* =======================
    📄 GENERATE DOCUMENT
@@ -66,118 +60,36 @@ const drive = google.drive({
 app.post('/generate-doc', async (req, res) => {
   try {
     const body = req.body || {};
-	
-	/* =======================
-   🚀 DATE
-   ======================= */
-	if (body.datumPristiKontroly) {
-		body.datumPristiKontroly = formatDateCZ(body.datumPristiKontroly);
-	}
-
-	if (body.datumZpracovani) {
-	  body.datumZpracovani = formatDateCZ(body.datumZpracovani);
-	}
-	
-	if (body.datumZpracovaniPENB) {
-	  body.datumZpracovaniPENB = formatDateCZ(body.datumZpracovaniPENB);
-	}
-
-	
-	
-	/* =======================
-   🔁 OKRUHY (EDIT GRID)
-   ======================= */
-	applyOkruhy(body, {
-	  sourceKey: 'editGrid', // ключ Form.io
-	  targetKey: 'okruh',    // {{okruh.0.*}}
-	  max: 4
-	});
-	
-	/* =======================
-   🔁 DATA ŠETŘENÍ (TABLE)
-   ======================= */
-	if (Array.isArray(body.dataSetreni)) {
-	  body.DATA_SETRENI = body.dataSetreni
-		.map((item, index) => {
-		  if (!item?.datum) return '';
-		  return `${index + 1}. ${formatDateCZ(item.datum)}`;
-		})
-		.filter(Boolean)
-		.join('\n');
-	} else {
-	  body.DATA_SETRENI = '';
-	}
 
     /* =======================
-       ☑ RADIO: ANO / NE
+       📅 DATES
        ======================= */
-    const radio = body.automatizacniRidiciSystem;
+    if (body.datumPristiKontroly)
+      body.datumPristiKontroly = formatDateCZ(body.datumPristiKontroly);
+    if (body.datumZpracovani)
+      body.datumZpracovani = formatDateCZ(body.datumZpracovani);
+    if (body.datumZpracovaniPENB)
+      body.datumZpracovaniPENB = formatDateCZ(body.datumZpracovaniPENB);
 
-    body.automatizacniRidiciSystem_checkYes =
-      radio === 'ano' ? '☒' : '☐';
-
-    body.automatizacniRidiciSystem_checkNo =
-      radio === 'ne' ? '☒' : '☐';
+    /* =======================
+       🔁 OKRUHY (FORM.IO GRID)
+       ======================= */
+    applyOkruhy(body, {
+      sourceKey: 'editGrid',
+      targetKey: 'okruh',
+      max: 50
+    });
 
     /* =======================
        🧩 AGGREGATES
        ======================= */
-    
-	handleB2(body);
-	handleC32(body);
+    handleB2(body);
+    handleC32(body);
     handleC42(body);
     handleC52(body);
-	handleC41(body);
-	handleC411(body);
-	handleC116(body);
-	
-	
-	/* =======================
-   ☑ SELECT: TYP BUDOVY
-   ======================= */
-	applySelectCheckboxeTypBudovy(body, {
-	  key: 'typBudovy',
-	  data: {
-		values: [
-		  { label: 'Bytový dům', value: 'bytovyDum' },
-		  { label: 'Budova pro vzdělávání', value: 'budovaProVzdelavani' },
-		  { label: 'Administrativní budova', value: 'administrativniBudova' },
-		  { label: 'Budova pro kulturu', value: 'budovaProKulturu' },
-		  { label: 'Budova pro obchodní účely', value: 'budovaProObchodniUcely' },
-		  { label: 'Budova pro sociální péči', value: 'budovaProSocialniPeci' },
-		  { label: 'Budova pro sport', value: 'budovaProSport' },
-		  { label: 'Budova pro zdravotnictví', value: 'budovaProZdravotnictvi' },
-		  { label: 'Budova pro ubytování a stravování', value: 'budovaProUbytovaniAStravovani' },
-		  { label: 'Budova pro výrobu a skladování', value: 'budovaProVyrobuASkladovani' },
-		  { label: 'Jiný druh budovy', value: 'jinyDruhBudovy' }
-		]
-	  }
-	});
-	
-	
-	
-	/* =======================
-   ☑ SELECTBOXES: REGULACE VÝKONU ZDROJE
-   ======================= */
-	const regulaceMap = {
-	  kvantitativni: 'kvantitativní',
-	  kvalitativni: 'kvalitativní',
-	  jina: 'jiná'
-	};
-
-	if (
-	  body.regulaceVykonuZdroje &&
-	  typeof body.regulaceVykonuZdroje === 'object'
-	) {
-	  const selectedKey = Object.keys(body.regulaceVykonuZdroje)
-		.find(key => body.regulaceVykonuZdroje[key] === true);
-
-	  body.regulaceVykonuZdroje =
-		regulaceMap[selectedKey] || '';
-	} else {
-	  body.regulaceVykonuZdroje = '';
-	}
-	
+    handleC41(body);
+    handleC411(body);
+    handleC116(body);
 
     /* =======================
        📄 COPY TEMPLATE
@@ -207,21 +119,20 @@ app.post('/generate-doc', async (req, res) => {
       }
     }));
 
-    if (requests.length > 0) {
+    if (requests.length) {
       await docs.documents.batchUpdate({
         documentId,
         requestBody: { requests }
       });
     }
-	
-	/* =======================
-   🔁 OKRUH BLOCKS (APPS SCRIPT)
-   ======================= */
-	const okruhy = collectOkruhy(body);
 
-	if (okruhy.length > 0) {
-	  await runGenerateOkruhy(okruhy);
-	}
+    /* =======================
+       🔁 OKRUH BLOCKS (APPS SCRIPT)
+       ======================= */
+    const okruhy = collectOkruhy(body);
+    if (okruhy.length > 0) {
+      await runGenerateOkruhy(documentId, okruhy);
+    }
 
     /* =======================
        ✅ RESPONSE
@@ -229,7 +140,6 @@ app.post('/generate-doc', async (req, res) => {
     res.json({
       url: `https://docs.google.com/document/d/${documentId}/edit`
     });
-
   } catch (err) {
     console.error('Generate-doc error:', err);
     res.status(500).json({
@@ -243,55 +153,39 @@ app.post('/generate-doc', async (req, res) => {
    🚀 SERVER START
    ======================= */
 const PORT = process.env.PORT || 8080;
-
 app.listen(PORT, () => {
   console.log(`✅ Server started on port ${PORT}`);
 });
 
+/* =======================
+   🧰 HELPERS
+   ======================= */
 
 function formatDateCZ(value) {
   if (!value) return '';
-
   const d = new Date(value);
-
-  const day = String(d.getDate()).padStart(2, '0');
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const year = d.getFullYear();
-
-  return `${day}.${month}.${year}`;
-}
-
-function setIfEmpty(body, key, value) {
-  if (body[key] === undefined || body[key] === '') {
-    body[key] = value;
-  }
+  return `${String(d.getDate()).padStart(2, '0')}.${String(
+    d.getMonth() + 1
+  ).padStart(2, '0')}.${d.getFullYear()}`;
 }
 
 function collectOkruhy(body) {
   const okruhy = [];
-
   for (let i = 0; i < 100; i++) {
     if (!body[`okruh.${i}.cislo`]) break;
 
     okruhy.push({
       cislo: body[`okruh.${i}.cislo`],
-      oznaceni: body[`okruh.${i}.oznaceni`],
-      vypoctovyTeplotniSpad: body[`okruh.${i}.vypoctovyTeplotniSpad`],
-      provozovanyTeplotniSpad: body[`okruh.${i}.provozovanyTeplotniSpad`],
       vypoctovyTepelnyVykon: body[`okruh.${i}.vypoctovyTepelnyVykon`],
-      prenasenyVykon: body[`okruh.${i}.prenasenyVykon`],
-      typTepelneIzolace: body[`okruh.${i}.typTepelneIzolace`],
+      provozovanyTeplotniSpad: body[`okruh.${i}.provozovanyTeplotniSpad`],
       oznaceniCerpadla: body[`okruh.${i}.oznaceniCerpadla`],
-      jmenovityPrikon: body[`okruh.${i}.jmenovityPrikon`],
-      poznamkyKRozvodumTepelneEnergie:
-        body[`okruh.${i}.poznamkyKRozvodumTepelneEnergie`] || ''
+      poznamky: body[`okruh.${i}.poznamkyKRozvodumTepelneEnergie`] || ''
     });
   }
-
   return okruhy;
 }
 
-async function runGenerateOkruhy(okruhy) {
+async function runGenerateOkruhy(documentId, okruhy) {
   const scriptId = process.env.APPS_SCRIPT_ID;
   const { token } = await oauth2Client.getAccessToken();
 
@@ -305,18 +199,15 @@ async function runGenerateOkruhy(okruhy) {
       },
       body: JSON.stringify({
         function: 'generateOkruhy',
-        parameters: [okruhy]
+        parameters: [documentId, okruhy]
       })
     }
   );
 
   const json = await res.json();
-
   if (json.error) {
     throw new Error(
       'Apps Script error: ' + JSON.stringify(json.error)
     );
   }
 }
-
-
