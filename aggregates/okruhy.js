@@ -107,24 +107,27 @@ module.exports = function applyOkruhy(body, options = {}) {
     );
 
     /* =====================
-       REGULACE ČERPADLA (SELECT → LABEL)
-       ===================== */
-    const regulaceMap = {
-      bezRegulaceKonstantniOtacky: 'Bez regulace, konstantní otáčky',
-      rucneNastaveneKonstantniOtacky: 'Ručně nastavené konstantní otáčky',
-      regulacePodleProporcionalnihoTlaku: 'Regulace podle proporcionálního tlaku',
-      regulacePodleKonstantnihoTlaku: 'Regulace podle konstantního tlaku',
-      automatickaRegulaceRizenaElektronikouCerpadla:
-        'Automatická regulace řízená elektronikou čerpadla',
-      jine: 'Jiné'
-    };
-	
+	   REGULACE ČERPADLA (SELECT → ☒ / ☐)
+	   ===================== */
+	const regulaceOptions = {
+	  bezRegulaceKonstantniOtacky: 'Bez regulace, konstantní otáčky',
+	  rucneNastaveneKonstantniOtacky: 'Ručně nastavené konstantní otáčky',
+	  regulacePodleProporcionalnihoTlaku:
+		'Regulace podle proporcionálního tlaku',
+	  regulacePodleKonstantnihoTlaku:
+		'Regulace podle konstantního tlaku',
+	  automatickaRegulaceRizenaElektronikouCerpadla:
+		'Automatická regulace řízená elektronikou čerpadla',
+	  jine: 'Jiné'
+	};
 
-    setIfEmpty(
-      body,
-      `${p}.zpusobRegulace`,
-      regulaceMap[row.zpusobRegulace] || ''
-    );
+	Object.keys(regulaceOptions).forEach(key => {
+	  setIfEmpty(
+		body,
+		`${p}.zpusobRegulace.${key}`,
+		row.zpusobRegulace === key ? '☒' : '☐'
+	  );
+	});
 
     /* =====================
        ELEKTRICKÝ PŘÍKON
