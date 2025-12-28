@@ -233,7 +233,40 @@ app.post('/generate-doc', async (req, res) => {
 		generated
 	  );
 
-	  await overwriteDocument(docs, documentId, finalText);
+	  await docs.documents.batchUpdate({
+		  documentId,
+		  requestBody: {
+			requests: [
+			  {
+				replaceAllText: {
+				  containsText: {
+					text: '{{#okruhBlock}}',
+					matchCase: true
+				  },
+				  replaceText: ''
+				}
+			  },
+			  {
+				replaceAllText: {
+				  containsText: {
+					text: '{{/okruhBlock}}',
+					matchCase: true
+				  },
+				  replaceText: ''
+				}
+			  },
+			  {
+				replaceAllText: {
+				  containsText: {
+					text: '{{OKRUH_BLOCK_CONTENT}}',
+					matchCase: true
+				  },
+				  replaceText: generated
+				}
+			  }
+			]
+		  }
+		});
 	}
 
     /* =======================
