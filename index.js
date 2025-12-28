@@ -80,7 +80,7 @@ app.post('/generate-doc', async (req, res) => {
       max: 50
     });
 	
-	🔁 DATA ŠETŘENÍ (TABLE)
+	/*🔁 DATA ŠETŘENÍ (TABLE)
    ======================= */
 	if (Array.isArray(body.dataSetreni)) {
 	  body.DATA_SETRENI = body.dataSetreni
