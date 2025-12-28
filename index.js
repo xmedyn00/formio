@@ -13,6 +13,7 @@ const applyOkruhy = require('./aggregates/okruhy');
 const handleC41 = require('./aggregates/c41');
 const handleC411 = require('./aggregates/c411');
 const handleB2 = require('./aggregates/b2');
+const handleC116 = require('./aggregates/c116');
 
 /* =======================
    🚀 APP INIT
@@ -128,6 +129,7 @@ app.post('/generate-doc', async (req, res) => {
     handleC52(body);
 	handleC41(body);
 	handleC411(body);
+	handleS116(body);
 	
 	
 	/* =======================

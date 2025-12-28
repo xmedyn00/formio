@@ -119,20 +119,6 @@ module.exports = function applyOkruhy(body, options = {}) {
       jine: 'Jiné'
     };
 	
-	/* =====================
-   REGULACE VÝKONU ZDROJE (SELECTBOXES)
-   ===================== */
-	applySelectBoxes(
-	  body,
-	  p,
-	  'regulaceVykonuZdroje',
-	  row,
-	  {
-		kvantitativni: 'kvantitativní',
-		kvalitativni: 'kvalitativní',
-		jina: 'jiná'
-	  }
-	);
 
     setIfEmpty(
       body,
@@ -210,17 +196,3 @@ function applyAnoNe(body, prefix, key, row) {
   setIfEmpty(body, `${prefix}.${key}.no`, value === 'ne' ? '☒' : '☐');
 }
 
-/**
- * SelectBoxes → checkbox znaky (☒ / ☐)
- */
-function applySelectBoxes(body, prefix, key, row, options) {
-  const values = row[key] || {};
-
-  Object.entries(options).forEach(([valueKey, label]) => {
-    setIfEmpty(
-      body,
-      `${prefix}.${key}.${valueKey}`,
-      values[valueKey] === true ? '☒' : '☐'
-    );
-  });
-}
