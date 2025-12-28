@@ -191,6 +191,50 @@ app.post('/generate-doc', async (req, res) => {
     });
 
     const documentId = copy.data.id;
+	
+	/* =======================
+   🔁 OKRUH BLOCK (REPEAT)
+   ======================= */
+
+	const fullText = await getDocumentText(docs, documentId);
+
+	const blockMatch = fullText.match(
+	  /\{\{#okruhBlock\}\}([\s\S]*?)\{\{\/okruhBlock\}\}/
+	);
+
+	if (blockMatch) {
+	  const templateBlock = blockMatch[1];
+
+	  const okruhyCount = Object.keys(body)
+	  .filter(
+		k =>
+		  k.startsWith('okruh.') &&
+		  k.endsWith('.cislo') &&
+		  body[k]
+	  )
+	  .length;
+
+	  let generated = '';
+
+	  for (let i = 0; i < okruhyCount; i++) {
+		let block = templateBlock;
+
+		block = block.replace(/okruh\.0/g, `okruh.${i}`);
+		block = block.replace(
+		  /\{\{item\.rowNum\}\}/g,
+		  String(i + 1)
+		);
+
+		generated += block + '\n\n';
+	  }
+
+	  const finalText = fullText.replace(
+		/\{\{#okruhBlock\}\}[\s\S]*?\{\{\/okruhBlock\}\}/,
+		generated
+	  );
+
+	  await overwriteDocument(docs, documentId, finalText);
+	}
 
     /* =======================
        ✏ REPLACE PLACEHOLDERS
@@ -254,4 +298,45 @@ function setIfEmpty(body, key, value) {
   if (body[key] === undefined || body[key] === '') {
     body[key] = value;
   }
+}
+
+async function getDocumentText(docs, documentId) {
+  const doc = await docs.documents.get({ documentId });
+  let text = '';
+
+  doc.data.body.content.forEach(el => {
+    if (el.paragraph) {
+      el.paragraph.elements.forEach(e => {
+        if (e.textRun?.content) {
+          text += e.textRun.content;
+        }
+      });
+    }
+  });
+
+  return text;
+}
+
+async function overwriteDocument(docs, documentId, text) {
+  const doc = await docs.documents.get({ documentId });
+  const endIndex = doc.data.body.content.slice(-1)[0].endIndex;
+
+  await docs.documents.batchUpdate({
+    documentId,
+    requestBody: {
+      requests: [
+        {
+          deleteContentRange: {
+            range: { startIndex: 1, endIndex }
+          }
+        },
+        {
+          insertText: {
+            location: { index: 1 },
+            text
+          }
+        }
+      ]
+    }
+  });
 }

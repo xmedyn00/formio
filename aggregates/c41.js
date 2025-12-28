@@ -6,7 +6,6 @@ module.exports = function handleC41(body) {
 
   applyCheckbox(body, 'c41_t1VytapeniProstoru', src.c41_t1VytapeniProstoru);
   applyCheckbox(body, 'c41_t3PripravaTepleVody', src.c41_t3PripravaTepleVody);
-  console.log('C41 src:', src);
 };
 
 /* =====================
