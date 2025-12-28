@@ -65,7 +65,6 @@ const drive = google.drive({
    ======================= */
 app.post('/generate-doc', async (req, res) => {
   try {
-	  await testScriptPing();
     const body = req.body || {};
 	
 	/* =======================
@@ -155,6 +154,8 @@ app.post('/generate-doc', async (req, res) => {
 	  }
 	});
 	
+	
+	
 	/* =======================
    ☑ SELECTBOXES: REGULACE VÝKONU ZDROJE
    ======================= */
@@ -212,6 +213,15 @@ app.post('/generate-doc', async (req, res) => {
         requestBody: { requests }
       });
     }
+	
+	/* =======================
+   🔁 OKRUH BLOCKS (APPS SCRIPT)
+   ======================= */
+	const okruhy = collectOkruhy(body);
+
+	if (okruhy.length > 0) {
+	  await runGenerateOkruhy(okruhy);
+	}
 
     /* =======================
        ✅ RESPONSE
@@ -257,9 +267,32 @@ function setIfEmpty(body, key, value) {
   }
 }
 
-async function testScriptPing() {
-  const scriptId = process.env.APPS_SCRIPT_ID;
+function collectOkruhy(body) {
+  const okruhy = [];
 
+  for (let i = 0; i < 100; i++) {
+    if (!body[`okruh.${i}.cislo`]) break;
+
+    okruhy.push({
+      cislo: body[`okruh.${i}.cislo`],
+      oznaceni: body[`okruh.${i}.oznaceni`],
+      vypoctovyTeplotniSpad: body[`okruh.${i}.vypoctovyTeplotniSpad`],
+      provozovanyTeplotniSpad: body[`okruh.${i}.provozovanyTeplotniSpad`],
+      vypoctovyTepelnyVykon: body[`okruh.${i}.vypoctovyTepelnyVykon`],
+      prenasenyVykon: body[`okruh.${i}.prenasenyVykon`],
+      typTepelneIzolace: body[`okruh.${i}.typTepelneIzolace`],
+      oznaceniCerpadla: body[`okruh.${i}.oznaceniCerpadla`],
+      jmenovityPrikon: body[`okruh.${i}.jmenovityPrikon`],
+      poznamkyKRozvodumTepelneEnergie:
+        body[`okruh.${i}.poznamkyKRozvodumTepelneEnergie`] || ''
+    });
+  }
+
+  return okruhy;
+}
+
+async function runGenerateOkruhy(okruhy) {
+  const scriptId = process.env.APPS_SCRIPT_ID;
   const { token } = await oauth2Client.getAccessToken();
 
   const res = await fetch(
@@ -271,20 +304,19 @@ async function testScriptPing() {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        function: 'pingFromBackend'
+        function: 'generateOkruhy',
+        parameters: [okruhy]
       })
     }
   );
 
   const json = await res.json();
-  console.log('SCRIPT RESPONSE:', JSON.stringify(json, null, 2));
 
   if (json.error) {
     throw new Error(
-      'Apps Script ping failed: ' +
-      JSON.stringify(json.error)
+      'Apps Script error: ' + JSON.stringify(json.error)
     );
   }
-
-  return json;
 }
+
+
