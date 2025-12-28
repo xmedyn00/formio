@@ -79,6 +79,32 @@ app.post('/generate-doc', async (req, res) => {
       targetKey: 'okruh',
       max: 50
     });
+	
+	🔁 DATA ŠETŘENÍ (TABLE)
+   ======================= */
+	if (Array.isArray(body.dataSetreni)) {
+	  body.DATA_SETRENI = body.dataSetreni
+		.map((item, index) => {
+		  if (!item?.datum) return '';
+		  return `${index + 1}. ${formatDateCZ(item.datum)}`;
+		})
+		.filter(Boolean)
+		.join('\n');
+	} else {
+	  body.DATA_SETRENI = '';
+	}
+
+    /* =======================
+       ☑ RADIO: ANO / NE
+       ======================= */
+    const radio = body.automatizacniRidiciSystem;
+
+    body.automatizacniRidiciSystem_checkYes =
+      radio === 'ano' ? '☒' : '☐';
+
+    body.automatizacniRidiciSystem_checkNo =
+      radio === 'ne' ? '☒' : '☐';
+
 
     /* =======================
        🧩 AGGREGATES
@@ -90,6 +116,51 @@ app.post('/generate-doc', async (req, res) => {
     handleC41(body);
     handleC411(body);
     handleC116(body);
+	
+	/* =======================
+   ☑ SELECT: TYP BUDOVY
+   ======================= */
+	applySelectCheckboxeTypBudovy(body, {
+	  key: 'typBudovy',
+	  data: {
+		values: [
+		  { label: 'Bytový dům', value: 'bytovyDum' },
+		  { label: 'Budova pro vzdělávání', value: 'budovaProVzdelavani' },
+		  { label: 'Administrativní budova', value: 'administrativniBudova' },
+		  { label: 'Budova pro kulturu', value: 'budovaProKulturu' },
+		  { label: 'Budova pro obchodní účely', value: 'budovaProObchodniUcely' },
+		  { label: 'Budova pro sociální péči', value: 'budovaProSocialniPeci' },
+		  { label: 'Budova pro sport', value: 'budovaProSport' },
+		  { label: 'Budova pro zdravotnictví', value: 'budovaProZdravotnictvi' },
+		  { label: 'Budova pro ubytování a stravování', value: 'budovaProUbytovaniAStravovani' },
+		  { label: 'Budova pro výrobu a skladování', value: 'budovaProVyrobuASkladovani' },
+		  { label: 'Jiný druh budovy', value: 'jinyDruhBudovy' }
+		]
+	  }
+	});
+	
+	/* =======================
+   ☑ SELECTBOXES: REGULACE VÝKONU ZDROJE
+   ======================= */
+	const regulaceMap = {
+	  kvantitativni: 'kvantitativní',
+	  kvalitativni: 'kvalitativní',
+	  jina: 'jiná'
+	};
+
+	if (
+	  body.regulaceVykonuZdroje &&
+	  typeof body.regulaceVykonuZdroje === 'object'
+	) {
+	  const selectedKey = Object.keys(body.regulaceVykonuZdroje)
+		.find(key => body.regulaceVykonuZdroje[key] === true);
+
+	  body.regulaceVykonuZdroje =
+		regulaceMap[selectedKey] || '';
+	} else {
+	  body.regulaceVykonuZdroje = '';
+	}
+
 
     /* =======================
        📄 COPY TEMPLATE
