@@ -164,7 +164,6 @@ module.exports = function applyOkruhy(body, options = {}) {
     'prenasenyVykon',
     'typTepelneIzolace',
     'oznaceniCerpadla',
-    'zpusobRegulace',
     'jmenovityPrikon'
   ];
 
