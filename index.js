@@ -279,6 +279,22 @@ function collectOkruhy(body) {
     regulaceKeys.forEach(key => {
       okruh[key] = zpusobRegulace[key] ? '☒' : '☐';
     });
+	
+	const anoNeKeys = [
+	  'jsouOsazenyVyvazovaciArmaturyNaRozvodechTepelneEnergie',
+	  'lzeOveritSpravnostDimenzeANastaveni',
+	  'jeProvedenoHydraulickeNastaveniVyvazovacichArmatur',
+	  'vsechnyPristupneCastiRozvoduTepelneEnergieTepelneIzolovany',
+	  'dochaziKeZtrateTeplonosneLatky',
+	  'kontrolaKvalityTeplonosneLatky'
+	];
+
+	anoNeKeys.forEach(key => {
+	  okruh[key] = {
+		yes: body[`okruh.${i}.${key}.yes`] || '☐',
+		no:  body[`okruh.${i}.${key}.no`]  || '☐'
+	  };
+	});
 
     okruhy.push(okruh);
   }
