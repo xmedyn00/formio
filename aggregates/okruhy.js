@@ -151,6 +151,8 @@ module.exports = function applyOkruhy(body, options = {}) {
     applyAnoNe(body, p, 'vyhovujiciStavTepelneIzolace', row);
     applyAnoNe(body, p, 'dochaziKeZtrateTeplonosneLatky', row);
     applyAnoNe(body, p, 'kontrolaKvalityTeplonosneLatky', row);
+	
+	console.log('DEBUG zpusobRegulace:', JSON.stringify(row.zpusobRegulace));
   });
 
   /* =====================
@@ -175,7 +177,7 @@ module.exports = function applyOkruhy(body, options = {}) {
       setIfEmpty(body, `${p}.${field}`, '')
     );
   }
-  console.log('DEBUG zpusobRegulace:', JSON.stringify(row.zpusobRegulace));
+  
 };
 
 /* ======================================================
