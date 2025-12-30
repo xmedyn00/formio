@@ -235,8 +235,8 @@ app.listen(PORT, () => {
 function formatDateCZ(value) {
   if (!value) return '';
   const d = new Date(value);
-  return `${String(d.getDate()).padStart(2, '0')}.${String(
-    d.getMonth() + 1
+  return `${String(d.getUTCDate()).padStart(2, '0')}.${String(
+    d.getUTCMonth() + 1
   ).padStart(2, '0')}.${d.getFullYear()}`;
 }
 
