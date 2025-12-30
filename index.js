@@ -271,7 +271,7 @@ function collectOkruhy(body) {
         body[`okruh.${i}.oznaceniCerpadla`] || '',
       jmenovityPrikon:
         body[`okruh.${i}.jmenovityPrikon`] || '',
-      poznamky:
+      poznamkyKRozvodumTepelneEnergie:
         body[`okruh.${i}.poznamkyKRozvodumTepelneEnergie`] || ''
     };
 
