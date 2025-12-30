@@ -11,14 +11,17 @@ module.exports = function handleC32(body) {
      ZÁKLADNÍ POLE C32
      ===================== */
   const fields = [
-    { key: 'c32_pouzitiKoncepcniReseni', label: 'Použití, koncepční řešení' },
-    { key: 'c32_dimenzovani', label: 'Dimenzování' },
-    { key: 'c32_zapojeni', label: 'Zapojení' },
-    { key: 'c32_regulace', label: 'Regulace' },
-    { key: 'c32_provozniNastaveni', label: 'Provozní nastavení' },
-    { key: 'c32_tepelnaIzolace', label: 'Tepelná izolace' },
-    { key: 'c32_stavArmatur', label: 'Stav armatur' },
-    { key: 'c32_dalsi', label: 'Další' }
+    { key: 'c32_pouzitiKoncepcniReseni', },
+    { key: 'c32_dimenzovani', },
+    { key: 'c32_zapojeni', },
+    { key: 'c32_regulace', },
+    { key: 'c32_provozniNastaveni', },
+    { key: 'c32_tepelnaIzolace', },
+    { key: 'c32_stavArmatur', },
+    { key: 'c32_dalsi' }
+    { key: 'c32_zjisteneRozporySPozadavkyPravnichPredpisu' }
+    { key: 'c32_zjisteneRozporySPokynyVyrobce' }
+    { key: 'c32_dalsiZjisteneVazneNedostatky' }
   ];
 
   /* =====================
