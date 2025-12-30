@@ -21,10 +21,10 @@ module.exports = function applySelectBoxesAnoNe(
     const checked = Boolean(data[item.value]);
 
     // ✅ ANO
-    body[`${key}_${item.value}_ano`] = checked ? '☒' : '☐';
+    body[`${key}_${item.value}_ano`] = checked ? '☒ ANO' : '☐';
 
     // ❌ NE
-    body[`${key}_${item.value}_ne`] = checked ? '☐' : '☒';
+    body[`${key}_${item.value}_ne`] = checked ? '☐' : '☒ NE';
 	body[`${key}_${item.value}_anone`] = checked ? 'ANO' : 'NE';
   });
 };
