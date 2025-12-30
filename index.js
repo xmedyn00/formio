@@ -252,12 +252,23 @@ function collectOkruhy(body) {
     'jine'
   ];
 
+  const anoNeKeys = [
+    'jsouOsazenyVyvazovaciArmaturyNaRozvodechTepelneEnergie',
+    'lzeOveritSpravnostDimenzeANastaveni',
+    'jeProvedenoHydraulickeNastaveniVyvazovacichArmatur',
+    'vsechnyPristupneCastiRozvoduTepelneEnergieTepelneIzolovany',
+    'dochaziKeZtrateTeplonosneLatky',
+    'vyhovujiciStavTepelneIzolace',
+    'kontrolaKvalityTeplonosneLatky'
+  ];
+
   for (let i = 0; i < 100; i++) {
     const cislo = body[`okruh.${i}.cislo`];
     if (!cislo) break;
 
-    const zpusobRegulace =
-      body[`okruh.${i}.zpusobRegulace`] || {};
+    // 🔹 SELECT z Form.io → STRING
+    const selectedRegulace =
+      body[`okruh.${i}.zpusobRegulace`] || '';
 
     const okruh = {
       cislo,
@@ -273,31 +284,27 @@ function collectOkruhy(body) {
         body[`okruh.${i}.jmenovityPrikon`] || '',
       poznamkyKRozvodumTepelneEnergie:
         body[`okruh.${i}.poznamkyKRozvodumTepelneEnergie`] || '',
-	typHydraulickehoVyvazeniOtopneSoustavy:
+      typHydraulickehoVyvazeniOtopneSoustavy:
         body[`okruh.${i}.typHydraulickehoVyvazeniOtopneSoustavy`] || ''
     };
 
-    // ✅ checkboxy (☒ / ☐)
+    /* =====================
+       REGULACE ČERPADLA
+       (SELECT → ☒ / ☐)
+       ===================== */
     regulaceKeys.forEach(key => {
-      okruh[key] = zpusobRegulace[key] ? '☒' : '☐';
+      okruh[key] = selectedRegulace === key ? '☒' : '☐';
     });
-	
-	const anoNeKeys = [
-	  'jsouOsazenyVyvazovaciArmaturyNaRozvodechTepelneEnergie',
-	  'lzeOveritSpravnostDimenzeANastaveni',
-	  'jeProvedenoHydraulickeNastaveniVyvazovacichArmatur',
-	  'vsechnyPristupneCastiRozvoduTepelneEnergieTepelneIzolovany',
-	  'dochaziKeZtrateTeplonosneLatky',
-	  'vyhovujiciStavTepelneIzolace',
-	  'kontrolaKvalityTeplonosneLatky'
-	];
 
-	anoNeKeys.forEach(key => {
-	  okruh[key] = {
-		yes: body[`okruh.${i}.${key}.yes`] || '☐',
-		no:  body[`okruh.${i}.${key}.no`]  || '☐'
-	  };
-	});
+    /* =====================
+       ANO / NE → ☒ / ☐
+       ===================== */
+    anoNeKeys.forEach(key => {
+      okruh[key] = {
+        yes: body[`okruh.${i}.${key}.yes`] || '☐',
+        no:  body[`okruh.${i}.${key}.no`]  || '☐'
+      };
+    });
 
     okruhy.push(okruh);
   }
