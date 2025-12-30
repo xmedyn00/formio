@@ -8,6 +8,7 @@
  */
 
 module.exports = function applyOkruhy(body, options = {}) {
+	
   const {
     sourceKey = 'editGrid',
     targetKey = 'okruh',
@@ -124,7 +125,7 @@ module.exports = function applyOkruhy(body, options = {}) {
 	Object.keys(regulaceOptions).forEach(key => {
 	  setIfEmpty(
 		body,
-		`${p}.zpusobRegulace.${key}`,
+		`${p}.zpusobRegulace_${key}`,
 		row.zpusobRegulace === key ? '☒' : '☐'
 	  );
 	});
@@ -174,6 +175,7 @@ module.exports = function applyOkruhy(body, options = {}) {
       setIfEmpty(body, `${p}.${field}`, '')
     );
   }
+  console.log('DEBUG zpusobRegulace:', JSON.stringify(row.zpusobRegulace));
 };
 
 /* ======================================================
