@@ -272,7 +272,9 @@ function collectOkruhy(body) {
       jmenovityPrikon:
         body[`okruh.${i}.jmenovityPrikon`] || '',
       poznamkyKRozvodumTepelneEnergie:
-        body[`okruh.${i}.poznamkyKRozvodumTepelneEnergie`] || ''
+        body[`okruh.${i}.poznamkyKRozvodumTepelneEnergie`] || '',
+	typHydraulickehoVyvazeniOtopneSoustavy:
+        body[`okruh.${i}.typHydraulickehoVyvazeniOtopneSoustavy`] || ''
     };
 
     // ✅ checkboxy (☒ / ☐)
