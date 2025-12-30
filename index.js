@@ -243,23 +243,46 @@ function formatDateCZ(value) {
 function collectOkruhy(body) {
   const okruhy = [];
 
+  const regulaceKeys = [
+    'bezRegulaceKonstantniOtacky',
+    'rucneNastaveneKonstantniOtacky',
+    'regulacePodleProporcionalnihoTlaku',
+    'regulacePodleKonstantnihoTlaku',
+    'automatickaRegulaceRizenaElektronikouCerpadla',
+    'jine'
+  ];
+
   for (let i = 0; i < 100; i++) {
-    if (!body[`okruh.${i}.cislo`]) break;
+    const cislo = body[`okruh.${i}.cislo`];
+    if (!cislo) break;
 
-    okruhy.push({
-      cislo: body[`okruh.${i}.cislo`],
-      vypoctovyTepelnyVykon: body[`okruh.${i}.vypoctovyTepelnyVykon`],
-      vypoctovyTeplotniSpad: body[`okruh.${i}.vypoctovyTeplotniSpad`],
-      provozovanyTeplotniSpad: body[`okruh.${i}.provozovanyTeplotniSpad`],
-      oznaceniCerpadla: body[`okruh.${i}.oznaceniCerpadla`],
-      jmenovityPrikon: body[`okruh.${i}.jmenovityPrikon`],
-      poznamky: body[`okruh.${i}.poznamkyKRozvodumTepelneEnergie`] || '',
-	  
-	  zpusobRegulace.bezRegulaceKonstantniOtacky: body[`okruh.${i}.zpusobRegulace.bezRegulaceKonstantniOtacky`],
-	  zpusobRegulace.automatickaRegulaceRizenaElektronikouCerpadla: body[`okruh.${i}.automatickaRegulaceRizenaElektronikouCerpadla.bezRegulaceKonstantniOtacky`]
+    const zpusobRegulace =
+      body[`okruh.${i}.zpusobRegulace`] || {};
 
+    const okruh = {
+      cislo,
+      vypoctovyTepelnyVykon:
+        body[`okruh.${i}.vypoctovyTepelnyVykon`] || '',
+      vypoctovyTeplotniSpad:
+        body[`okruh.${i}.vypoctovyTeplotniSpad`] || '',
+      provozovanyTeplotniSpad:
+        body[`okruh.${i}.provozovanyTeplotniSpad`] || '',
+      oznaceniCerpadla:
+        body[`okruh.${i}.oznaceniCerpadla`] || '',
+      jmenovityPrikon:
+        body[`okruh.${i}.jmenovityPrikon`] || '',
+      poznamky:
+        body[`okruh.${i}.poznamkyKRozvodumTepelneEnergie`] || ''
+    };
+
+    // ✅ checkboxy (☒ / ☐)
+    regulaceKeys.forEach(key => {
+      okruh[key] = zpusobRegulace[key] ? '☒' : '☐';
     });
+
+    okruhy.push(okruh);
   }
+
   return okruhy;
 }
 
