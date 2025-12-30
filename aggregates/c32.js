@@ -19,6 +19,9 @@ module.exports = function handleC32(body) {
     { key: 'c32_tepelnaIzolace', label: 'Tepelná izolace' },
     { key: 'c32_stavArmatur', label: 'Stav armatur' },
     { key: 'c32_dalsi', label: 'Další' }
+    { key: 'c32_zjisteneRozporySPozadavkyPravnichPredpisu', label: 'Rozpory s pozadavky pravnich predpisu' }
+    { key: 'c32_zjisteneRozporySPokynyVyrobce', label: 'Rozpory s pokyny vyrobce' }
+    { key: 'c32_dalsiZjisteneVazneNedostatky', label: 'Další vazne nedostatky' }
   ];
 
   /* =====================
