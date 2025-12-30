@@ -123,11 +123,8 @@ module.exports = function applyOkruhy(body, options = {}) {
 	};
 
 	Object.keys(regulaceOptions).forEach(key => {
-	  setIfEmpty(
-		body,
-		`${p}.zpusobRegulace.${key}`,
-		row.zpusobRegulace === key ? '☒' : '☐'
-	  );
+	  body[`${p}.zpusobRegulace.${key}`] =
+		row.zpusobRegulace?.[key] ? '☒' : '☐';
 	});
 
     /* =====================
