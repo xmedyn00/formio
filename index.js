@@ -262,10 +262,6 @@ function collectOkruhy(body) {
     'kontrolaKvalityTeplonosneLatky'
   ];
   
-  console.log(
-	  'DEBUG selected regulace:',
-	  body[`okruh.${i}.zpusobRegulace`]
-	);
 	
   for (let i = 0; i < 100; i++) {
     const cislo = body[`okruh.${i}.cislo`];
