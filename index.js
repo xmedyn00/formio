@@ -286,6 +286,7 @@ function collectOkruhy(body) {
 	  'jeProvedenoHydraulickeNastaveniVyvazovacichArmatur',
 	  'vsechnyPristupneCastiRozvoduTepelneEnergieTepelneIzolovany',
 	  'dochaziKeZtrateTeplonosneLatky',
+	  'vyhovujiciStavTepelneIzolace',
 	  'kontrolaKvalityTeplonosneLatky'
 	];
 
