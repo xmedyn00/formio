@@ -242,15 +242,22 @@ function formatDateCZ(value) {
 
 function collectOkruhy(body) {
   const okruhy = [];
+
   for (let i = 0; i < 100; i++) {
     if (!body[`okruh.${i}.cislo`]) break;
 
     okruhy.push({
       cislo: body[`okruh.${i}.cislo`],
       vypoctovyTepelnyVykon: body[`okruh.${i}.vypoctovyTepelnyVykon`],
+      vypoctovyTeplotniSpad: body[`okruh.${i}.vypoctovyTeplotniSpad`],
       provozovanyTeplotniSpad: body[`okruh.${i}.provozovanyTeplotniSpad`],
       oznaceniCerpadla: body[`okruh.${i}.oznaceniCerpadla`],
-      poznamky: body[`okruh.${i}.poznamkyKRozvodumTepelneEnergie`] || ''
+      jmenovityPrikon: body[`okruh.${i}.jmenovityPrikon`],
+      poznamky: body[`okruh.${i}.poznamkyKRozvodumTepelneEnergie`] || '',
+	  
+	  zpusobRegulace.bezRegulaceKonstantniOtacky: body[`okruh.${i}.zpusobRegulace.bezRegulaceKonstantniOtacky`],
+	  zpusobRegulace.automatickaRegulaceRizenaElektronikouCerpadla: body[`okruh.${i}.automatickaRegulaceRizenaElektronikouCerpadla.bezRegulaceKonstantniOtacky`]
+
     });
   }
   return okruhy;
