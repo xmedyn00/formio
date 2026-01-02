@@ -17,6 +17,7 @@ const handleC411 = require('./aggregates/c411');
 const handleC413 = require('./aggregates/c413');
 const handleB2 = require('./aggregates/b2');
 const handleC116 = require('./aggregates/c116');
+const insertSingleImageWithCaption = require('./services/insertSingleImageWithCaption');
 
 /* =======================
    🚀 APP INIT
@@ -94,7 +95,16 @@ app.post('/generate-doc', async (req, res) => {
 	} else {
 	  body.DATA_SETRENI = '';
 	}
-
+	/* =======================
+   🖼 INSERT IMAGE (FORM.IO → GOOGLE DRIVE)
+   ======================= */
+	await insertSingleImageWithCaption({
+	  documentId,
+	  placeholder: '{{fotografieBudovy}}',
+	  imageFileId: body?.file?.[0]?.id,
+	  caption: 'Fotografie budovy – hlavní pohled',
+	  docs
+	});
     /* =======================
        ☑ RADIO: ANO / NE
        ======================= */
