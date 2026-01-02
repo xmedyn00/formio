@@ -31,7 +31,7 @@ module.exports = function applySelectBoxesAnoNe(
        🧠 BUSINESS TEXT (NEW)
        ========================== */
     if (item.onYesText && item.targetKey) {
-      body[item.targetKey] = checked ? item.onYesText : '';
+      body[item.targetKey] = checked ? '': item.onYesText;
     }
   });
 };

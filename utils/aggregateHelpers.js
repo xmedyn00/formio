@@ -1,9 +1,9 @@
 function aggregatePripominky(body, fields) {
   return fields
-    .map(({ key }) => {
+    .map(({ key, label }) => {
       const value = body[key];
       if (!value || !String(value).trim()) return null;
-      return `\n${String(value).trim()}`;
+      return `${label}:\n${String(value).trim()}`;
     })
     .filter(Boolean)
     .join('\n\n');

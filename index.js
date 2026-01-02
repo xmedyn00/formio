@@ -110,7 +110,7 @@ app.post('/generate-doc', async (req, res) => {
     /* =======================
        🧩 AGGREGATES
        ======================= */
-	Object.assign(body, handleB2(body));
+    handleB2(body);
     handleC32(body);
     handleC42(body);
     handleC52(body);
