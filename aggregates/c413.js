@@ -12,5 +12,5 @@ module.exports = function handleC413(body) {
 };
 
 function check(val) {
-	return val === true ? '☒' : '';
+	return val === true ? '☒' : '☐';
 }
