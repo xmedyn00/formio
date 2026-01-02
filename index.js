@@ -183,7 +183,11 @@ app.post('/generate-doc', async (req, res) => {
     /* =======================
        ✏ REPLACE PLACEHOLDERS
        ======================= */
-    const requests = Object.entries(body).map(([key, value]) => ({
+	const SKIP_KEYS = [
+		'file',
+		'fotografieBudovy'
+	];
+    const requests = Object.entries(body).filter(([key]) => !SKIP_KEYS.includes(key)).map(([key, value]) => ({
       replaceAllText: {
         containsText: {
           text: `{{${key}}}`,
