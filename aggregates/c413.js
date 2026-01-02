@@ -2,14 +2,15 @@ module.exports = function handleC413(body) {
   const src = body.C413_pripravaTepleVody || {};
 
   return {
-    pripravaTepleVody: {
-      t31: src.t31ZasobnikovyOhrivacTepleVodySeZabudovanymVymenikem === true,
-      t32: src.t32ZasobnikovyOhrivacTepleVodySExternimVymenikem === true,
-      t33: src.t33PrutokovyOhrevTepleVody === true,
-      t34: src.t34JinyUvedte === true
-    },
+    T31: check(src.t31ZasobnikovyOhrivacTepleVodySeZabudovanymVymenikem),
+    T32: check(src.t32ZasobnikovyOhrivacTepleVodySExternimVymenikem),
+    T33: check(src.t33PrutokovyOhrevTepleVody),
+    T34: check(src.t34JinyUvedte),
 
-    // если есть отдельное поле "jiný – uveďte"
-    t34Jiny: body.t34Jiny || ''
+    T34_JINY: body.t34Jiny || ''
   };
 };
+
+function check(val) {
+	return val === true ? '☒' : '';
+}
