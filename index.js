@@ -116,7 +116,7 @@ app.post('/generate-doc', async (req, res) => {
     handleC52(body);
     handleC41(body);
     handleC411(body);
-    handleC413(body);
+    Object.assign(body, handleC413(body));
     handleC116(body);
 	
 	/* =======================
