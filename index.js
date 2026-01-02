@@ -98,6 +98,7 @@ app.post('/generate-doc', async (req, res) => {
 	/* =======================
    🖼 INSERT IMAGE (FORM.IO → GOOGLE DRIVE)
    ======================= */
+   const documentId = copy.data.id;
 	await insertSingleImageWithCaption({
 	  documentId,
 	  placeholder: '{{fotografieBudovy}}',
