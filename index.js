@@ -179,7 +179,16 @@ app.post('/generate-doc', async (req, res) => {
     });
 
     const documentId = copy.data.id;
-	
+	/* =======================
+   🖼 INSERT IMAGE (FORM.IO → GOOGLE DRIVE)
+   ======================= */
+   
+	await insertSingleImageWithCaption({
+	  documentId,
+	  placeholder: '{{fotografieBudovy}}',
+	  imageFileId: body?.file?.[0]?.id,
+	  docs
+	});
     /* =======================
        ✏ REPLACE PLACEHOLDERS
        ======================= */
@@ -203,17 +212,7 @@ app.post('/generate-doc', async (req, res) => {
         requestBody: { requests }
       });
     }
-	
-	/* =======================
-   🖼 INSERT IMAGE (FORM.IO → GOOGLE DRIVE)
-   ======================= */
-   
-	await insertSingleImageWithCaption({
-	  documentId,
-	  placeholder: '{{fotografieBudovy}}',
-	  imageFileId: body?.file?.[0]?.id,
-	  docs
-	});
+
 
     /* =======================
        🔁 OKRUH BLOCKS (APPS SCRIPT)
