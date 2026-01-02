@@ -76,7 +76,7 @@ module.exports = function handleB2(body) {
     values: [
       { label: 'Pravidelná údržba', value: 'pravidelnaUdrzba' },
       { label: 'Dokumenty a informace jsou aktuální', value: 'dokumentyAInformaceAktualni' },
-      { label: 'Zpráva o čištění otopného okruhu', value: 'zpravaOCisteniOtopnehoOkruhu' },
+      { label: 'Zpráva o čištění otopného okruhu', onYesText: 'Doporučujeme provést chemické čištění otopné soustavy.' value: 'zpravaOCisteniOtopnehoOkruhu' },
       {
         label: 'Zpráva o výměně termostatických hlavic a uzavíracích ventilů',
         value: 'zpravaOVymeneTermostatickychHlavic'

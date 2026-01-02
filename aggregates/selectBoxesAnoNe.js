@@ -26,5 +26,12 @@ module.exports = function applySelectBoxesAnoNe(
     // ❌ NE
     body[`${key}_${item.value}_ne`] = checked ? '☐' : '☒';
 	body[`${key}_${item.value}_anone`] = checked ? 'ANO' : 'NE';
+	
+	/* ==========================
+       🧠 BUSINESS TEXT (NEW)
+       ========================== */
+    if (item.onYesText && item.targetKey) {
+      body[item.targetKey] = checked ? item.onYesText : '';
+    }
   });
 };
