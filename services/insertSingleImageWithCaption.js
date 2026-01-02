@@ -1,9 +1,12 @@
+
+
 module.exports = async function insertSingleImageWithCaption({
   documentId,
   placeholder,
   imageFileId,
   docs
 }) {
+	console.log('Searching for placeholder:', placeholder);
   if (!imageFileId) return;
 
   const doc = await docs.documents.get({ documentId });

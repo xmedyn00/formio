@@ -183,12 +183,16 @@ app.post('/generate-doc', async (req, res) => {
    🖼 INSERT IMAGE (FORM.IO → GOOGLE DRIVE)
    ======================= */
    
-	await insertSingleImageWithCaption({
-	  documentId,
-	  placeholder: '{{fotografieBudovy}}',
-	  imageFileId: body?.file?.[0]?.id,
-	  docs
-	});
+	const imageFileId = body?.file?.[0]?.id;
+	
+	if (imageFileId) {
+	  await insertSingleImageWithCaption({
+		documentId,
+		placeholder: '{{fotografieBudovy}}',
+		imageFileId,
+		docs
+	  });
+	}
     /* =======================
        ✏ REPLACE PLACEHOLDERS
        ======================= */
