@@ -18,6 +18,7 @@ const handleC413 = require('./aggregates/c413');
 const handleB2 = require('./aggregates/b2');
 const handleC116 = require('./aggregates/c116');
 const insertSingleImageWithCaption = require('./services/insertSingleImageWithCaption');
+const insertImagesAtPlaceholder = require('./services/insertImagesAtPlaceholder');
 
 /* =======================
    🚀 APP INIT
@@ -182,14 +183,33 @@ app.post('/generate-doc', async (req, res) => {
 	/* =======================
    🖼 INSERT IMAGE (FORM.IO → GOOGLE DRIVE)
    ======================= */
-   
-	const imageFileId = body?.fotografieBudovy?.[0]?.id;
-	console.log('IMAGE FILE ID:', imageFileId);
-	if (imageFileId) {
-	  await insertSingleImageWithCaption({
+   const IMAGE_PLACEHOLDERS = {
+	  fotografieBudovy: '{{fotografieBudovy}}',
+	  fotografieVstupuTeplaDoBudovy: '{{fotografieVstupuTeplaDoBudovy}}',
+	  fotografieZdrojeTepla: '{{fotografieZdrojeTepla}}',
+	  fotografieRozvodu: '{{fotografieRozvodu}}',
+	  fotografiePrvkuSdileniTepla: '{{fotografiePrvkuSdileniTepla}}'
+	};
+	
+	
+	/* =======================
+   🖼 INSERT ALL IMAGE GROUPS
+   ======================= */
+	for (const [formKey, placeholder] of Object.entries(IMAGE_PLACEHOLDERS)) {
+	  const files = body?.[formKey];
+
+	  if (!Array.isArray(files) || files.length === 0) continue;
+
+	  const imageFileIds = files
+		.map(f => f?.id)
+		.filter(Boolean);
+
+	  if (imageFileIds.length === 0) continue;
+
+	  await insertImagesAtPlaceholder({
 		documentId,
-		placeholder: '{{fotografieBudovy}}',
-		imageFileId,
+		placeholder,
+		imageFileIds,
 		docs
 	  });
 	}
@@ -197,8 +217,12 @@ app.post('/generate-doc', async (req, res) => {
        ✏ REPLACE PLACEHOLDERS
        ======================= */
 	const SKIP_KEYS = [
-		'file',
-		'fotografieBudovy'
+	  'fotografieBudovy',
+	  'fotografieVstupuTeplaDoBudovy',
+	  'fotografieZdrojeTepla',
+	  'fotografieRozvodu',
+	  'fotografiePrvkuSdileniTepla',
+	  'prilohy'
 	];
     const requests = Object.entries(body).filter(([key]) => !SKIP_KEYS.includes(key)).map(([key, value]) => ({
       replaceAllText: {
