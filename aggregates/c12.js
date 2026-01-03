@@ -48,7 +48,7 @@ module.exports = function handleC12(body) {
   /* =====================
      DEFAULTY
      ===================== */
-  setIfEmpty(
+  /*setIfEmpty(
     body,
     'zjisteneRozporySPozadavkyPravnichPredpisu',
     'bez připomínek'
@@ -62,7 +62,7 @@ module.exports = function handleC12(body) {
     body,
     'dalsiZjisteneVazneNedostatky',
     'bez připomínek'
-  );
+  );*/
 
   /* =====================
      AGREGACE
