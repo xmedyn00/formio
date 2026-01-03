@@ -169,15 +169,20 @@ app.post('/generate-doc', async (req, res) => {
     /* =======================
        📄 COPY TEMPLATE
        ======================= */
-    const copy = await drive.files.copy({
-      fileId: process.env.TEMPLATE_ID,
-      requestBody: {
-        name: body.adresaBudovy
-          ? `Firma_${String(body.adresaBudovy)}`
-          : 'Firma',
-        mimeType: 'application/vnd.google-apps.document'
-      }
-    });
+    const templateId =
+	  body.rozsahZpravy === 'plny'
+		? process.env.TEMPLATE_FULL_ID
+		: process.env.TEMPLATE_ID; // zjednodusenyBezVlastnihoZdrojeTepla
+
+	const copy = await drive.files.copy({
+	  fileId: templateId,
+	  requestBody: {
+		name: body.adresaBudovy
+		  ? `Firma_${String(body.adresaBudovy)}`
+		  : 'Firma',
+		mimeType: 'application/vnd.google-apps.document'
+	  }
+	});
 
     const documentId = copy.data.id;
 	/* =======================
