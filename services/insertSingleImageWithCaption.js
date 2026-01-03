@@ -51,8 +51,8 @@ module.exports = async function insertSingleImageWithCaption({
             location: { index: startIndex },
             uri: `https://drive.google.com/uc?id=${imageFileId}`,
             objectSize: {
-              width: { magnitude: 591, unit: 'PT' },
-              height: { magnitude: 400, unit: 'PT' }
+              width: { magnitude: 481, unit: 'PT' },
+              height: { magnitude: 481, unit: 'PT' }
             }
           }
         }
