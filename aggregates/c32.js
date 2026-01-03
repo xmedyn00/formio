@@ -36,7 +36,7 @@ module.exports = function handleC32(body) {
   /* =====================
      DEFAULTNÍ HODNOTY
      ===================== */
-  setIfEmpty(
+  /*setIfEmpty(
     body,
     'c32_zjisteneRozporySPozadavkyPravnichPredpisu',
     'bez připomínek'
@@ -52,7 +52,7 @@ module.exports = function handleC32(body) {
     body,
     'c32_dalsiZjisteneVazneNedostatky',
     'bez připomínek'
-  );
+  );*/
 
   /* =====================
      AGREGACE PŘIPOMÍNEK
