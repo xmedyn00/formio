@@ -364,7 +364,10 @@ function collectOkruhy(body) {
 }
 
 async function runGenerateOkruhy(documentId, okruhy) {
-  const scriptId = process.env.APPS_SCRIPT_ID;
+  const scriptId =
+	  body.rozsahZpravy === 'plny'
+		? process.env.APPS_SCRIPT_FULL_ID
+		: process.env.APPS_SCRIPT_ID; // zjednodusenyBezVlastnihoZdrojeTepla
   const { token } = await oauth2Client.getAccessToken();
 
   const res = await fetch(
