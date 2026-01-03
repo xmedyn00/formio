@@ -7,6 +7,7 @@ const fetch = (...args) =>
    📦 IMPORT MODULES
    ======================= */
 const handleC12 = require('./aggregates/c12');
+const handleC22 = require('./aggregates/c22');
 const handleC32 = require('./aggregates/c32');
 const handleC42 = require('./aggregates/c42');
 const handleC52 = require('./aggregates/c52');
@@ -115,6 +116,7 @@ app.post('/generate-doc', async (req, res) => {
        ======================= */
     handleB2(body);
     handleC12(body);
+    handleC22(body);
     handleC32(body);
     handleC42(body);
     handleC52(body);
