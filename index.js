@@ -252,7 +252,7 @@ app.post('/generate-doc', async (req, res) => {
        ======================= */
     const okruhy = collectOkruhy(body);
     if (okruhy.length > 0) {
-      await runGenerateOkruhy(documentId, okruhy);
+      await runGenerateOkruhy(documentId, okruhy, body.rozsahZpravy);
     }
 
     /* =======================
@@ -363,7 +363,7 @@ function collectOkruhy(body) {
   return okruhy;
 }
 
-async function runGenerateOkruhy(documentId, okruhy) {
+async function runGenerateOkruhy(documentId, okruhy, rozsahZpravy) {
   const scriptId =
 	  body.rozsahZpravy === 'plny'
 		? process.env.APPS_SCRIPT_FULL_ID
