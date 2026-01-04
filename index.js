@@ -90,10 +90,10 @@ app.post('/generate-doc', async (req, res) => {
        🔁 ZdrojTepla (FORM.IO GRID)
        ======================= */
     applyZdrojTepla(body, {
-      sourceKey = 'zdrojeTepla',
-	  targetKey = 'zdrojeTepla',
-      max: 50
-    });
+	  sourceKey: 'zdrojeTepla',
+	  targetKey: 'zdrojeTepla',
+	  max: 50
+	});
 	
 	/*🔁 DATA ŠETŘENÍ (TABLE)
    ======================= */
