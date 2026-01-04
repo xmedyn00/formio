@@ -12,7 +12,7 @@ module.exports = function applyOkruhy(body, options = {}) {
   const {
     sourceKey = 'editGrid',
     targetKey = 'okruh',
-    max = 3
+    max = 10
   } = options;
 
   const rows = Array.isArray(body[sourceKey])

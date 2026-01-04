@@ -14,6 +14,7 @@ const handleC52 = require('./aggregates/c52');
 const applySelectCheckboxeTypBudovy = require('./aggregates/selectCheckBox-typBudovy');
 const applySelectBoxesAnoNe = require('./aggregates/selectBoxesAnoNe');
 const applyOkruhy = require('./aggregates/okruhy');
+const applyZdrojTepla = require('./aggregates/zdrojTepla');
 const handleC41 = require('./aggregates/c41');
 const handleC411 = require('./aggregates/c411');
 const handleC413 = require('./aggregates/c413');
@@ -80,6 +81,15 @@ app.post('/generate-doc', async (req, res) => {
        🔁 OKRUHY (FORM.IO GRID)
        ======================= */
     applyOkruhy(body, {
+      sourceKey = 'zdrojeTepla',
+	  targetKey = 'zdrojTepla',
+      max: 50
+    });
+	
+	/* =======================
+       🔁 ZdrojTepla (FORM.IO GRID)
+       ======================= */
+    applyZdrojTepla(body, {
       sourceKey: 'editGrid',
       targetKey: 'okruh',
       max: 50
