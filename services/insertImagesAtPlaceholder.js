@@ -49,8 +49,8 @@ module.exports = async function insertImagesAtPlaceholder({
         location: { index: cursor },
         uri: `https://drive.google.com/uc?id=${fileId}`,
         objectSize: {
-          width: { magnitude: 580, unit: 'PT' },
-          height: { magnitude: 400, unit: 'PT' }
+          width: { magnitude: 200, unit: 'PT' },
+          height: { magnitude: 150, unit: 'PT' }
         }
       }
     });
