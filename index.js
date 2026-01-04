@@ -268,6 +268,14 @@ app.post('/generate-doc', async (req, res) => {
     if (okruhy.length > 0) {
       await runGenerateOkruhy(documentId, okruhy, body.rozsahZpravy);
     }
+	
+	/* =======================
+       🔁 ZDROJETEPLA BLOCKS (APPS SCRIPT)
+       ======================= */
+	const zdrojeTepla = collectZdrojeTepla(body);
+	if (zdrojeTepla.length > 0) {
+	  await runGenerateZdrojeTepla(documentId, zdrojeTepla);
+	}
 
     /* =======================
        ✅ RESPONSE
@@ -395,6 +403,89 @@ async function runGenerateOkruhy(documentId, okruhy, rozsahZpravy) {
       body: JSON.stringify({
         function: 'generateOkruhy',
         parameters: [documentId, okruhy]
+      })
+    }
+  );
+
+  const json = await res.json();
+  if (json.error) {
+    throw new Error(
+      'Apps Script error: ' + JSON.stringify(json.error)
+    );
+  }
+}
+
+
+function collectZdrojeTepla(body) {
+  const zdroje = [];
+
+  for (let i = 0; i < 100; i++) {
+    const cislo = body[`zdrojeTepla.${i}.cislo`];
+    if (!cislo) break;
+
+    const zdroj = {
+      cislo,
+      oznaceni: body[`zdrojeTepla.${i}.oznaceni`] || '',
+      vyrobceTypModel:
+        body[`zdrojeTepla.${i}.vyrobceTypModel`] || '',
+      rokVyrobyVyrobniCislo:
+        body[`zdrojeTepla.${i}.rokVyrobyVyrobniCislo`] || '',
+
+      /* ===== REGULOVATELNÝ ROZSAH ===== */
+      minKW: body[`zdrojeTepla.${i}.minKW`] || '',
+      maxKW: body[`zdrojeTepla.${i}.maxKW`] || '',
+
+      /* ===== ÚČINNOST ===== */
+      vyslednaUcinnost:
+        body[`zdrojeTepla.${i}.vyslednaUcinnost`] || '',
+      minimalniPozadovanaUcinnost:
+        body[`zdrojeTepla.${i}.minimalniPozadovanaUcinnost`] || '',
+
+      /* ===== TEXT ===== */
+      regulaceVykonu:
+        body[`zdrojeTepla.${i}.regulaceVykonu`] || '',
+      poznamky:
+        body[`zdrojeTepla.${i}.poznamky`] || ''
+    };
+
+    /* =====================
+       ANO / NE → ☒ / ☐
+       ===================== */
+    zdroj.splneniPozadavkuNaUcinnost = {
+      yes:
+        body[`zdrojeTepla.${i}.splneniPozadavkuNaUcinnost.yes`] || '☐',
+      no:
+        body[`zdrojeTepla.${i}.splneniPozadavkuNaUcinnost.no`] || '☐'
+    };
+
+    zdroj.splneniPozadavkuVyhlaskyC382022Sb = {
+      yes:
+        body[`zdrojeTepla.${i}.splneniPozadavkuVyhlaskyC382022Sb.yes`] || '☐',
+      no:
+        body[`zdrojeTepla.${i}.splneniPozadavkuVyhlaskyC382022Sb.no`] || '☐'
+    };
+
+    zdroje.push(zdroj);
+  }
+
+  return zdroje;
+}
+
+async function runGenerateZdrojeTepla(documentId, zdrojeTepla) {
+  const scriptId = process.env.APPS_SCRIPT_ZDROJE_TEPLA_ID;
+  const { token } = await oauth2Client.getAccessToken();
+
+  const res = await fetch(
+    `https://script.googleapis.com/v1/scripts/${scriptId}:run`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        function: 'generateZdrojeTepla',
+        parameters: [documentId, zdrojeTepla]
       })
     }
   );
