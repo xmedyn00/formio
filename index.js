@@ -452,17 +452,36 @@ function collectZdrojeTepla(body) {
        ===================== */
     zdroj.splneniPozadavkuNaUcinnost = {
       yes:
-        body[`zdrojeTepla.${i}.splneniPozadavkuNaUcinnost.yes`] || '☐',
+        body[`zdrojeTepla.${i}.splneniPozadavkuNaUcinnost.yes`] || '☒',
       no:
         body[`zdrojeTepla.${i}.splneniPozadavkuNaUcinnost.no`] || '☐'
     };
 
     zdroj.splneniPozadavkuVyhlaskyC382022Sb = {
       yes:
-        body[`zdrojeTepla.${i}.splneniPozadavkuVyhlaskyC382022Sb.yes`] || '☐',
+        body[`zdrojeTepla.${i}.splneniPozadavkuVyhlaskyC382022Sb.yes`] || '☒',
       no:
         body[`zdrojeTepla.${i}.splneniPozadavkuVyhlaskyC382022Sb.no`] || '☐'
     };
+	
+	/* =====================
+       PALIVO → ☒ / ☐
+       ===================== */
+    const paliva = [
+      'zemniPlyn',
+      'lehkyTopnyOlej',
+      'uhli',
+      'lpg',
+      'drevoPelety',
+      'jine'
+    ];
+
+    zdroj.palivo = {};
+
+    paliva.forEach(p => {
+      zdroj.palivo[p] =
+        body[`zdrojeTepla.${i}.palivo.${p}`] === '☒' ? '☒' : '☐';
+    });
 
     zdroje.push(zdroj);
   }
