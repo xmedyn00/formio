@@ -428,22 +428,21 @@ function collectZdrojeTepla(body) {
       oznaceni: body[`zdrojeTepla.${i}.oznaceni`] || '',
       vyrobceTypModel:
         body[`zdrojeTepla.${i}.vyrobceTypModel`] || '',
+	  zakladniDiagnostikaKotle:
+        body[`zdrojeTepla.${i}.zakladniDiagnostikaKotle`] || '',
       rokVyrobyVyrobniCislo:
         body[`zdrojeTepla.${i}.rokVyrobyVyrobniCislo`] || '',
-
-      /* ===== REGULOVATELNÝ ROZSAH ===== */
       minKW: body[`zdrojeTepla.${i}.minKW`] || '',
       maxKW: body[`zdrojeTepla.${i}.maxKW`] || '',
-
-      /* ===== ÚČINNOST ===== */
-      vyslednaUcinnost:
-        body[`zdrojeTepla.${i}.vyslednaUcinnost`] || '',
+      celkovaZtrata: body[`zdrojeTepla.${i}.celkovaZtrata`] || '',
+      namerenaKoncentraceCoVeSpalinachMgM3: body[`zdrojeTepla.${i}.namerenaKoncentraceCoVeSpalinachMgM3`] || '',
+      vyslednaUcinnost: body[`zdrojeTepla.${i}.vyslednaUcinnost`] || '',
+      regulaceVykonu: body[`zdrojeTepla.${i}.regulaceVykonu`] || '',
+		
       minimalniPozadovanaUcinnost:
         body[`zdrojeTepla.${i}.minimalniPozadovanaUcinnost`] || '',
 
       /* ===== TEXT ===== */
-      regulaceVykonu:
-        body[`zdrojeTepla.${i}.regulaceVykonu`] || '',
       poznamky:
         body[`zdrojeTepla.${i}.poznamky`] || ''
     };
