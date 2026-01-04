@@ -517,7 +517,8 @@ function collectZdrojeTepla(body) {
 
     typyKotle.forEach(t => {
       zdroj.typKotle[t] =
-        selectedTypKotle === t ? '☒' : '☐';
+        //selectedTypKotle === t ? '☒' : '☐';
+		body[`zdrojeTepla.${i}.${t}`] === '☒' ? '☒' : '☐';
     });
 
     zdroje.push(zdroj);
