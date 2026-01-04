@@ -81,8 +81,8 @@ app.post('/generate-doc', async (req, res) => {
        🔁 OKRUHY (FORM.IO GRID)
        ======================= */
     applyOkruhy(body, {
-      sourceKey = 'zdrojeTepla',
-	  targetKey = 'zdrojTepla',
+      sourceKey: 'editGrid',
+      targetKey: 'okruh',
       max: 50
     });
 	
@@ -90,8 +90,8 @@ app.post('/generate-doc', async (req, res) => {
        🔁 ZdrojTepla (FORM.IO GRID)
        ======================= */
     applyZdrojTepla(body, {
-      sourceKey: 'editGrid',
-      targetKey: 'okruh',
+      sourceKey = 'zdrojeTepla',
+	  targetKey = 'zdrojTepla',
       max: 50
     });
 	
