@@ -117,6 +117,29 @@ module.exports = function applyZdrojTepla(body, options = {}) {
        ===================== */
     setIfEmpty(body, `${p}.regulaceVykonu`, row.C11_regulaceVykonu || '');
     setIfEmpty(body, `${p}.poznamky`, row.C11_poznamkyKeZdrojiTepla || '');
+	
+	  /* =====================
+     ČIŠTĚNÍ NEPOUŽITÝCH ZDROJŮ
+     ===================== */
+	  const SAFE_FIELDS = [
+		'cislo',
+		'oznaceni',
+		'vyrobceTypModel',
+		'rokVyrobyVyrobniCislo',
+		'minKW',
+		'maxKW',
+		'regulaceVykonu',
+		'poznamky'
+	  ];
+
+	  for (let i = rows.length; i < max; i++) {
+		const p = `${targetKey}.${i}`;
+
+		SAFE_FIELDS.forEach(field => {
+		  body[`${p}.${field}`] = '';
+		});
+	  }
+
   });
 };
 
