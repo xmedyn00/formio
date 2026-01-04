@@ -482,6 +482,24 @@ function collectZdrojeTepla(body) {
       zdroj.palivo[p] =
         body[`zdrojeTepla.${i}.palivo.${p}`] === '☒' ? '☒' : '☐';
     });
+	
+	/* =====================
+       ZDROJ TEPLA JE URČEN PRO → ☒ / ☐
+       ===================== */
+    const urceniKeys = [
+      'vytapeniProstoruOtopnouSoustavouNeboPrimymSdilenimTepla',
+      'pripravaTepleVody',
+      'ohrevVzduchuVeVzduchotechnickemZarizeni',
+      'teploProTechnologii',
+      'dalsi'
+    ];
+
+    zdroj.urceni = {};
+
+    urceniKeys.forEach(key => {
+      zdroj.urceni[key] =
+        body[`zdrojeTepla.${i}.urceni.${key}`] === '☒' ? '☒' : '☐';
+    });
 
     zdroje.push(zdroj);
   }
