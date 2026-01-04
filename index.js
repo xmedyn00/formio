@@ -500,6 +500,25 @@ function collectZdrojeTepla(body) {
       zdroj.urceni[key] =
         body[`zdrojeTepla.${i}.urceni.${key}`] === '☒' ? '☒' : '☐';
     });
+	
+	/* =====================
+       TYP KOTLE (RADIO) → ☒ / ☐
+       ===================== */
+    const typyKotle = [
+      'standardni',
+      'kondenzacni',
+      'nizkoteplotni'
+    ];
+
+    zdroj.typKotle = {};
+
+    const selectedTypKotle =
+      body[`zdrojeTepla.${i}.typKotle`] || '';
+
+    typyKotle.forEach(t => {
+      zdroj.typKotle[t] =
+        selectedTypKotle === t ? '☒' : '☐';
+    });
 
     zdroje.push(zdroj);
   }
