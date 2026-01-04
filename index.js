@@ -91,7 +91,7 @@ app.post('/generate-doc', async (req, res) => {
        ======================= */
     applyZdrojTepla(body, {
       sourceKey = 'zdrojeTepla',
-	  targetKey = 'zdrojTepla',
+	  targetKey = 'zdrojeTepla',
       max: 50
     });
 	

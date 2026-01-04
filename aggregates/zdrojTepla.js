@@ -9,7 +9,7 @@
 module.exports = function applyZdrojTepla(body, options = {}) {
   const {
     sourceKey = 'zdrojeTepla',
-    targetKey = 'zdrojTepla',
+    targetKey = 'zdrojeTepla',
     max = 10
   } = options;
 
