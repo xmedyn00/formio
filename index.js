@@ -428,8 +428,8 @@ function collectZdrojeTepla(body) {
       oznaceni: body[`zdrojeTepla.${i}.oznaceni`] || '',
       vyrobceTypModel:
         body[`zdrojeTepla.${i}.vyrobceTypModel`] || '',
-	  zakladniDiagnostikaKotle:
-        body[`zdrojeTepla.${i}.zakladniDiagnostikaKotle`] || '',
+	  zakladniCharakteristikaKotle:
+        body[`zdrojeTepla.${i}.zakladniCharakteristikaKotle`] || '',
       rokVyrobyVyrobniCislo:
         body[`zdrojeTepla.${i}.rokVyrobyVyrobniCislo`] || '',
       minKW: body[`zdrojeTepla.${i}.minKW`] || '',
