@@ -11,6 +11,7 @@ const handleC22 = require('./aggregates/c22');
 const handleC32 = require('./aggregates/c32');
 const handleC42 = require('./aggregates/c42');
 const handleC52 = require('./aggregates/c52');
+const handleC61 = require('./aggregates/c61');
 const applySelectCheckboxeTypBudovy = require('./aggregates/selectCheckBox-typBudovy');
 const applySelectBoxesAnoNe = require('./aggregates/selectBoxesAnoNe');
 const applyOkruhy = require('./aggregates/okruhy');
@@ -134,6 +135,7 @@ app.post('/generate-doc', async (req, res) => {
     handleC411(body);
     Object.assign(body, handleC413(body));
     handleC116(body);
+    handleC61(body);
 	
 	/* =======================
    ☑ SELECT: TYP BUDOVY
