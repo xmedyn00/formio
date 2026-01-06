@@ -1,13 +1,20 @@
 const applySelectBoxesAnoNe = require('./selectBoxesAnoNe');
 
-module.exports = function handleC62(body) {
+module.exports = function handleC2(body) {
+  const key = 'c2_pripravaTepleVody';
+  const valueKey = 'pripravaTepleVody';
 
-  applySelectBoxesAnoNe(body, {
-	  key: 'c2_pripravaTepleVody',
-	  values: [
-		{ value: 'pripravaTepleVody' }
-	  ]
-	});
+  let checkbox = '☐';
 
+  if (
+    body[key] &&
+    typeof body[key] === 'object' &&
+    body[key][valueKey] === true
+  ) {
+    checkbox = '☒';
+  }
+
+  // 🔹 ОДИН checkbox placeholder
+  body.c2_pripravaTepleVody_checkbox = checkbox;
 };
 
