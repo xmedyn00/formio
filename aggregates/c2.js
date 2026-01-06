@@ -7,6 +7,10 @@ module.exports = function handleC2(body) {
    * generates:
    * body[targetKey] = '☒' | '☐'
    */
+   
+   const applyRadioAnoNe = require('./applyRadioAnoNe');
+   
+   
   function applySingleSelectBoxCheckbox(sourceKey, valueKey, targetKey) {
     let checkbox = '☐';
 
@@ -20,6 +24,8 @@ module.exports = function handleC2(body) {
 
     body[targetKey] = checkbox;
   }
+  
+  applyRadioAnoNe(body, 'c2_kombinovanyAkumulacniZasobnik');
 
   // =========================
   // C2 – Příprava teplé vody
