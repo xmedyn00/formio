@@ -470,6 +470,12 @@ function collectZdrojeTepla(body) {
 		  : '',
 	referencniKoncentraceCoVeSpalinachMgM3: body[`zdrojeTepla.${i}.referencniKoncentraceCoVeSpalinachMgM3`] || '',
 	//splneniPozadavkuVyhlaskyC382022Sb nize
+	splneniPozadavkuVyhlaskyC382022Sb:
+	  body[`zdrojeTepla.${i}.splneniPozadavkuVyhlaskyC382022Sb`] === 'ano'
+		? 'Ano'
+		: body[`zdrojeTepla.${i}.splneniPozadavkuVyhlaskyC382022Sb`] === 'ne'
+		  ? 'Ne'
+		  : ''
     };
 
     /* =====================
@@ -480,7 +486,7 @@ function collectZdrojeTepla(body) {
         body[`zdrojeTepla.${i}.splneniPozadavkuNaUcinnost.yes`] || 'Ano',
       no:
         body[`zdrojeTepla.${i}.splneniPozadavkuNaUcinnost.no`] || 'Ne'
-    };*/
+    };
 
     zdroj.splneniPozadavkuVyhlaskyC382022Sb = {
       yes:
@@ -488,7 +494,7 @@ function collectZdrojeTepla(body) {
       no:
         body[`zdrojeTepla.${i}.splneniPozadavkuVyhlaskyC382022Sb.no`] || 'Ne'
     };
-	
+	*/
 	/* =====================
        PALIVO → ☒ / ☐
        ===================== */
