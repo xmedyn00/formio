@@ -475,7 +475,13 @@ function collectZdrojeTepla(body) {
 		? 'Ano'
 		: body[`zdrojeTepla.${i}.splneniPozadavkuVyhlaskyC382022Sb`] === 'ne'
 		  ? 'Ne'
-		  : ''
+		  : '',
+	vhodneDimenzovaniZdroje:
+	  body[`zdrojeTepla.${i}.vhodneDimenzovaniZdroje`] === 'ano'
+		? 'Ano'
+		: body[`zdrojeTepla.${i}.vhodneDimenzovaniZdroje`] === 'ne'
+		  ? 'Ne'
+		  : '',
     };
 
     /* =====================

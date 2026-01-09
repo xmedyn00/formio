@@ -81,6 +81,10 @@ module.exports = function applyZdrojTepla(body, options = {}) {
 	setIfEmpty(body, `${p}.referencniKoncentraceCoVeSpalinachMgM3`, toStr(row.C11_referencniKoncentraceCoVeSpalinachMgM3));
 	applyAnoNe(body, `${p}.splneniPozadavkuVyhlaskyC382022Sb`, toStr(row.C11_splneniPozadavkuVyhlaskyC382022Sb));
 	
+	
+	setIfEmpty(body, `${p}.vhodneDimenzovaniZdroje`, toStr(row.C11_vhodneDimenzovaniZdroje));
+	
+	
     /* =====================
        ÚČINNOST – HODNOTY
        ===================== */
