@@ -55,6 +55,10 @@ module.exports = function applyZdrojTepla(body, options = {}) {
        ===================== */
     setIfEmpty(body, `${p}.minKW`, toStr(row.C11_minKW));
     setIfEmpty(body, `${p}.maxKW`, toStr(row.C11_maxKW));
+	
+	
+    setIfEmpty(body, `${p}.teplotaSpalinNaVystupuZKotleC`, toStr(row.C11_teplotaSpalinNaVystupuZKotleC));
+    setIfEmpty(body, `${p}.teplotaVzduchuNaVstupuDoKotleC`, toStr(row.C11_teplotaVzduchuNaVstupuDoKotleC));
 
     /* =====================
        ÚČINNOST – HODNOTY
