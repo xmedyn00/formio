@@ -79,7 +79,7 @@ module.exports = function applyZdrojTepla(body, options = {}) {
 
 	//Namerena konc. oxidu v c111 namerenaKoncentraceCoVeSpalinachMgM3
 	setIfEmpty(body, `${p}.referencniKoncentraceCoVeSpalinachMgM3`, toStr(row.C11_referencniKoncentraceCoVeSpalinachMgM3));
-	applyAnoNe(body, `${p}.splneniPozadavkuVyhlaskyC382022Sb`, toStr(row.C11_splneniPozadavkuVyhlaskyC382022Sb));
+	setIfEmpty(body, `${p}.splneniPozadavkuVyhlaskyC382022Sb`, toStr(row.C11_splneniPozadavkuVyhlaskyC382022Sb));
 	
 	
 	setIfEmpty(body, `${p}.vhodneDimenzovaniZdroje`, toStr(row.C11_vhodneDimenzovaniZdroje));
