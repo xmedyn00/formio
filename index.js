@@ -465,8 +465,8 @@ function collectZdrojeTepla(body) {
 	kominovaZtrataDinO2: body[`zdrojeTepla.${i}.kominovaZtrataDinO2`] || '',
 	kominovaZtrataDinCo2: body[`zdrojeTepla.${i}.kominovaZtrataDinCo2`] || '',
 	ucinnostStanovenaAnalyzatoremSpalin: body[`zdrojeTepla.${i}.ucinnostStanovenaAnalyzatoremSpalin`] || '',
-	splneniPozadavkuNaUcinnost: body[`zdrojeTepla.${i}.splneniPozadavkuNaUcinnost`] || '',
-	referencniKoncentraceCoVeSpalinachMgM3: body[`zdrojeTepla.${i}.referencniKoncentraceCoVeSpalinachMgM3`] || '',
+	//splneniPozadavkuNaUcinnost: body[`zdrojeTepla.${i}.splneniPozadavkuNaUcinnost`] || '',
+	//referencniKoncentraceCoVeSpalinachMgM3: body[`zdrojeTepla.${i}.referencniKoncentraceCoVeSpalinachMgM3`] || '',
       /* ===== TEXT ===== */
       poznamky:
         body[`zdrojeTepla.${i}.poznamky`] || ''
@@ -475,18 +475,18 @@ function collectZdrojeTepla(body) {
     /* =====================
        ANO / NE → ☒ / ☐
        ===================== */
-    /*zdroj.splneniPozadavkuNaUcinnost = {
+    zdroj.splneniPozadavkuNaUcinnost = {
       yes:
-        body[`zdrojeTepla.${i}.splneniPozadavkuNaUcinnost.yes`] || '☒',
+        body[`zdrojeTepla.${i}.splneniPozadavkuNaUcinnost.yes`] || 'Ano',
       no:
-        body[`zdrojeTepla.${i}.splneniPozadavkuNaUcinnost.no`] || '☐'
-    };*/
+        body[`zdrojeTepla.${i}.splneniPozadavkuNaUcinnost.no`] || 'Ne'
+    };
 
     zdroj.splneniPozadavkuVyhlaskyC382022Sb = {
       yes:
-        body[`zdrojeTepla.${i}.splneniPozadavkuVyhlaskyC382022Sb.yes`] || '☒',
+        body[`zdrojeTepla.${i}.splneniPozadavkuVyhlaskyC382022Sb.yes`] || 'Ano',
       no:
-        body[`zdrojeTepla.${i}.splneniPozadavkuVyhlaskyC382022Sb.no`] || '☐'
+        body[`zdrojeTepla.${i}.splneniPozadavkuVyhlaskyC382022Sb.no`] || 'Ne'
     };
 	
 	/* =====================
