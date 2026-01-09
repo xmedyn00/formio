@@ -56,9 +56,22 @@ module.exports = function applyZdrojTepla(body, options = {}) {
     setIfEmpty(body, `${p}.minKW`, toStr(row.C11_minKW));
     setIfEmpty(body, `${p}.maxKW`, toStr(row.C11_maxKW));
 	
+	/*Table 2 */
 	
     setIfEmpty(body, `${p}.teplotaSpalinNaVystupuZKotleC`, toStr(row.C11_teplotaSpalinNaVystupuZKotleC));
     setIfEmpty(body, `${p}.teplotaVzduchuNaVstupuDoKotleC`, toStr(row.C11_teplotaVzduchuNaVstupuDoKotleC));
+    setIfEmpty(body, `${p}.koeficientADinO2`, toStr(row.C11_koeficientADinO2));
+    setIfEmpty(body, `${p}.koeficientBDinO2`, toStr(row.C11_koeficientBDinO2));
+    setIfEmpty(body, `${p}.koeficientADinCo2`, toStr(row.C11_koeficientADinCo2));
+    setIfEmpty(body, `${p}.koeficientBDinCo2`, toStr(row.C11_koeficientBDinCo2));
+    setIfEmpty(body, `${p}.koncentraceO2VeSpalinach`, toStr(row.C11_koncentraceO2VeSpalinach));
+    setIfEmpty(body, `${p}.koncentraceCo2VeSpalinach`, toStr(row.C11_koncentraceCo2VeSpalinach));
+    setIfEmpty(body, `${p}.kominovaZtrataDinO2`, toStr(row.C11_kominovaZtrataDinO2));
+    setIfEmpty(body, `${p}.kominovaZtrataDinCo2`, toStr(row.C11_kominovaZtrataDinCo2));
+    setIfEmpty(body, `${p}.ucinnostStanovenaAnalyzatoremSpalin`, toStr(row.C11_ucinnostStanovenaAnalyzatoremSpalin));
+    setIfEmpty(body, `${p}.celkovaZtrata`, toStr(row.C11_celkovaZtrata));
+    setIfEmpty(body, `${p}.vyslednaUcinnost`, toStr(row.C11_vyslednaUcinnost));
+    setIfEmpty(body, `${p}.minimalniPozadovanaUcinnost`, toStr(row.C11_minimalniPozadovanaUcinnost));
 
     /* =====================
        ÚČINNOST – HODNOTY

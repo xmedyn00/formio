@@ -451,7 +451,20 @@ function collectZdrojeTepla(body) {
 		
 	  teplotaSpalinNaVystupuZKotleC: body[`zdrojeTepla.${i}.teplotaSpalinNaVystupuZKotleC`] || '',
 	  teplotaVzduchuNaVstupuDoKotleC: body[`zdrojeTepla.${i}.teplotaVzduchuNaVstupuDoKotleC`] || '',
-
+	  
+	  /*Table 2 */
+	
+    teplotaSpalinNaVystupuZKotleC: body[`zdrojeTepla.${i}.teplotaSpalinNaVystupuZKotleC`] || '',
+	teplotaVzduchuNaVstupuDoKotleC: body[`zdrojeTepla.${i}.teplotaVzduchuNaVstupuDoKotleC`] || '',
+	koeficientADinO2: body[`zdrojeTepla.${i}.koeficientADinO2`] || '',
+	koeficientBDinO2: body[`zdrojeTepla.${i}.koeficientBDinO2`] || '',
+	koeficientADinCo2: body[`zdrojeTepla.${i}.koeficientADinCo2`] || '',
+	koeficientBDinCo2: body[`zdrojeTepla.${i}.koeficientBDinCo2`] || '',
+	koncentraceO2VeSpalinach: body[`zdrojeTepla.${i}.koncentraceO2VeSpalinach`] || '',
+	koncentraceCo2VeSpalinach: body[`zdrojeTepla.${i}.koncentraceCo2VeSpalinach`] || '',
+	kominovaZtrataDinO2: body[`zdrojeTepla.${i}.kominovaZtrataDinO2`] || '',
+	kominovaZtrataDinCo2: body[`zdrojeTepla.${i}.kominovaZtrataDinCo2`] || '',
+	ucinnostStanovenaAnalyzatoremSpalin: body[`zdrojeTepla.${i}.ucinnostStanovenaAnalyzatoremSpalin`] || '',
       /* ===== TEXT ===== */
       poznamky:
         body[`zdrojeTepla.${i}.poznamky`] || ''
