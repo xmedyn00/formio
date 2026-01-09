@@ -447,6 +447,10 @@ function collectZdrojeTepla(body) {
 		
       minimalniPozadovanaUcinnost:
         body[`zdrojeTepla.${i}.minimalniPozadovanaUcinnost`] || '',
+		
+		
+	  teplotaSpalinNaVystupuZKotleC: body[`zdrojeTepla.${i}.teplotaSpalinNaVystupuZKotleC`] || '',
+	  teplotaVzduchuNaVstupuDoKotleC: body[`zdrojeTepla.${i}.teplotaVzduchuNaVstupuDoKotleC`] || '',
 
       /* ===== TEXT ===== */
       poznamky:
