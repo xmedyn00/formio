@@ -20,43 +20,46 @@ module.exports = function applyZdrojTepla(body, options = {}) {
   rows.forEach((row, i) => {
     const p = `${targetKey}.${i}`;
 
-    /* =====================
-       ZÁKLAD
-       ===================== */
+    
+
+
+	/*C111*/
+
     setIfEmpty(body, `${p}.cislo`, row.C11_cisloZ1Zn || '');
     setIfEmpty(body, `${p}.oznaceni`, row.C11_oznaceni || '');
-
-    /* =====================
-       PALIVO (MULTISELECT)
-       ===================== */
     if (Array.isArray(row.C11_palivo)) {
       row.C11_palivo.forEach(v => {
         body[`${p}.palivo.${v}`] = '☒';
       });
     }
-
-    /* =====================
-       TYP KOTLE (RADIO)
-       ===================== */
+	setIfEmpty(body, `${p}.palivoJine`, row.C11_palivoJine || '');
     applyRadio(body, p, 'typKotle', row.C11_typKotle, [
       'standardni',
       'kondenzacni',
       'nizkoteplotni'
     ]);
-
-    /* =====================
-       VÝROBCE / ROK
-       ===================== */
+    
     setIfEmpty(body, `${p}.vyrobceTypModel`, row.C11_vyrobceTypModel || '');
+    setIfEmpty(body, `${p}.zakladniCharakteristikaKotle`, row.C11_zakladniCharakteristikaKotle || '');
     setIfEmpty(body, `${p}.rokVyrobyVyrobniCislo`, row.C11_rokVyrobyVyrobniCislo || '');
-
-    /* =====================
-       REGULOVATELNÝ ROZSAH
-       ===================== */
     setIfEmpty(body, `${p}.minKW`, toStr(row.C11_minKW));
     setIfEmpty(body, `${p}.maxKW`, toStr(row.C11_maxKW));
+	setIfEmpty(body, `${p}.celkovaZtrata`, toStr(row.C11_celkovaZtrata)); //kominova ztrata
+	setIfEmpty(body, `${p}.namerenaKoncentraceCoVeSpalinachMgM3`, toStr(row.C11_namerenaKoncentraceCoVeSpalinachMgM3)); //Emise CO
+	setIfEmpty(body, `${p}.vyslednaUcinnost`, toStr(row.C11_vyslednaUcinnost)); //Vypocetna ucinost
+	setIfEmpty(body, `${p}.regulaceVykonu`, row.C11_regulaceVykonu || '');
+	if (Array.isArray(row.C11_zdrojTeplaJeUrcenPro)) {
+      row.C11_zdrojTeplaJeUrcenPro.forEach(v => {
+        body[`${p}.urceni.${v}`] = '☒';
+      });
+    }
+	setIfEmpty(body, `${p}.zdrojTeplaUrcenProDalsi`, row.C11_zdrojTeplaUrcenProDalsi || '');
+	setIfEmpty(body, `${p}.poznamkyKeZdrojiTepla`, row.C11_poznamkyKeZdrojiTepla || '');
 	
-	/*Table 2 */
+	
+	
+	
+	/*Priloha 6 */
 	
     setIfEmpty(body, `${p}.teplotaSpalinNaVystupuZKotleC`, toStr(row.C11_teplotaSpalinNaVystupuZKotleC));
     setIfEmpty(body, `${p}.teplotaVzduchuNaVstupuDoKotleC`, toStr(row.C11_teplotaVzduchuNaVstupuDoKotleC));
@@ -69,10 +72,15 @@ module.exports = function applyZdrojTepla(body, options = {}) {
     setIfEmpty(body, `${p}.kominovaZtrataDinO2`, toStr(row.C11_kominovaZtrataDinO2));
     setIfEmpty(body, `${p}.kominovaZtrataDinCo2`, toStr(row.C11_kominovaZtrataDinCo2));
     setIfEmpty(body, `${p}.ucinnostStanovenaAnalyzatoremSpalin`, toStr(row.C11_ucinnostStanovenaAnalyzatoremSpalin));
-    setIfEmpty(body, `${p}.celkovaZtrata`, toStr(row.C11_celkovaZtrata));
-    setIfEmpty(body, `${p}.vyslednaUcinnost`, toStr(row.C11_vyslednaUcinnost));
+    //celkova ztrata v c111
+	//vesledna ucinost v c111 
     setIfEmpty(body, `${p}.minimalniPozadovanaUcinnost`, toStr(row.C11_minimalniPozadovanaUcinnost));
+	applyAnoNe(body, p, 'splneniPozadavkuNaUcinnost', row.C11_splneniPozadavkuNaUcinnost);
 
+	//Namerena konc. oxidu v c111 namerenaKoncentraceCoVeSpalinachMgM3
+	setIfEmpty(body, `${p}.referencniKoncentraceCoVeSpalinachMgM3`, toStr(row.C11_referencniKoncentraceCoVeSpalinachMgM3));
+	applyAnoNe(body, `${p}.splneniPozadavkuVyhlaskyC382022Sb`, toStr(row.C11_splneniPozadavkuVyhlaskyC382022Sb));
+	
     /* =====================
        ÚČINNOST – HODNOTY
        ===================== */
@@ -93,47 +101,7 @@ module.exports = function applyZdrojTepla(body, options = {}) {
       'C11_minimalniPozadovanaUcinnost'
     ]);
 
-    /* =====================
-       SPLNĚNÍ POŽADAVKŮ
-       ===================== */
-    applyAnoNe(body, p, 'splneniPozadavkuNaUcinnost', row.C11_splneniPozadavkuNaUcinnost);
-
-    /* =====================
-       KONCENTRACE CO
-       ===================== */
-    setIfEmpty(
-      body,
-      `${p}.namerenaKoncentraceCoVeSpalinachMgM3`,
-      toStr(row.C11_namerenaKoncentraceCoVeSpalinachMgM3)
-    );
-
-    setIfEmpty(
-      body,
-      `${p}.referencniKoncentraceCoVeSpalinachMgM3`,
-      toStr(row.C11_referencniKoncentraceCoVeSpalinachMgM3)
-    );
-
-    applyAnoNe(
-      body,
-      p,
-      'splneniPozadavkuVyhlaskyC382022Sb',
-      row.C11_splneniPozadavkuVyhlaskyC382022Sb
-    );
-
-    /* =====================
-       URČENÍ ZDROJE
-       ===================== */
-    if (Array.isArray(row.C11_zdrojTeplaJeUrcenPro)) {
-      row.C11_zdrojTeplaJeUrcenPro.forEach(v => {
-        body[`${p}.urceni.${v}`] = '☒';
-      });
-    }
-
-    /* =====================
-       OSTATNÍ
-       ===================== */
-    setIfEmpty(body, `${p}.regulaceVykonu`, row.C11_regulaceVykonu || '');
-    setIfEmpty(body, `${p}.poznamky`, row.C11_poznamkyKeZdrojiTepla || '');
+ 
 	
 	  /* =====================
      ČIŠTĚNÍ NEPOUŽITÝCH ZDROJŮ
@@ -174,9 +142,9 @@ function toStr(v) {
   return v != null ? String(v) : '';
 }
 
-function applyAnoNe(body, prefix, key, value) {
-  setIfEmpty(body, `${prefix}.${key}.yes`, value === 'ano' ? '☒' : '☐');
-  setIfEmpty(body, `${prefix}.${key}.no`, value === 'ne' ? '☒' : '☐');
+function applyAnoNe(body, path, value) {
+  setIfEmpty(body, `${path}.yes`, value === 'ano' ? 'Ano' : 'Ne');
+  setIfEmpty(body, `${path}.no`, value === 'ne' ? 'Ano' : 'Ne');
 }
 
 function applyRadio(body, prefix, key, selected, values) {

@@ -430,29 +430,25 @@ function collectZdrojeTepla(body) {
     if (!cislo) break;
 
     const zdroj = {
+		
+	/*C111*/
       cislo,
       oznaceni: body[`zdrojeTepla.${i}.oznaceni`] || '',
-      vyrobceTypModel:
-        body[`zdrojeTepla.${i}.vyrobceTypModel`] || '',
-	  zakladniCharakteristikaKotle:
-        body[`zdrojeTepla.${i}.zakladniCharakteristikaKotle`] || '',
-      rokVyrobyVyrobniCislo:
-        body[`zdrojeTepla.${i}.rokVyrobyVyrobniCislo`] || '',
+      palivoJine: body[`zdrojeTepla.${i}.palivoJine`] || '', 
+      vyrobceTypModel: body[`zdrojeTepla.${i}.vyrobceTypModel`] || '',
+	  zakladniCharakteristikaKotle: body[`zdrojeTepla.${i}.zakladniCharakteristikaKotle`] || '',
+      rokVyrobyVyrobniCislo: body[`zdrojeTepla.${i}.rokVyrobyVyrobniCislo`] || '',
       minKW: body[`zdrojeTepla.${i}.minKW`] || '',
       maxKW: body[`zdrojeTepla.${i}.maxKW`] || '',
       celkovaZtrata: body[`zdrojeTepla.${i}.celkovaZtrata`] || '',
       namerenaKoncentraceCoVeSpalinachMgM3: body[`zdrojeTepla.${i}.namerenaKoncentraceCoVeSpalinachMgM3`] || '',
       vyslednaUcinnost: body[`zdrojeTepla.${i}.vyslednaUcinnost`] || '',
       regulaceVykonu: body[`zdrojeTepla.${i}.regulaceVykonu`] || '',
-		
-      minimalniPozadovanaUcinnost:
-        body[`zdrojeTepla.${i}.minimalniPozadovanaUcinnost`] || '',
-		
-		
-	  teplotaSpalinNaVystupuZKotleC: body[`zdrojeTepla.${i}.teplotaSpalinNaVystupuZKotleC`] || '',
-	  teplotaVzduchuNaVstupuDoKotleC: body[`zdrojeTepla.${i}.teplotaVzduchuNaVstupuDoKotleC`] || '',
+      zdrojTeplaUrcenProDalsi: body[`zdrojeTepla.${i}.zdrojTeplaUrcenProDalsi`] || '',
+      poznamkyKeZdrojiTepla: body[`zdrojeTepla.${i}.poznamkyKeZdrojiTepla`] || '',
 	  
-	  /*Table 2 */
+	  
+	  /*Priloha 6 */
 	
     teplotaSpalinNaVystupuZKotleC: body[`zdrojeTepla.${i}.teplotaSpalinNaVystupuZKotleC`] || '',
 	teplotaVzduchuNaVstupuDoKotleC: body[`zdrojeTepla.${i}.teplotaVzduchuNaVstupuDoKotleC`] || '',
@@ -465,11 +461,10 @@ function collectZdrojeTepla(body) {
 	kominovaZtrataDinO2: body[`zdrojeTepla.${i}.kominovaZtrataDinO2`] || '',
 	kominovaZtrataDinCo2: body[`zdrojeTepla.${i}.kominovaZtrataDinCo2`] || '',
 	ucinnostStanovenaAnalyzatoremSpalin: body[`zdrojeTepla.${i}.ucinnostStanovenaAnalyzatoremSpalin`] || '',
-	//splneniPozadavkuNaUcinnost: body[`zdrojeTepla.${i}.splneniPozadavkuNaUcinnost`] || '',
-	//referencniKoncentraceCoVeSpalinachMgM3: body[`zdrojeTepla.${i}.referencniKoncentraceCoVeSpalinachMgM3`] || '',
-      /* ===== TEXT ===== */
-      poznamky:
-        body[`zdrojeTepla.${i}.poznamky`] || ''
+	minimalniPozadovanaUcinnost: body[`zdrojeTepla.${i}.minimalniPozadovanaUcinnost`] || '',
+	//splneniPozadavkuNaUcinnost nize,
+	referencniKoncentraceCoVeSpalinachMgM3: body[`zdrojeTepla.${i}.referencniKoncentraceCoVeSpalinachMgM3`] || '',
+	//splneniPozadavkuVyhlaskyC382022Sb nize
     };
 
     /* =====================
