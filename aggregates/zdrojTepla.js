@@ -75,7 +75,7 @@ module.exports = function applyZdrojTepla(body, options = {}) {
     //celkova ztrata v c111
 	//vesledna ucinost v c111 
     setIfEmpty(body, `${p}.minimalniPozadovanaUcinnost`, toStr(row.C11_minimalniPozadovanaUcinnost));
-	applyAnoNe(body, p, 'splneniPozadavkuNaUcinnost', row.C11_splneniPozadavkuNaUcinnost);
+	setIfEmpty(body, `${p}.splneniPozadavkuNaUcinnost`, toStr(row.C11_splneniPozadavkuNaUcinnost));
 
 	//Namerena konc. oxidu v c111 namerenaKoncentraceCoVeSpalinachMgM3
 	setIfEmpty(body, `${p}.referencniKoncentraceCoVeSpalinachMgM3`, toStr(row.C11_referencniKoncentraceCoVeSpalinachMgM3));
