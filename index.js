@@ -466,6 +466,7 @@ function collectZdrojeTepla(body) {
 	kominovaZtrataDinCo2: body[`zdrojeTepla.${i}.kominovaZtrataDinCo2`] || '',
 	ucinnostStanovenaAnalyzatoremSpalin: body[`zdrojeTepla.${i}.ucinnostStanovenaAnalyzatoremSpalin`] || '',
 	splneniPozadavkuNaUcinnost: body[`zdrojeTepla.${i}.splneniPozadavkuNaUcinnost`] || '',
+	referencniKoncentraceCoVeSpalinachMgM3: body[`zdrojeTepla.${i}.referencniKoncentraceCoVeSpalinachMgM3`] || '',
       /* ===== TEXT ===== */
       poznamky:
         body[`zdrojeTepla.${i}.poznamky`] || ''
@@ -474,12 +475,12 @@ function collectZdrojeTepla(body) {
     /* =====================
        ANO / NE → ☒ / ☐
        ===================== */
-    zdroj.splneniPozadavkuNaUcinnost = {
+    /*zdroj.splneniPozadavkuNaUcinnost = {
       yes:
         body[`zdrojeTepla.${i}.splneniPozadavkuNaUcinnost.yes`] || '☒',
       no:
         body[`zdrojeTepla.${i}.splneniPozadavkuNaUcinnost.no`] || '☐'
-    };
+    };*/
 
     zdroj.splneniPozadavkuVyhlaskyC382022Sb = {
       yes:
