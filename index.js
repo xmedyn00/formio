@@ -465,6 +465,7 @@ function collectZdrojeTepla(body) {
 	kominovaZtrataDinO2: body[`zdrojeTepla.${i}.kominovaZtrataDinO2`] || '',
 	kominovaZtrataDinCo2: body[`zdrojeTepla.${i}.kominovaZtrataDinCo2`] || '',
 	ucinnostStanovenaAnalyzatoremSpalin: body[`zdrojeTepla.${i}.ucinnostStanovenaAnalyzatoremSpalin`] || '',
+	splneniPozadavkuNaUcinnost: body[`zdrojeTepla.${i}.splneniPozadavkuNaUcinnost`] || '',
       /* ===== TEXT ===== */
       poznamky:
         body[`zdrojeTepla.${i}.poznamky`] || ''

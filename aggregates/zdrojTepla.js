@@ -103,13 +103,13 @@ module.exports = function applyZdrojTepla(body, options = {}) {
        ===================== */
     setIfEmpty(
       body,
-      `${p}.namerenaKoncentraceCo`,
+      `${p}.namerenaKoncentraceCoVeSpalinachMgM3`,
       toStr(row.C11_namerenaKoncentraceCoVeSpalinachMgM3)
     );
 
     setIfEmpty(
       body,
-      `${p}.referencniKoncentraceCo`,
+      `${p}.referencniKoncentraceCoVeSpalinachMgM3`,
       toStr(row.C11_referencniKoncentraceCoVeSpalinachMgM3)
     );
 
