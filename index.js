@@ -364,7 +364,8 @@ function collectOkruhy(body) {
       oznaceniCerpadla: body[`okruh.${i}.oznaceniCerpadla`] || '',
       jmenovityPrikon: body[`okruh.${i}.jmenovityPrikon`] || '',
       poznamkyKRozvodumTepelneEnergie: body[`okruh.${i}.poznamkyKRozvodumTepelneEnergie`] || '',
-      typHydraulickehoVyvazeniOtopneSoustavy: body[`okruh.${i}.typHydraulickehoVyvazeniOtopneSoustavy`] || ''
+      typHydraulickehoVyvazeniOtopneSoustavy: body[`okruh.${i}.typHydraulickehoVyvazeniOtopneSoustavy`] || '',
+      teplotniLatka: body[`okruh.${i}.teplotniLatka`] || 'teplotniLatka'
     };
 
     /* =====================
