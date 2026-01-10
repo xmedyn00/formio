@@ -14,7 +14,7 @@ module.exports = async function insertImagesAtPlaceholder({
   },
 
   default: {
-    height: 550 // PT — как сейчас
+    height: 450 // PT — как сейчас
   }
 };
 
