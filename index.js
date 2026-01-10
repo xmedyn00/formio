@@ -289,6 +289,11 @@ app.post('/generate-doc', async (req, res) => {
 	if (zdrojeTepla.length > 0) {
 	  await runGenerateZdrojeTepla(documentId, zdrojeTepla);
 	}
+	
+	/* =======================
+   🧹 FINAL CLEANUP – REMOVE UNUSED {{PLACEHOLDERS}}
+   ======================= */
+	await removeAllRemainingPlaceholders(documentId, docs);
 
     /* =======================
        ✅ RESPONSE
@@ -590,4 +595,23 @@ async function runGenerateZdrojeTepla(documentId, zdrojeTepla) {
       'Apps Script error: ' + JSON.stringify(json.error)
     );
   }
+}
+
+function removeAllRemainingPlaceholders(documentId, docs) {
+  return docs.documents.batchUpdate({
+    documentId,
+    requestBody: {
+      requests: [
+        {
+          replaceAllText: {
+            containsText: {
+              text: '{{',
+              matchCase: false
+            },
+            replaceText: ''
+          }
+        }
+      ]
+    }
+  });
 }
