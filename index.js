@@ -34,9 +34,15 @@ const app = express();
 /* =======================
    🔐 CORS
    ======================= */
+const allowedOrigins = [
+  'https://portal.form.io',
+  'https://pro.formview.io'
+];
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://portal.form.io');
-  res.setHeader('Access-Control-Allow-Origin', 'https://pro.formview.io/');
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
