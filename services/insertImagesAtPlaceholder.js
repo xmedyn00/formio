@@ -7,6 +7,16 @@ module.exports = async function insertImagesAtPlaceholder({
   if (!Array.isArray(imageFileIds) || imageFileIds.length === 0) return;
 
   const doc = await docs.documents.get({ documentId });
+  
+  const PLACEHOLDER_IMAGE_SIZES = {
+  '{{fotografieBudovy}}': {
+    height: 310 // PT — больше
+  },
+
+  default: {
+    height: 550 // PT — как сейчас
+  }
+};
 
   let startIndex = null;
   let endIndex = null;
@@ -42,6 +52,10 @@ module.exports = async function insertImagesAtPlaceholder({
   ];
 
   let cursor = startIndex;
+  
+  const size =
+    PLACEHOLDER_IMAGE_SIZES[placeholder] ||
+    PLACEHOLDER_IMAGE_SIZES.default;
 
   for (const fileId of imageFileIds) {
     requests.push({
@@ -49,7 +63,7 @@ module.exports = async function insertImagesAtPlaceholder({
         location: { index: cursor },
         uri: `https://drive.google.com/uc?id=${fileId}`,
         objectSize: {
-          height: { magnitude: 320, unit: 'PT' }
+          height: { magnitude: size.height, unit: 'PT' }
         }
       }
     });
