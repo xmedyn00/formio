@@ -293,7 +293,20 @@ app.post('/generate-doc', async (req, res) => {
 	/* =======================
    🧹 FINAL CLEANUP – REMOVE UNUSED {{PLACEHOLDERS}}
    ======================= */
-	await removeAllRemainingPlaceholders(documentId, docs);
+	await fetch(
+	  `https://script.googleapis.com/v1/scripts/${process.env.APPS_SCRIPT_ID}:run`,
+	  {
+		method: 'POST',
+		headers: {
+		  Authorization: `Bearer ${await oauth2Client.getAccessToken().then(r => r.token)}`,
+		  'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+		  function: 'removeUnusedPlaceholders',
+		  parameters: [documentId]
+		})
+	  }
+	);
 
     /* =======================
        ✅ RESPONSE
@@ -398,10 +411,10 @@ function collectOkruhy(body) {
 }
 
 async function runGenerateOkruhy(documentId, okruhy, rozsahZpravy) {
-  const scriptId =
-	  rozsahZpravy === 'plny'
+  const scriptId = process.env.APPS_SCRIPT_ID
+	  /*rozsahZpravy === 'plny'
 		? process.env.APPS_SCRIPT_FULL_ID
-		: process.env.APPS_SCRIPT_ID; // zjednodusenyBezVlastnihoZdrojeTepla
+		: process.env.APPS_SCRIPT_ID; // zjednodusenyBezVlastnihoZdrojeTepla*/
   const { token } = await oauth2Client.getAccessToken();
 
   const res = await fetch(
@@ -595,23 +608,4 @@ async function runGenerateZdrojeTepla(documentId, zdrojeTepla) {
       'Apps Script error: ' + JSON.stringify(json.error)
     );
   }
-}
-
-function removeAllRemainingPlaceholders(documentId, docs) {
-  return docs.documents.batchUpdate({
-    documentId,
-    requestBody: {
-      requests: [
-        {
-          replaceAllText: {
-            containsText: {
-              text: '{{',
-              matchCase: false
-            },
-            replaceText: ''
-          }
-        }
-      ]
-    }
-  });
 }
