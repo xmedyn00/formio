@@ -358,20 +358,13 @@ function collectOkruhy(body) {
 
     const okruh = {
       cislo,
-      vypoctovyTepelnyVykon:
-        body[`okruh.${i}.vypoctovyTepelnyVykon`] || '',
-      vypoctovyTeplotniSpad:
-        body[`okruh.${i}.vypoctovyTeplotniSpad`] || '',
-      provozovanyTeplotniSpad:
-        body[`okruh.${i}.provozovanyTeplotniSpad`] || '',
-      oznaceniCerpadla:
-        body[`okruh.${i}.oznaceniCerpadla`] || '',
-      jmenovityPrikon:
-        body[`okruh.${i}.jmenovityPrikon`] || '',
-      poznamkyKRozvodumTepelneEnergie:
-        body[`okruh.${i}.poznamkyKRozvodumTepelneEnergie`] || '',
-      typHydraulickehoVyvazeniOtopneSoustavy:
-        body[`okruh.${i}.typHydraulickehoVyvazeniOtopneSoustavy`] || ''
+      vypoctovyTepelnyVykon: body[`okruh.${i}.vypoctovyTepelnyVykon`] || '',
+      vypoctovyTeplotniSpad: body[`okruh.${i}.vypoctovyTeplotniSpad`] || '',
+      provozovanyTeplotniSpad: body[`okruh.${i}.provozovanyTeplotniSpad`] || '',
+      oznaceniCerpadla: body[`okruh.${i}.oznaceniCerpadla`] || '',
+      jmenovityPrikon: body[`okruh.${i}.jmenovityPrikon`] || '',
+      poznamkyKRozvodumTepelneEnergie: body[`okruh.${i}.poznamkyKRozvodumTepelneEnergie`] || '',
+      typHydraulickehoVyvazeniOtopneSoustavy: body[`okruh.${i}.typHydraulickehoVyvazeniOtopneSoustavy`] || ''
     };
 
     /* =====================

@@ -22,63 +22,32 @@ module.exports = function applyOkruhy(body, options = {}) {
   rows.forEach((row, i) => {
     const p = `${targetKey}.${i}`;
 
-    /* =====================
-       ZÁKLAD
-       ===================== */
     setIfEmpty(body, `${p}.cislo`, row.cislo || '');
     setIfEmpty(body, `${p}.oznaceni`, row.oznaceni || '');
-
-    /* =====================
-       VÝPOČTOVÝ TEPLOTNÍ SPÁD
-       ===================== */
     const vypoctovySpad =
       row.teplotaVPrivodnimPotrubiC1 != null &&
       row.teplotaVeVratnemPotrubiC3 != null
         ? `${row.teplotaVPrivodnimPotrubiC1}/${row.teplotaVeVratnemPotrubiC3}`
         : '';
-
     setIfEmpty(body, `${p}.vypoctovyTeplotniSpad`, vypoctovySpad);
-
-    /* =====================
-       PROVOZOVANÝ TEPLOTNÍ SPÁD
-       ===================== */
+	setIfEmpty(body, `${p}.vypoctovyTepelnyVykon`, row.vypoctovyTepelnyVykon != null ? String(row.vypoctovyTepelnyVykon) : '');
     const provozovanySpad =
       row.teplotaVPrivodnimPotrubiC != null &&
       row.teplotaVeVratnemPotrubiC2 != null
         ? `${row.teplotaVPrivodnimPotrubiC}/${row.teplotaVeVratnemPotrubiC2}`
         : '';
-
     setIfEmpty(body, `${p}.provozovanyTeplotniSpad`, provozovanySpad);
-
-    /* =====================
-       VÝKONY
-       ===================== */
-
-    // vypočtový tepelný výkon – pouze převzetí hodnoty
-    setIfEmpty(
-      body,
-      `${p}.vypoctovyTepelnyVykon`,
-      row.vypoctovyTepelnyVykon != null
-        ? String(row.vypoctovyTepelnyVykon)
-        : ''
-    );
-
-    // přenášený výkon – OPRAVENO (byl ReferenceError)
     const prenasenyVykon =
       row.prenasenyVykon != null
         ? String(row.prenasenyVykon)
         : '';
-
     setIfEmpty(body, `${p}.prenasenyVykon`, prenasenyVykon);
-
-    /* =====================
-       IZOLACE
-       ===================== */
-    setIfEmpty(
-      body,
-      `${p}.typTepelneIzolace`,
-      row.typTepelneIzolace || ''
-    );
+    setIfEmpty(body, `${p}.typTepelneIzolace`, row.typTepelneIzolace || '' );
+    setIfEmpty(body, `${p}.zpusobRegulace`, row.zpusobRegulace || '' );
+	setIfEmpty(body, `${p}.jmenovityPrikon`, row.jmenovityPrikon != null ? String(row.jmenovityPrikon) : '' );
+	applyAnoNe(body, p, 'jsouOsazenyVyvazovaciArmaturyNaRozvodechTepelneEnergie', row);
+    applyAnoNe(body, p, 'lzeOveritSpravnostDimenzeANastaveni', row);
+    applyAnoNe(body, p, 'jeProvedenoHydraulickeNastaveniVyvazovacichArmatur', row);
 
     /* =====================
        ČERPADLO
@@ -122,28 +91,20 @@ module.exports = function applyOkruhy(body, options = {}) {
 	  jine: 'Jiné'
 	};
 
-	Object.keys(regulaceOptions).forEach(key => {
+	/*Object.keys(regulaceOptions).forEach(key => {
 	  body[`${p}.zpusobRegulace.${key}`] =
 		row.zpusobRegulace?.[key] ? '☒' : '☐';
-	});
+	});*/
 
     /* =====================
        ELEKTRICKÝ PŘÍKON
        ===================== */
-    setIfEmpty(
-      body,
-      `${p}.jmenovityPrikon`,
-      row.jmenovityPrikon != null
-        ? String(row.jmenovityPrikon)
-        : ''
-    );
+    
 
     /* =====================
        RADIO: ANO / NE → CHECK
        ===================== */
-    applyAnoNe(body, p, 'jsouOsazenyVyvazovaciArmaturyNaRozvodechTepelneEnergie', row);
-    applyAnoNe(body, p, 'lzeOveritSpravnostDimenzeANastaveni', row);
-    applyAnoNe(body, p, 'jeProvedenoHydraulickeNastaveniVyvazovacichArmatur', row);
+
     applyAnoNe(body, p, 'vsechnyPristupneCastiRozvoduTepelneEnergieTepelneIzolovany', row);
     applyAnoNe(body, p, 'vyhovujiciStavTepelneIzolace', row);
     applyAnoNe(body, p, 'dochaziKeZtrateTeplonosneLatky', row);
