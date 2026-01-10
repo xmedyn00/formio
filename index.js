@@ -36,6 +36,7 @@ const app = express();
    ======================= */
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', 'https://portal.form.io');
+  res.setHeader('Access-Control-Allow-Origin', 'https://pro.formview.io/');
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
