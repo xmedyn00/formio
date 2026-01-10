@@ -85,8 +85,7 @@ app.post('/generate-doc', async (req, res) => {
     if (body.datumZpracovani)
       body.datumZpracovani = formatDateCZ(body.datumZpracovani);
     if (body.datumZpracovaniPENB)
-      body.datumZpracovaniPENB = formatDateCZ(body.datumZpracovaniPENB;
-  
+      body.datumZpracovaniPENB = formatDateCZ(body.datumZpracovaniPENB);
 
     /* =======================
        🔁 OKRUHY (FORM.IO GRID)
