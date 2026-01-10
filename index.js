@@ -411,10 +411,10 @@ function collectOkruhy(body) {
 }
 
 async function runGenerateOkruhy(documentId, okruhy, rozsahZpravy) {
-  const scriptId = process.env.APPS_SCRIPT_ID;
-	  /*rozsahZpravy === 'plny'
+  const scriptId =
+	  rozsahZpravy === 'plny'
 		? process.env.APPS_SCRIPT_FULL_ID
-		: process.env.APPS_SCRIPT_ID; // zjednodusenyBezVlastnihoZdrojeTepla*/
+		: process.env.APPS_SCRIPT_ID; // zjednodusenyBezVlastnihoZdrojeTepla
   const { token } = await oauth2Client.getAccessToken();
 
   const res = await fetch(
