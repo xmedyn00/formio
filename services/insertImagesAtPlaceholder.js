@@ -4,6 +4,24 @@ module.exports = async function insertImagesAtPlaceholder({
   imageFileIds,
   docs
 }) {
+	if (!documentId || !docs || !placeholder) {
+    console.warn('⛔ insertImagesAtPlaceholder skipped: missing documentId / docs / placeholder');
+    return;
+  }
+
+  if (!Array.isArray(imageFileIds)) {
+    console.warn('⛔ insertImagesAtPlaceholder skipped: imageFileIds is not an array');
+    return;
+  }
+
+  const validImageIds = imageFileIds.filter(
+    id => typeof id === 'string' && id.trim().length > 0
+  );
+
+  if (validImageIds.length === 0) {
+    console.log(`ℹ insertImagesAtPlaceholder skipped: no images for ${placeholder}`);
+    return;
+  }
   if (!Array.isArray(imageFileIds) || imageFileIds.length === 0) return;
 
   const doc = await docs.documents.get({ documentId });

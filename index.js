@@ -289,6 +289,24 @@ app.post('/generate-doc', async (req, res) => {
 	if (zdrojeTepla.length > 0) {
 	  await runGenerateZdrojeTepla(documentId, zdrojeTepla);
 	}
+	
+	/* =======================
+   🧹 FINAL CLEANUP – REMOVE UNUSED {{PLACEHOLDERS}}
+   ======================= */
+	await fetch(
+	  `https://script.googleapis.com/v1/scripts/${process.env.APPS_SCRIPT_ID}:run`,
+	  {
+		method: 'POST',
+		headers: {
+		  Authorization: `Bearer ${await oauth2Client.getAccessToken().then(r => r.token)}`,
+		  'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+		  function: 'removeUnusedPlaceholders',
+		  parameters: [documentId]
+		})
+	  }
+	);
 
     /* =======================
        ✅ RESPONSE
@@ -592,4 +610,21 @@ async function runGenerateZdrojeTepla(documentId, zdrojeTepla) {
   }
 }
 
-
+function removeAllRemainingPlaceholders(documentId, docs) {
+  return docs.documents.batchUpdate({
+    documentId,
+    requestBody: {
+      requests: [
+        {
+          replaceAllText: {
+            containsText: {
+              text: '{{',
+              matchCase: false
+            },
+            replaceText: ''
+          }
+        }
+      ]
+    }
+  });
+}
