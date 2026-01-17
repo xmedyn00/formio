@@ -4,13 +4,13 @@ module.exports = async function insertImagesAtPlaceholder({
   imageFileIds,
   docs
 }) {
-	if (!documentId || !docs || !placeholder) {
+  if (!documentId || !docs || !placeholder) {
     console.warn('⛔ insertImagesAtPlaceholder skipped: missing documentId / docs / placeholder');
     return;
   }
 
-  if (!Array.isArray(imageFileIds)) {
-    console.warn('⛔ insertImagesAtPlaceholder skipped: imageFileIds is not an array');
+  if (!Array.isArray(imageFileIds) || imageFileIds.length === 0) {
+    console.warn('⛔ insertImagesAtPlaceholder skipped: imageFileIds empty or not array');
     return;
   }
 
@@ -22,19 +22,8 @@ module.exports = async function insertImagesAtPlaceholder({
     console.log(`ℹ insertImagesAtPlaceholder skipped: no images for ${placeholder}`);
     return;
   }
-  if (!Array.isArray(imageFileIds) || imageFileIds.length === 0) return;
 
   const doc = await docs.documents.get({ documentId });
-  
-  const PLACEHOLDER_IMAGE_SIZES = {
-  '{{fotografieBudovy}}': {
-    height: 310 // PT — больше
-  },
-
-  default: {
-    height: 450 // PT — как сейчас
-  }
-};
 
   let startIndex = null;
   let endIndex = null;
@@ -70,23 +59,27 @@ module.exports = async function insertImagesAtPlaceholder({
   ];
 
   let cursor = startIndex;
-  
-  const size =
-    PLACEHOLDER_IMAGE_SIZES[placeholder] ||
-    PLACEHOLDER_IMAGE_SIZES.default;
 
-  for (const fileId of imageFileIds) {
-    requests.push({
+  const isFotografieBudovy = placeholder === '{{fotografieBudovy}}';
+
+  for (const fileId of validImageIds) {
+    const insertImageRequest = {
       insertInlineImage: {
         location: { index: cursor },
-        uri: `https://drive.google.com/uc?id=${fileId}`,
-        objectSize: {
-          height: { magnitude: size.height, unit: 'PT' }
-        }
+        uri: `https://drive.google.com/uc?id=${fileId}`
       }
-    });
+    };
 
-    // перенос строки после фото
+    // ✅ Масштаб ТОЛЬКО для fotografieBudovy
+    if (isFotografieBudovy) {
+      insertImageRequest.insertInlineImage.objectSize = {
+        height: { magnitude: 310, unit: 'PT' }
+      };
+    }
+
+    requests.push(insertImageRequest);
+
+    // перенос строки после изображения
     requests.push({
       insertText: {
         location: { index: cursor + 1 },
