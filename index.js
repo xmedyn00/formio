@@ -216,12 +216,12 @@ app.post('/generate-doc', async (req, res) => {
    🖼 INSERT IMAGE (FORM.IO → GOOGLE DRIVE)
    ======================= */
    const IMAGE_PLACEHOLDERS = {
+	  owner_podpisOsobyUrcene: '{{owner_podpisOsobyUrcene}}'
 	  fotografieBudovy: '{{fotografieBudovy}}',
 	  fotografieVstupuTeplaDoBudovy: '{{fotografieVstupuTeplaDoBudovy}}',
 	  fotografieZdrojeTepla: '{{fotografieZdrojeTepla}}',
 	  fotografieRozvodu: '{{fotografieRozvodu}}',
-	  fotografiePrvkuSdileniTepla: '{{fotografiePrvkuSdileniTepla}}',
-	  owner_podpisOsobyUrcene: '{{owner_podpisOsobyUrcene}}'
+	  fotografiePrvkuSdileniTepla: '{{fotografiePrvkuSdileniTepla}}'
 	};
 	
 	
@@ -250,13 +250,13 @@ app.post('/generate-doc', async (req, res) => {
        ✏ REPLACE PLACEHOLDERS
        ======================= */
 	const SKIP_KEYS = [
+	  'owner_podpisOsobyUrcene',
 	  'fotografieBudovy',
 	  'fotografieVstupuTeplaDoBudovy',
 	  'fotografieZdrojeTepla',
 	  'fotografieRozvodu',
 	  'fotografiePrvkuSdileniTepla',
-	  'prilohy',
-	  'owner_podpisOsobyUrcene'
+	  'prilohy'	  
 	];
     const requests = Object.entries(body).filter(([key]) => !SKIP_KEYS.includes(key)).map(([key, value]) => ({
       replaceAllText: {
