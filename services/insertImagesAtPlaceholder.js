@@ -107,7 +107,7 @@ module.exports = async function insertImagesAtPlaceholder({
     documentId,
     requestBody: { requests }
   });
-};
+}; 
 
 
 function findPlaceholderInContent(content, placeholder) {
