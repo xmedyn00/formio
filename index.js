@@ -255,7 +255,8 @@ app.post('/generate-doc', async (req, res) => {
 	  'fotografieZdrojeTepla',
 	  'fotografieRozvodu',
 	  'fotografiePrvkuSdileniTepla',
-	  'prilohy'
+	  'prilohy',
+	  'owner_podpisOsobyUrcene'
 	];
     const requests = Object.entries(body).filter(([key]) => !SKIP_KEYS.includes(key)).map(([key, value]) => ({
       replaceAllText: {
