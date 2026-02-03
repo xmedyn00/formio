@@ -28,7 +28,7 @@ module.exports = async function insertImagesAtPlaceholder({
   let startIndex = null;
   let endIndex = null;
 
-  for (const element of doc.data.body.content) {
+ /* for (const element of doc.data.body.content) {
     if (!element.paragraph) continue;
 
     for (const el of element.paragraph.elements || []) {
@@ -43,12 +43,18 @@ module.exports = async function insertImagesAtPlaceholder({
       }
     }
     if (startIndex !== null) break;
-  }
+  }*/
+	const found = findPlaceholderInContent(
+	  doc.data.body.content,
+	  placeholder
+	);
 
-  if (startIndex === null) {
-    console.warn(`⚠ Placeholder ${placeholder} not found`);
-    return;
-  }
+	if (!found) {
+	  console.warn(`⚠ Placeholder ${placeholder} not found (including tables)`);
+	  return;
+	}
+
+	const { startIndex, endIndex } = found;
 
   const requests = [
     {
@@ -102,3 +108,40 @@ module.exports = async function insertImagesAtPlaceholder({
     requestBody: { requests }
   });
 };
+
+
+function findPlaceholderInContent(content, placeholder) {
+  for (const element of content) {
+
+    // 📄 обычный параграф
+    if (element.paragraph) {
+      for (const el of element.paragraph.elements || []) {
+        const text = el.textRun?.content;
+        if (!text) continue;
+
+        const pos = text.indexOf(placeholder);
+        if (pos !== -1) {
+          return {
+            startIndex: el.startIndex + pos,
+            endIndex: el.startIndex + pos + placeholder.length
+          };
+        }
+      }
+    }
+
+    // 📊 ТАБЛИЦА (ВОТ ТУТ БЫЛО ПРОПУЩЕНО)
+    if (element.table) {
+      for (const row of element.table.tableRows || []) {
+        for (const cell of row.tableCells || []) {
+          const found = findPlaceholderInContent(
+            cell.content || [],
+            placeholder
+          );
+          if (found) return found;
+        }
+      }
+    }
+  }
+
+  return null;
+}
