@@ -25,9 +25,6 @@ module.exports = async function insertImagesAtPlaceholder({
 
   const doc = await docs.documents.get({ documentId });
 
-  let startIndex = null;
-  let endIndex = null;
-
  /* for (const element of doc.data.body.content) {
     if (!element.paragraph) continue;
 
