@@ -65,6 +65,7 @@ module.exports = async function insertImagesAtPlaceholder({
 
   const isFotografieBudovy = placeholder === '{{fotografieBudovy}}';
   const podpisOsobyUrcene = placeholder === '{{owner_podpisOsobyUrcene}}';
+  const podpisEnergetickehoSpecialisty = placeholder === '{{owner_podpisEnergetickehoSpecialisty}}';
 
   for (const fileId of validImageIds) {
     const insertImageRequest = {
@@ -82,6 +83,11 @@ module.exports = async function insertImagesAtPlaceholder({
     }
 	// ✅ Масштаб ТОЛЬКО для owner_podpisOsobyUrcene
     if (podpisOsobyUrcene) {
+      insertImageRequest.insertInlineImage.objectSize = {
+        height: { magnitude: 100, unit: 'PT' }
+      };
+    }// ✅ Масштаб ТОЛЬКО для EnergetickehoSpecialisty
+    if (podpisEnergetickehoSpecialisty) {
       insertImageRequest.insertInlineImage.objectSize = {
         height: { magnitude: 100, unit: 'PT' }
       };

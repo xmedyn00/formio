@@ -217,6 +217,7 @@ app.post('/generate-doc', async (req, res) => {
    ======================= */
    const IMAGE_PLACEHOLDERS = {
 	  owner_podpisOsobyUrcene: '{{owner_podpisOsobyUrcene}}',
+	  owner_podpisEnergetickehoSpecialisty: '{{owner_podpisEnergetickehoSpecialisty}}',
 	  fotografieBudovy: '{{fotografieBudovy}}',
 	  fotografieVstupuTeplaDoBudovy: '{{fotografieVstupuTeplaDoBudovy}}',
 	  fotografieZdrojeTepla: '{{fotografieZdrojeTepla}}',
@@ -251,6 +252,7 @@ app.post('/generate-doc', async (req, res) => {
        ======================= */
 	const SKIP_KEYS = [
 	  'owner_podpisOsobyUrcene',
+	  'owner_podpisEnergetickehoSpecialisty',
 	  'fotografieBudovy',
 	  'fotografieVstupuTeplaDoBudovy',
 	  'fotografieZdrojeTepla',
