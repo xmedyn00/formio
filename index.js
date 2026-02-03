@@ -216,7 +216,7 @@ app.post('/generate-doc', async (req, res) => {
    🖼 INSERT IMAGE (FORM.IO → GOOGLE DRIVE)
    ======================= */
    const IMAGE_PLACEHOLDERS = {
-	  owner_podpisOsobyUrcene: '{{owner_podpisOsobyUrcene}}'
+	  owner_podpisOsobyUrcene: '{{owner_podpisOsobyUrcene}}',
 	  fotografieBudovy: '{{fotografieBudovy}}',
 	  fotografieVstupuTeplaDoBudovy: '{{fotografieVstupuTeplaDoBudovy}}',
 	  fotografieZdrojeTepla: '{{fotografieZdrojeTepla}}',
