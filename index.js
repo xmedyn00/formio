@@ -220,7 +220,8 @@ app.post('/generate-doc', async (req, res) => {
 	  fotografieVstupuTeplaDoBudovy: '{{fotografieVstupuTeplaDoBudovy}}',
 	  fotografieZdrojeTepla: '{{fotografieZdrojeTepla}}',
 	  fotografieRozvodu: '{{fotografieRozvodu}}',
-	  fotografiePrvkuSdileniTepla: '{{fotografiePrvkuSdileniTepla}}'
+	  fotografiePrvkuSdileniTepla: '{{fotografiePrvkuSdileniTepla}}',
+	  owner_podpisOsobyUrcene: '{{owner_podpisOsobyUrcene}}'
 	};
 	
 	

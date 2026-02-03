@@ -61,6 +61,7 @@ module.exports = async function insertImagesAtPlaceholder({
   let cursor = startIndex;
 
   const isFotografieBudovy = placeholder === '{{fotografieBudovy}}';
+  const isFotografieBudovy = placeholder === '{{owner_podpisOsobyUrcene}}';
 
   for (const fileId of validImageIds) {
     const insertImageRequest = {
@@ -74,6 +75,12 @@ module.exports = async function insertImagesAtPlaceholder({
     if (isFotografieBudovy) {
       insertImageRequest.insertInlineImage.objectSize = {
         height: { magnitude: 310, unit: 'PT' }
+      };
+    }
+	// ✅ Масштаб ТОЛЬКО для owner_podpisOsobyUrcene
+    if (isFotografieBudovy) {
+      insertImageRequest.insertInlineImage.objectSize = {
+        height: { magnitude: 100, unit: 'PT' }
       };
     }
 
