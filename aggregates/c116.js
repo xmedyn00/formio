@@ -8,21 +8,13 @@
  * - NIKDY nepřepisuje existující klíče
  */
 
-// FIX: use shared helper instead of local duplicate
-const { setIfEmpty } = require('../utils/helpers');
-
 module.exports = function handleC116(body) {
-  // FIX: guard against non-object (e.g. already-stringified value)
-  const source =
-    body.regulaceVykonuZdroje &&
-    typeof body.regulaceVykonuZdroje === 'object'
-      ? body.regulaceVykonuZdroje
-      : {};
+  const source = body.regulaceVykonuZdroje || {};
 
   const OPTIONS = {
     kvantitativni: 'kvantitativní',
-    kvalitativni:  'kvalitativní',
-    jina:          'jiná'
+    kvalitativni: 'kvalitativní',
+    jina: 'jiná'
   };
 
   Object.keys(OPTIONS).forEach(key => {
@@ -33,3 +25,13 @@ module.exports = function handleC116(body) {
     );
   });
 };
+
+/* =====================
+   HELPERS
+   ===================== */
+
+function setIfEmpty(body, key, value) {
+  if (body[key] === undefined || body[key] === '') {
+    body[key] = value;
+  }
+}
