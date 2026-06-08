@@ -4,6 +4,9 @@ const {
   applyCheckboxes
 } = require('../utils/aggregateHelpers');
 
+// FIX: use shared helper instead of local duplicate
+const { setIfEmpty } = require('../utils/helpers');
+
 module.exports = function handleC32(body) {
   if (!body || typeof body !== 'object') return;
 
@@ -11,17 +14,17 @@ module.exports = function handleC32(body) {
      ZÁKLADNÍ POLE C32
      ===================== */
   const fields = [
-    { key: 'c32_pouzitiKoncepcniReseni', label: 'Použití, koncepční řešení' },
-    { key: 'c32_dimenzovani', label: 'Dimenzování' },
-    { key: 'c32_zapojeni', label: 'Zapojení' },
-    { key: 'c32_regulace', label: 'Regulace' },
-    { key: 'c32_provozniNastaveni', label: 'Provozní nastavení' },
-    { key: 'c32_tepelnaIzolace', label: 'Tepelná izolace' },
-    { key: 'c32_stavArmatur', label: 'Stav armatur' },
-    { key: 'c32_dalsi', label: 'Další' },
+    { key: 'c32_pouzitiKoncepcniReseni',                    label: 'Použití, koncepční řešení' },
+    { key: 'c32_dimenzovani',                               label: 'Dimenzování' },
+    { key: 'c32_zapojeni',                                  label: 'Zapojení' },
+    { key: 'c32_regulace',                                  label: 'Regulace' },
+    { key: 'c32_provozniNastaveni',                         label: 'Provozní nastavení' },
+    { key: 'c32_tepelnaIzolace',                            label: 'Tepelná izolace' },
+    { key: 'c32_stavArmatur',                               label: 'Stav armatur' },
+    { key: 'c32_dalsi',                                     label: 'Další' },
     { key: 'c32_zjisteneRozporySPozadavkyPravnichPredpisu', label: 'Rozpory s pozadavky pravnich predpisu' },
-    { key: 'c32_zjisteneRozporySPokynyVyrobce', label: 'Rozpory s pokyny vyrobce' },
-    { key: 'c32_dalsiZjisteneVazneNedostatky', label: 'Další vazne nedostatky' }
+    { key: 'c32_zjisteneRozporySPokynyVyrobce',             label: 'Rozpory s pokyny vyrobce' },
+    { key: 'c32_dalsiZjisteneVazneNedostatky',              label: 'Další vazne nedostatky' }
   ];
 
   /* =====================
@@ -33,26 +36,7 @@ module.exports = function handleC32(body) {
     'c32_dalsiZjisteneVazneNedostatky'
   ];
 
-  /* =====================
-     DEFAULTNÍ HODNOTY
-     ===================== */
-  /*setIfEmpty(
-    body,
-    'c32_zjisteneRozporySPozadavkyPravnichPredpisu',
-    'bez připomínek'
-  );
-
-  setIfEmpty(
-    body,
-    'c32_zjisteneRozporySPokynyVyrobce',
-    'bez připomínek'
-  );
-
-  setIfEmpty(
-    body,
-    'c32_dalsiZjisteneVazneNedostatky',
-    'bez připomínek'
-  );*/
+  // NOTE: do NOT default fields before aggregation — see c12.js for explanation.
 
   /* =====================
      AGREGACE PŘIPOMÍNEK
@@ -76,13 +60,3 @@ module.exports = function handleC32(body) {
      ===================== */
   applyCheckboxes(body, 'c32', status);
 };
-
-function setIfEmpty(body, key, value) {
-  if (
-    body[key] === undefined ||
-    body[key] === null ||
-    body[key] === ''
-  ) {
-    body[key] = value;
-  }
-}
