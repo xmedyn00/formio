@@ -15,7 +15,10 @@ module.exports = function handleC42(body) {
     { key: 'c42_provozniNastaveni', label: 'Provozní nastavení' },
     { key: 'c42_tepelnaIzolace', label: 'Tepelná izolace' },
     { key: 'c42_stavArmatur', label: 'Stav armatur' },
-    { key: 'c42_dalsi', label: 'Další' }
+    { key: 'c42_dalsi', label: 'Další' },
+	{ key: 'c42_zjisteneRozporySPozadavkyPravnichPredpisu', label: 'Rozpory s pozadavky pravnich predpisu' },
+    { key: 'c42_zjisteneRozporySPokynyVyrobce', label: 'Rozpory s pokyny vyrobce' },
+    { key: 'c42_dalsiZjisteneVazneNedostatky', label: 'Další vazne nedostatky' }
   ];
 
   const vaznyFields = [
